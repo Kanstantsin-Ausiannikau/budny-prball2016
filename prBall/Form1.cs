@@ -14,7 +14,7 @@ namespace prBall
 {
     public partial class Form1 : Form
     {
-        List<CFData2015> cfData = new List<CFData2015>();
+        List<CFData2016> cfData = new List<CFData2016>();
 
         List<Article> articles1 = new List<Article>();
 
@@ -63,29 +63,49 @@ namespace prBall
             dgvArticles.Columns["PrBallDnevnBudget"].HeaderText = "Дневное\nбюджет";
             //dgvArticles.Columns["PrBallDnevnBudget"].HeaderCell.Style.Font.Size = 5;
 
-            dgvArticles.Columns["PrBallDnevnBudgetLgotn"].Width = 20;
+          //  dgvArticles.Columns["PrBallDnevnBudgetLgotn"].Width = 20;
 
             dgvArticles.Columns["PrBallDnevnPlatnoe"].Width = 60;
             dgvArticles.Columns["PrBallDnevnPlatnoe"].HeaderText = "Дневное\nплатное";
 
-            dgvArticles.Columns["PrBallZaochnBudgetLgotn"].Width = 20;
+          //  dgvArticles.Columns["PrBallZaochnBudgetLgotn"].Width = 20;
 
             dgvArticles.Columns["PrBallZaochnBudget"].Width = 60;
             dgvArticles.Columns["PrBallZaochnBudget"].HeaderText = "Заочное\nБюджет";
 
 
-            dgvArticles.Columns["PrBallZaochnPlatnLgotn"].Width = 20;
+          //  dgvArticles.Columns["PrBallZaochnPlatnLgotn"].Width = 20;
 
             dgvArticles.Columns["PrBallZaochnPlatn"].Width = 60;
             dgvArticles.Columns["PrBallZaochnPlatn"].HeaderText = "Заочное\nПлатное";
+            
+            dgvArticles.Columns["PrBallSokrDnevnBudg"].Width = 60;
+            dgvArticles.Columns["PrBallSokrDnevnBudg"].HeaderText = "СкрДнев\nБюдж";
 
-            dgvArticles.Columns["PrBallSokraschLgotn"].Width = 20;
+            dgvArticles.Columns["PrBallSokrDnevnPlatn"].Width = 60;
+            dgvArticles.Columns["PrBallSokrDnevnPlatn"].HeaderText = "СкрДнев\nПлатное";
 
-            dgvArticles.Columns["PrBallSokrasch"].Width = 70;
-            dgvArticles.Columns["PrBallSokrasch"].HeaderText = "Сокращен\nбюджет";
+            dgvArticles.Columns["PrBallSokrZaochBudget"].Width = 60;
+            dgvArticles.Columns["PrBallSokrZaochBudget"].HeaderText = "СкрЗаоч\nДневн";
 
-            dgvArticles.Columns["PrBallSokraschPlatn"].Width = 70;
-            dgvArticles.Columns["PrBallSokraschPlatn"].HeaderText = "Сокращен\nплатное";
+            dgvArticles.Columns["PrBallSokrZaochPlatnoe"].Width = 60;
+            dgvArticles.Columns["PrBallSokrZaochPlatnoe"].HeaderText = "СкрЗаоч\nПлатн";
+
+            dgvArticles.Columns["PrBallDistBudget"].Width = 60;
+            dgvArticles.Columns["PrBallDistBudget"].HeaderText = "Дистанц\nБюдж";
+
+            dgvArticles.Columns["PrBallDistPlatnoe"].Width = 60;
+            dgvArticles.Columns["PrBallDistPlatnoe"].HeaderText = "Дистанц\nПлатное";
+
+ 
+
+         //   dgvArticles.Columns["PrBallSokraschLgotn"].Width = 20;
+
+           // dgvArticles.Columns["PrBallSokrasch"].Width = 70;
+           // dgvArticles.Columns["PrBallSokrasch"].HeaderText = "Сокращен\nбюджет";
+
+           // dgvArticles.Columns["PrBallSokraschPlatn"].Width = 70;
+           // dgvArticles.Columns["PrBallSokraschPlatn"].HeaderText = "Сокращен\nплатное";
 
             dgvArticles.Columns["Title"].Width = 270;
         

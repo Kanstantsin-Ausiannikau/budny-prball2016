@@ -142,11 +142,11 @@ namespace prBall
 
         }
 
-        public static CFData2015 GetCFDataByArticleID(int articleId)
+        public static CFData2016 GetCFDataByArticleID(int articleId)
         {
             connection.Open();
 
-            CFData2015 articleData = new CFData2015();
+            CFData2016 articleData = new CFData2016();
 
             articleData.ArticleID = articleId;
 
@@ -212,15 +212,15 @@ namespace prBall
                         case 17: articleData.TypeObuchSokrasch = (bool)CFReader["Bit"]; break;
 
                         case 18: articleData.PrBallDnevnBudget = (decimal)CFReader["Decimal"]; break;
-                        case 19: articleData.PrBallDnevnBudgetLgotn = (decimal)CFReader["Decimal"]; break;
+                        //case 19: articleData.PrBallDnevnBudgetLgotn = (decimal)CFReader["Decimal"]; break;
                         case 20: articleData.PrBallZaochnBudget = (decimal)CFReader["Decimal"]; break;
                         case 21: articleData.PrBallZaochnPlatn = (decimal)CFReader["Decimal"]; break;
                         case 22: articleData.PrBallDnevnPlatnoe = (decimal)CFReader["Decimal"]; break;
-                        case 24: articleData.PrBallZaochnPlatnLgotn = (decimal)CFReader["Decimal"]; break;
-                        case 25: articleData.PrBallSokrasch = (decimal)CFReader["Decimal"]; break;
-                        case 27: articleData.PrBallZaochnBudgetLgotn = (decimal)CFReader["Decimal"]; break;
-                        case 28: articleData.PrBallZaochnBudgetLgotn = (decimal)CFReader["Decimal"]; break;
-                        case 29: articleData.PrBallSokraschLgotn = (decimal)CFReader["Decimal"]; break;
+                        //case 24: articleData.PrBallZaochnPlatnLgotn = (decimal)CFReader["Decimal"]; break;
+                       // case 25: articleData.PrBallSokrasch = (decimal)CFReader["Decimal"]; break;
+                       // case 27: articleData.PrBallZaochnBudgetLgotn = (decimal)CFReader["Decimal"]; break;
+                       // case 28: articleData.PrBallZaochnBudgetLgotn = (decimal)CFReader["Decimal"]; break;
+                        //case 29: articleData.PrBallSokraschLgotn = (decimal)CFReader["Decimal"]; break;
                     }
                     //      articles.Add((int)articleReader["ArticleID"]);
                 }
@@ -259,7 +259,7 @@ namespace prBall
             return title;
         }
 
-        public static void CreateNewArticle(Article article, CFData2015 data)
+        public static void CreateNewArticle(Article article, CFData2016 data)
         {
             connection.Open();
 
@@ -272,16 +272,17 @@ namespace prBall
 
             SqlCommand lastIdentity = new SqlCommand("SELECT MAX( [ArticleID]) FROM [budnyby_test].[dbo].[EasyDNNNews]", connection);
 
-            int id = (int)lastIdentity.ExecuteScalar();
+            int articleId = (int)lastIdentity.ExecuteScalar();
 
             string title = article.Title;
-            string titleLink = article.TitleLink + "-2015";
-            string articleText = article.ArticleText.Replace("2014", "2015");
-            string cleanArticleData = article.CleanArticleData.Replace("2014", "2015");
+            string titleLink = article.TitleLink.Replace("2015", "2016");
+
+            string articleText = article.ArticleText.Replace("2015", "2016");
+            string cleanArticleData = article.CleanArticleData.Replace("2015", "2016");
 
 
-            string upd = string.Format("update [budnyby_test].[DBO].[EasyDNNNews] SET [PublishDate]='9/14/2015 16:05:07', [DateAdded]='9/14/2015 16:05:07', [LastModified]='9/14/2015 16:05:07', [NumberOfViews]=0, [RatingValue]=0, [RatingCount]=0, [Title]=@title, [TitleLink]=@titlelink, [Article]=@articletext, [CleanArticleData]=@cleanarticletext  where [ArticleID]= {0}",
-                id.ToString());
+            string upd = string.Format("update [budnyby_test].[DBO].[EasyDNNNews] SET [PublishDate]='9/14/2016 16:05:07', [DateAdded]='9/14/2016 16:05:07', [LastModified]='9/14/2016 16:05:07', [NumberOfViews]=0, [RatingValue]=0, [RatingCount]=0, [Title]=@title, [TitleLink]=@titlelink, [Article]=@articletext, [CleanArticleData]=@cleanarticletext  where [ArticleID]= {0}",
+                articleId.ToString());
 
             SqlCommand updateNewArticle = new SqlCommand(upd, connection);
             updateNewArticle.Parameters.Add("@title",System.Data.SqlDbType.NVarChar);
@@ -295,30 +296,27 @@ namespace prBall
 
             updateNewArticle.Parameters.Add("@cleanarticletext",System.Data.SqlDbType.NVarChar);
             updateNewArticle.Parameters["@cleanarticletext"].Value = cleanArticleData;
-
-
-
-            
+           
             updateNewArticle.ExecuteNonQuery();
 
             connection.Close();
 
-            CreateNewCFData(id, data);
+            CreateNewCFData(articleId, data);
 
-            SetCategoryID(id);
+            SetCategoryID(articleId);
         }
 
         private static void SetCategoryID(int id)
         {
             connection.Open();
 
-            SqlCommand gorodCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNNewsCategories]  ([ArticleID],[CategoryID]) Values ({0},{1})", id, 72), connection);
+            SqlCommand gorodCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNNewsCategories]  ([ArticleID],[CategoryID]) Values ({0},{1})", id, 79), connection);
             gorodCommand.ExecuteNonQuery();
 
             connection.Close();
         }
 
-        private static void CreateNewCFData(decimal id, CFData2015 data)
+        private static void CreateNewCFData(decimal id, CFData2016 data)
         {
             connection.Open();
 
@@ -429,11 +427,11 @@ namespace prBall
                 prCommand.ExecuteNonQuery();
             }
 
-            if (data.PrBallDnevnBudgetLgotn != null)
-            {
-                SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 19, id, data.PrBallDnevnBudgetLgotn), connection);
-                prCommand.ExecuteNonQuery();
-            }
+            //if (data.PrBallDnevnBudgetLgotn != null)
+            //{
+            //    SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 19, id, data.PrBallDnevnBudgetLgotn), connection);
+            //    prCommand.ExecuteNonQuery();
+            //}
 
             if (data.PrBallZaochnBudget != null)
             {
@@ -453,35 +451,71 @@ namespace prBall
                 prCommand.ExecuteNonQuery();
             }
 
-            if (data.PrBallZaochnPlatnLgotn != null)
+            if (data.PrBallSokrDnevnBudg != null)
             {
-                SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 24, id, data.PrBallZaochnPlatnLgotn), connection);
+                SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 39, id, data.PrBallSokrDnevnBudg), connection);
                 prCommand.ExecuteNonQuery();
             }
 
-            if (data.PrBallSokrasch != null)
+            if (data.PrBallSokrDnevnPlatn != null)
             {
-                SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 25, id, data.PrBallSokrasch), connection);
+                SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 42, id, data.PrBallSokrDnevnPlatn), connection);
                 prCommand.ExecuteNonQuery();
             }
 
-            if (data.PrBallZaochnBudgetLgotn != null)
+            if (data.PrBallSokrZaochBudget != null)
             {
-                SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 27, id, data.PrBallZaochnBudgetLgotn), connection);
+                SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 41, id, data.PrBallSokrZaochBudget), connection);
                 prCommand.ExecuteNonQuery();
             }
 
-            if (data.PrBallSokraschPlatn != null)
+            if (data.PrBallSokrZaochPlatnoe != null)
             {
-                SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 28, id, data.PrBallSokraschPlatn), connection);
+                SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 43, id, data.PrBallSokrZaochPlatnoe), connection);
                 prCommand.ExecuteNonQuery();
             }
 
-            if (data.PrBallSokraschLgotn != null)
+            if (data.PrBallDistBudget != null)
             {
-                SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 29, id, data.PrBallSokraschLgotn), connection);
+                SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 44, id, data.PrBallDistBudget), connection);
                 prCommand.ExecuteNonQuery();
             }
+
+            if (data.PrBallDistPlatnoe != null)
+            {
+                SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 45, id, data.PrBallDistPlatnoe), connection);
+                prCommand.ExecuteNonQuery();
+            }
+
+            //if (data.PrBallZaochnPlatnLgotn != null)
+            //{
+            //    SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 24, id, data.PrBallZaochnPlatnLgotn), connection);
+            //    prCommand.ExecuteNonQuery();
+            //}
+
+            //if (data.PrBallSokrasch != null)
+            //{
+            //    SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 25, id, data.PrBallSokrasch), connection);
+            //    prCommand.ExecuteNonQuery();
+            //}
+
+            //if (data.PrBallZaochnBudgetLgotn != null)
+            //{
+            //    SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 27, id, data.PrBallZaochnBudgetLgotn), connection);
+            //    prCommand.ExecuteNonQuery();
+            //}
+
+            //if (data.PrBallSokraschPlatn != null)
+            //{
+            //    SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 28, id, data.PrBallSokraschPlatn), connection);
+            //    prCommand.ExecuteNonQuery();
+            //}
+
+            //if (data.PrBallSokraschLgotn != null)
+            //{
+            //    SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 29, id, data.PrBallSokraschLgotn), connection);
+            //    prCommand.ExecuteNonQuery();
+            //}
 
 
             connection.Close();
