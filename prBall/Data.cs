@@ -61,7 +61,7 @@ namespace prBall
         {
             connection.Open();
 
-            SqlCommand articleListCommand = new SqlCommand("SELECT * FROM [budnyby_test].[dbo].[EasyDNNNewsCategories] INNER JOIN [budnyby_test].[dbo].[EasyDNNNews] ON [budnyby_test].[dbo].[EasyDNNNewsCategories].ArticleID=[budnyby_test].[dbo].[EasyDNNNews].ArticleID INNER JOIN [budnyby_test].[dbo].[EasyDNNfieldsMultiSelected] ON [budnyby_test].[dbo].[EasyDNNNews].ArticleID =  [budnyby_test].[dbo].[EasyDNNfieldsMultiSelected].ArticleID WHERE CategoryID=43 AND [CustomFieldID]=12 AND [FieldElementID]="
+            SqlCommand articleListCommand = new SqlCommand("SELECT * FROM [budnyby_test].[dbo].[EasyDNNNewsCategories] INNER JOIN [budnyby_test].[dbo].[EasyDNNNews] ON [budnyby_test].[dbo].[EasyDNNNewsCategories].ArticleID=[budnyby_test].[dbo].[EasyDNNNews].ArticleID INNER JOIN [budnyby_test].[dbo].[EasyDNNfieldsMultiSelected] ON [budnyby_test].[dbo].[EasyDNNNews].ArticleID =  [budnyby_test].[dbo].[EasyDNNfieldsMultiSelected].ArticleID WHERE CategoryID=72 AND [CustomFieldID]=12 AND [FieldElementID]="
                 + vuzID, connection);
 
             SqlDataReader articleReader = articleListCommand.ExecuteReader();
@@ -142,15 +142,15 @@ namespace prBall
 
         }
 
-        public static CFData2015 GetCFDataByArticleID(int id)
+        public static CFData2015 GetCFDataByArticleID(int articleId)
         {
             connection.Open();
 
             CFData2015 articleData = new CFData2015();
 
-            articleData.ArticleID = id;
+            articleData.ArticleID = articleId;
 
-            SqlCommand customFieldsMultyCommand = new SqlCommand("select * from [EasyDNNfieldsMultiSelected] where ArticleID=" + id, connection);
+            SqlCommand customFieldsMultyCommand = new SqlCommand("select * from [EasyDNNfieldsMultiSelected] where ArticleID=" + articleId, connection);
 
             SqlDataReader CFMultyReader = customFieldsMultyCommand.ExecuteReader();
 
@@ -191,7 +191,7 @@ namespace prBall
             }
 
 
-            SqlCommand customFieldsCommand = new SqlCommand("select * from [EasyDNNfieldsValues] where ArticleID=" + id, connection);
+            SqlCommand customFieldsCommand = new SqlCommand("select * from [EasyDNNfieldsValues] where ArticleID=" + articleId, connection);
 
 
             SqlDataReader CFReader = customFieldsCommand.ExecuteReader();
