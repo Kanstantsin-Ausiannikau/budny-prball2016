@@ -8,7 +8,7 @@ namespace prBall
 {
     class Article
     {
-        public CFData CustomFieldsValue { get;  set; }
+        public CFData2015 CustomFieldsValue { get;  set; }
 
         public int ArticleID { get; set; }
         public int PortalID { get; set; }

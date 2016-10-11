@@ -5,7 +5,7 @@ using System.Text;
 
 namespace prBall
 {
-    class CFData
+    class CFData2015
     {
 
         public string Title { get; set; }

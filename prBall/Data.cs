@@ -142,11 +142,11 @@ namespace prBall
 
         }
 
-        public static CFData GetCFDataByArticleID(int id)
+        public static CFData2015 GetCFDataByArticleID(int id)
         {
             connection.Open();
 
-            CFData articleData = new CFData();
+            CFData2015 articleData = new CFData2015();
 
             articleData.ArticleID = id;
 
@@ -259,7 +259,7 @@ namespace prBall
             return title;
         }
 
-        public static void CreateNewArticle(Article article, CFData data)
+        public static void CreateNewArticle(Article article, CFData2015 data)
         {
             connection.Open();
 
@@ -318,7 +318,7 @@ namespace prBall
             connection.Close();
         }
 
-        private static void CreateNewCFData(decimal id, CFData data)
+        private static void CreateNewCFData(decimal id, CFData2015 data)
         {
             connection.Open();
 

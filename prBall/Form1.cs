@@ -14,7 +14,7 @@ namespace prBall
 {
     public partial class Form1 : Form
     {
-        List<CFData> cfData = new List<CFData>();
+        List<CFData2015> cfData = new List<CFData2015>();
 
         List<Article> articles1 = new List<Article>();
 
