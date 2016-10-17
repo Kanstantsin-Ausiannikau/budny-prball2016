@@ -67,6 +67,9 @@ namespace prBall
         public string DetailsLinksTemplate { get; set; }
         public string DetailsRelatedArticlesTemplate { get; set; }
 
+        public string ContactEmail { get; set; }
+        public string TitleTag { get; set; }
+
         public int FieldElementID { get; set; }
         public int CustomFieldID { get; set; }
 
