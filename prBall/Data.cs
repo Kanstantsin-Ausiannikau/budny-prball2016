@@ -221,6 +221,8 @@ namespace prBall
                 }
             }
 
+            articleData.PreviousArticleID = articleId;
+
             connection.Close();
 
             articleData.Title = GetTitleFromArticleId(articleData.ArticleID) + " " + GetSubTitleFromArticleId(articleData.ArticleID);
@@ -484,6 +486,12 @@ namespace prBall
             if (data.PrBallDistPlatnoe != null)
             {
                 SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 45, id, ToSql(data.PrBallDistPlatnoe)), connection);
+                prCommand.ExecuteNonQuery();
+            }
+
+            if (data.PreviousArticleID != 0)
+            {
+                SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Int]) Values ({0},{1},{2})", 46, id, data.PreviousArticleID), connection);
                 prCommand.ExecuteNonQuery();
             }
 

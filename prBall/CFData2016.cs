@@ -39,5 +39,7 @@
         public bool? CertProfSobesed { get; set; }
 
         public int NapravleniePodgotovki { get; set; }
+
+        public int PreviousArticleID { get; set; }
     }
 }

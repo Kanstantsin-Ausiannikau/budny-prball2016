@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace prBall
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         List<CFData2016> cfData = new List<CFData2016>();
 
@@ -22,7 +22,7 @@ namespace prBall
 
         object cellVaue;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -331,7 +331,7 @@ namespace prBall
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-                        if (isEdit) 
+            if (isEdit) 
             {
                 if (MessageBox.Show("Внесенные данные не сохранены, всё равно выйти?", "Внимание!", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.Cancel)
                 {
@@ -365,7 +365,7 @@ namespace prBall
 
             dgvVuzList.Columns["ID"].Visible = false;
             dgvVuzList.Columns["Name"].Width = 300;
-
+                       
             DataGridViewCheckBoxColumn saveColumn = new DataGridViewCheckBoxColumn()
             {
                 Name = "Shr",
@@ -374,33 +374,13 @@ namespace prBall
                 Visible = true,
                 Width = 20,
                 DataPropertyName = "saveColumn"
-
             };
-
             dgvArticles.Columns.Insert(0, saveColumn);
-
-
-
         }
 
         private void dgvArticles_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             cellVaue = ((DataGridView)sender)[e.ColumnIndex, e.RowIndex].Value;
-        }
-
-        private void dgvVuzList_SelectionChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void dgvVuzList_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void Form1_Shown(object sender, EventArgs e)
-        {
-
-
         }
 
         private void btnSaveSelected_Click(object sender, EventArgs e)
@@ -413,6 +393,21 @@ namespace prBall
                     dgvArticles["Shr", i].Value = false;
                 }
             }
+            isEdit = false;
+        }
+
+        private void btnGetUrl_Click(object sender, EventArgs e)
+        {
+            UrlsData.connection.Open();
+
+            for (int i = 0; i < articles1.Count;i++ )
+            {
+                txtLog.AppendText(UrlsData.GetNewUrlFromIdAndCategoryId(cfData[i].PreviousArticleID, 493));
+            }
+
+
+            UrlsData.connection.Close();
+
         }
     }
 }

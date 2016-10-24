@@ -1,6 +1,6 @@
 ﻿namespace prBall
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Требуется переменная конструктора.
@@ -31,9 +31,11 @@
             this.dgvVuzList = new System.Windows.Forms.DataGridView();
             this.dgvArticles = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnSaveSelected = new System.Windows.Forms.Button();
             this.btlLoad = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.btnSaveSelected = new System.Windows.Forms.Button();
+            this.btnGetUrl = new System.Windows.Forms.Button();
+            this.txtLog = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVuzList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvArticles)).BeginInit();
             this.panel1.SuspendLayout();
@@ -43,7 +45,7 @@
             // 
             this.dgvVuzList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvVuzList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
-            this.dgvVuzList.Location = new System.Drawing.Point(0, 469);
+            this.dgvVuzList.Location = new System.Drawing.Point(0, 663);
             this.dgvVuzList.Name = "dgvVuzList";
             this.dgvVuzList.Size = new System.Drawing.Size(377, 207);
             this.dgvVuzList.TabIndex = 0;
@@ -52,10 +54,11 @@
             // dgvArticles
             // 
             this.dgvArticles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvArticles.Dock = System.Windows.Forms.DockStyle.Top;
             this.dgvArticles.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dgvArticles.Location = new System.Drawing.Point(0, 0);
             this.dgvArticles.Name = "dgvArticles";
-            this.dgvArticles.Size = new System.Drawing.Size(1784, 462);
+            this.dgvArticles.Size = new System.Drawing.Size(1904, 657);
             this.dgvArticles.TabIndex = 1;
             this.dgvArticles.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvArticles_CellBeginEdit);
             this.dgvArticles.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvArticles_CellEndEdit);
@@ -63,14 +66,25 @@
             // panel1
             // 
             this.panel1.AutoSize = true;
+            this.panel1.Controls.Add(this.btnGetUrl);
             this.panel1.Controls.Add(this.btnSaveSelected);
             this.panel1.Controls.Add(this.btlLoad);
             this.panel1.Controls.Add(this.btnSave);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 682);
+            this.panel1.Location = new System.Drawing.Point(0, 1012);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1784, 30);
+            this.panel1.Size = new System.Drawing.Size(1904, 30);
             this.panel1.TabIndex = 2;
+            // 
+            // btnSaveSelected
+            // 
+            this.btnSaveSelected.Location = new System.Drawing.Point(256, 4);
+            this.btnSaveSelected.Name = "btnSaveSelected";
+            this.btnSaveSelected.Size = new System.Drawing.Size(168, 23);
+            this.btnSaveSelected.TabIndex = 2;
+            this.btnSaveSelected.Text = "Сохранить выделенное";
+            this.btnSaveSelected.UseVisualStyleBackColor = true;
+            this.btnSaveSelected.Click += new System.EventHandler(this.btnSaveSelected_Click);
             // 
             // btlLoad
             // 
@@ -93,28 +107,37 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // btnSaveSelected
+            // btnGetUrl
             // 
-            this.btnSaveSelected.Location = new System.Drawing.Point(256, 4);
-            this.btnSaveSelected.Name = "btnSaveSelected";
-            this.btnSaveSelected.Size = new System.Drawing.Size(168, 23);
-            this.btnSaveSelected.TabIndex = 2;
-            this.btnSaveSelected.Text = "Сохранить выделенное";
-            this.btnSaveSelected.UseVisualStyleBackColor = true;
-            this.btnSaveSelected.Click += new System.EventHandler(this.btnSaveSelected_Click);
+            this.btnGetUrl.Location = new System.Drawing.Point(586, 3);
+            this.btnGetUrl.Name = "btnGetUrl";
+            this.btnGetUrl.Size = new System.Drawing.Size(75, 23);
+            this.btnGetUrl.TabIndex = 3;
+            this.btnGetUrl.Text = "GetUrl";
+            this.btnGetUrl.UseVisualStyleBackColor = true;
+            this.btnGetUrl.Click += new System.EventHandler(this.btnGetUrl_Click);
             // 
-            // Form1
+            // txtLog
+            // 
+            this.txtLog.Location = new System.Drawing.Point(383, 663);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtLog.Size = new System.Drawing.Size(540, 207);
+            this.txtLog.TabIndex = 3;
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1784, 712);
+            this.ClientSize = new System.Drawing.Size(1904, 1042);
+            this.Controls.Add(this.txtLog);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.dgvArticles);
             this.Controls.Add(this.dgvVuzList);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "MainForm";
+            this.Text = "Проходные баллы";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.Shown += new System.EventHandler(this.Form1_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.dgvVuzList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvArticles)).EndInit();
             this.panel1.ResumeLayout(false);
@@ -131,6 +154,8 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btlLoad;
         private System.Windows.Forms.Button btnSaveSelected;
+        private System.Windows.Forms.Button btnGetUrl;
+        private System.Windows.Forms.TextBox txtLog;
 
     }
 }
