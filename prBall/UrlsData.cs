@@ -180,7 +180,7 @@ namespace prBall
           //  connection.Close();
         }
 
-        public static int RemoveUnusedUrls(int articleId, int categoryId)
+        public static int RemoveUnusedUrls(int articleId, int categoryId, int moduleid)
         {
             //moduleid=493;
             //categoryids = 79,72,43,34
@@ -195,7 +195,7 @@ namespace prBall
             deleteUrls.Parameters["@ArticleId"].Value = articleId;
 
             deleteUrls.Parameters.Add("@ModuleId", System.Data.SqlDbType.Int);
-            deleteUrls.Parameters["@ModuleId"].Value = 493;
+            deleteUrls.Parameters["@ModuleId"].Value = moduleid;
 
             return deleteUrls.ExecuteNonQuery();
         }
