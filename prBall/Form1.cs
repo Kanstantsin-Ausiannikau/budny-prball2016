@@ -409,5 +409,25 @@ namespace prBall
             UrlsData.connection.Close();
 
         }
+
+        private void btnReduseDB_Click(object sender, EventArgs e)
+        {
+            UrlsData.connection.Open();
+
+            int categoryID = 72;
+
+            List<int> list = UrlsData.GetArticlesIDFromCategoryID(categoryID);
+
+            int deletedUrls = 0;
+
+            foreach(int articleId in list)
+            {
+                deletedUrls += UrlsData.RemoveUnusedUrls(articleId, categoryID);
+
+                txtLog.AppendText(string.Format("id:{0} del - {0}\n", articleId, deletedUrls));
+            }
+
+            UrlsData.connection.Close();
+        }
     }
 }

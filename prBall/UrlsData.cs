@@ -11,7 +11,7 @@ namespace prBall
     {
         public static SqlConnection connection = new SqlConnection(@"Data Source=w05.hosterby.com;Initial Catalog=budnyby_test;User ID=budnyby_admin;Password=dthtcthtdta1!");
 
-        public static List<int> GetArticlesFromCategoryID(int id)
+        public static List<int> GetArticlesIDFromCategoryID(int id)
         {
           //  connection.Open();
 
@@ -19,18 +19,18 @@ namespace prBall
 
             SqlDataReader reader = listCommand.ExecuteReader();
 
-            List<int> vuzList = new List<int>();
+            List<int> articleList = new List<int>();
 
             using (reader)
             {
                 while (reader.Read())
                 {
-                    vuzList.Add((int)reader["ArticleID"]);
+                    articleList.Add((int)reader["ArticleID"]);
                 }
             }
             //connection.Close();
 
-            return vuzList;
+            return articleList;
         }
 
         private static string GetTitleFromArticleId(int articleId)
@@ -178,6 +178,26 @@ namespace prBall
             updateNewArticle.ExecuteNonQuery();
 
           //  connection.Close();
+        }
+
+        public static int RemoveUnusedUrls(int articleId, int categoryId)
+        {
+            //moduleid=493;
+            //categoryids = 79,72,43,34
+            SqlCommand deleteUrls = new SqlCommand("[budnyby_test].[dbo].[DeleteUnusedUrls]", connection);
+
+            deleteUrls.CommandType = System.Data.CommandType.StoredProcedure;
+
+
+            deleteUrls.CommandTimeout = 1000000;
+
+            deleteUrls.Parameters.Add("@ArticleId", System.Data.SqlDbType.Int);
+            deleteUrls.Parameters["@ArticleId"].Value = articleId;
+
+            deleteUrls.Parameters.Add("@ModuleId", System.Data.SqlDbType.Int);
+            deleteUrls.Parameters["@ModuleId"].Value = 493;
+
+            return deleteUrls.ExecuteNonQuery();
         }
     }
 }
