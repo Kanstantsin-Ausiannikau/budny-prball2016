@@ -414,9 +414,20 @@ namespace prBall
         {
             List<ModuleCategory> moduleCategoryList = new List<ModuleCategory>() 
             {
-                //new ModuleCategory(){ModuleID=475, CategoryID=5}, //вузы
-                //  new ModuleCategory(){ModuleID=520, CategoryID=29} //специальности
-                new ModuleCategory(){ModuleID=520, CategoryID=29} //специальности
+                new ModuleCategory(){ModuleID=493, CategoryID=34}, //пр баллы 2013
+                new ModuleCategory(){ModuleID=493, CategoryID=43}, //пр баллы 2014
+                new ModuleCategory(){ModuleID=493, CategoryID=72}, //пр баллы 2014
+                new ModuleCategory(){ModuleID=475, CategoryID=5}, //вузы
+                new ModuleCategory(){ModuleID=520, CategoryID=29}, //специальности
+                new ModuleCategory(){ModuleID=586, CategoryID=47}, //вступительная кампания
+                new ModuleCategory(){ModuleID=614, CategoryID=56}, //ссузы
+                new ModuleCategory(){ModuleID=581, CategoryID=50}, //красота и здоровье
+                new ModuleCategory(){ModuleID=579, CategoryID=53}, //новости образования
+                new ModuleCategory(){ModuleID=584, CategoryID=2}, //новости вузов
+                new ModuleCategory(){ModuleID=501, CategoryID=31}, //день открытых дверей
+                new ModuleCategory(){ModuleID=585, CategoryID=48}, //новые специальности
+                new ModuleCategory(){ModuleID=580, CategoryID=49}, //конкурсы и гранты
+                new ModuleCategory(){ModuleID=712, CategoryID=75} //школы развития
             };
 
             UrlsData.connection.Open();
