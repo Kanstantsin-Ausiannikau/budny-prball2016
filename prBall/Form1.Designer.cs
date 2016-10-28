@@ -31,12 +31,13 @@
             this.dgvVuzList = new System.Windows.Forms.DataGridView();
             this.dgvArticles = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnReduseDB = new System.Windows.Forms.Button();
             this.btnGetUrl = new System.Windows.Forms.Button();
             this.btnSaveSelected = new System.Windows.Forms.Button();
             this.btlLoad = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.txtLog = new System.Windows.Forms.TextBox();
-            this.btnReduseDB = new System.Windows.Forms.Button();
+            this.btnSetLinksNewVer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVuzList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvArticles)).BeginInit();
             this.panel1.SuspendLayout();
@@ -67,16 +68,28 @@
             // panel1
             // 
             this.panel1.AutoSize = true;
+            this.panel1.Controls.Add(this.txtLog);
+            this.panel1.Controls.Add(this.btnSetLinksNewVer);
             this.panel1.Controls.Add(this.btnReduseDB);
             this.panel1.Controls.Add(this.btnGetUrl);
             this.panel1.Controls.Add(this.btnSaveSelected);
             this.panel1.Controls.Add(this.btlLoad);
             this.panel1.Controls.Add(this.btnSave);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 720);
+            this.panel1.Location = new System.Drawing.Point(0, 456);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1370, 30);
+            this.panel1.Size = new System.Drawing.Size(1370, 294);
             this.panel1.TabIndex = 2;
+            // 
+            // btnReduseDB
+            // 
+            this.btnReduseDB.Location = new System.Drawing.Point(586, 34);
+            this.btnReduseDB.Name = "btnReduseDB";
+            this.btnReduseDB.Size = new System.Drawing.Size(151, 23);
+            this.btnReduseDB.TabIndex = 4;
+            this.btnReduseDB.Text = "Start Reduse DB";
+            this.btnReduseDB.UseVisualStyleBackColor = true;
+            this.btnReduseDB.Click += new System.EventHandler(this.btnReduseDB_Click);
             // 
             // btnGetUrl
             // 
@@ -121,29 +134,28 @@
             // 
             // txtLog
             // 
-            this.txtLog.Location = new System.Drawing.Point(383, 663);
+            this.txtLog.Location = new System.Drawing.Point(809, 4);
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(540, 207);
+            this.txtLog.Size = new System.Drawing.Size(540, 287);
             this.txtLog.TabIndex = 3;
             // 
-            // btnReduseDB
+            // btnSetLinksNewVer
             // 
-            this.btnReduseDB.Location = new System.Drawing.Point(1048, 2);
-            this.btnReduseDB.Name = "btnReduseDB";
-            this.btnReduseDB.Size = new System.Drawing.Size(151, 23);
-            this.btnReduseDB.TabIndex = 4;
-            this.btnReduseDB.Text = "Start Reduse DB";
-            this.btnReduseDB.UseVisualStyleBackColor = true;
-            this.btnReduseDB.Click += new System.EventHandler(this.btnReduseDB_Click);
+            this.btnSetLinksNewVer.Location = new System.Drawing.Point(586, 63);
+            this.btnSetLinksNewVer.Name = "btnSetLinksNewVer";
+            this.btnSetLinksNewVer.Size = new System.Drawing.Size(109, 23);
+            this.btnSetLinksNewVer.TabIndex = 6;
+            this.btnSetLinksNewVer.Text = "Set Links 2016";
+            this.btnSetLinksNewVer.UseVisualStyleBackColor = true;
+            this.btnSetLinksNewVer.Click += new System.EventHandler(this.btnSetLinksNewVer_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1370, 750);
-            this.Controls.Add(this.txtLog);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.dgvArticles);
             this.Controls.Add(this.dgvVuzList);
@@ -153,6 +165,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvVuzList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvArticles)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -169,6 +182,7 @@
         private System.Windows.Forms.Button btnGetUrl;
         private System.Windows.Forms.TextBox txtLog;
         private System.Windows.Forms.Button btnReduseDB;
+        private System.Windows.Forms.Button btnSetLinksNewVer;
 
     }
 }

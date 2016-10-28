@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -416,7 +417,7 @@ namespace prBall
             {
                 new ModuleCategory(){ModuleID=493, CategoryID=34}, //пр баллы 2013
                 new ModuleCategory(){ModuleID=493, CategoryID=43}, //пр баллы 2014
-                new ModuleCategory(){ModuleID=493, CategoryID=72}, //пр баллы 2014
+                new ModuleCategory(){ModuleID=493, CategoryID=72}, //пр баллы 2015
                 new ModuleCategory(){ModuleID=475, CategoryID=5}, //вузы
                 new ModuleCategory(){ModuleID=520, CategoryID=29}, //специальности
                 new ModuleCategory(){ModuleID=586, CategoryID=47}, //вступительная кампания
@@ -427,7 +428,10 @@ namespace prBall
                 new ModuleCategory(){ModuleID=501, CategoryID=31}, //день открытых дверей
                 new ModuleCategory(){ModuleID=585, CategoryID=48}, //новые специальности
                 new ModuleCategory(){ModuleID=580, CategoryID=49}, //конкурсы и гранты
-                new ModuleCategory(){ModuleID=712, CategoryID=75} //школы развития
+                new ModuleCategory(){ModuleID=712, CategoryID=75}, //школы развития
+                new ModuleCategory(){ModuleID=506, CategoryID=32}, //курсы цт
+                new ModuleCategory(){ModuleID=587, CategoryID=45} //абитуриент
+
             };
 
             UrlsData.connection.Open();
@@ -455,6 +459,28 @@ namespace prBall
         {
             public int ModuleID { get; set; }
             public int CategoryID { get; set; }
+        }
+
+        private void btnSetLinksNewVer_Click(object sender, EventArgs e)
+        {
+            const int SPECIALITY_CATEGORY_ID = 29;
+            const int VUZ_CATEGORY_ID = 5;
+            const int PRBALL2016_CATEGORY_ID = 79;
+
+            var articles = Data.GetArticlesIDFromCategoryID(SPECIALITY_CATEGORY_ID);
+
+            articles.AddRange(Data.GetArticlesIDFromCategoryID(VUZ_CATEGORY_ID));
+
+            List<CFData2016> cfData = new List<CFData2016>();
+
+            var prBall2016Articles = Data.GetArticlesIDFromCategoryID(PRBALL2016_CATEGORY_ID);
+
+            Hashtable linksTable = new Hashtable();
+
+            foreach(var item in prBall2016Articles)
+            {
+                linksTable.Add(Data.GetNewUrlFromIdAndCategoryId(Data.GetCFDataByArticleID(item).PreviousArticleID, 493), Data.GetNewUrlFromIdAndCategoryId(item, 493));
+            }
         }
     }
 }

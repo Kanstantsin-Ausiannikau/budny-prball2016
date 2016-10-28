@@ -211,6 +211,7 @@ namespace prBall
                         case 15: articleData.TypeObuchZaochnoe = (bool)CFReader["Bit"]; break;
                         case 16: articleData.TypeObuchDistanc = (bool)CFReader["Bit"]; break;
                         case 17: articleData.TypeObuchSokrasch = (bool)CFReader["Bit"]; break;
+                        case 46: articleData.PreviousArticleID = (CFReader["Int"]!=DBNull.Value)?(int)CFReader["Int"]:-1; break;
 
                         case 18: articleData.PrBallDnevnBudget = (decimal)CFReader["Decimal"]; break;
                         case 20: articleData.PrBallZaochnBudget = (decimal)CFReader["Decimal"]; break;
@@ -221,7 +222,7 @@ namespace prBall
                 }
             }
 
-            articleData.PreviousArticleID = articleId;
+            //articleData.PreviousArticleID = articleId;
 
             connection.Close();
 
@@ -502,6 +503,46 @@ namespace prBall
         private static string ToSql(decimal? dvalue)
         {
             return dvalue.ToString().Replace(',', '.');
+        }
+
+        public static List<int> GetArticlesIDFromCategoryID(int id)
+        {
+
+            connection.Open();
+
+            SqlCommand listCommand = new SqlCommand("SELECT * FROM [budnyby_test].[dbo].[EasyDNNNewsCategories] where categoryid=" + id, connection);
+
+
+            SqlDataReader reader = listCommand.ExecuteReader();
+
+            List<int> list = new List<int>();
+
+            using (reader)
+            {
+                while (reader.Read())
+                {
+                    list.Add((int)reader["ArticleID"]);
+                }
+            }
+
+            connection.Close();
+
+            return list;
+        }
+
+        internal static string GetNewUrlFromIdAndCategoryId(int? articleId, int moduleId)
+        {
+            connection.Open();
+
+            SqlCommand urlCommand = new SqlCommand(string.Format("SELECT LinkTitle FROM EasyDNNnewsUrlNewProviderData where ArticleID={0} and ModuleID={1}", articleId, moduleId), connection);
+
+            urlCommand.CommandTimeout = 1000000;
+
+            string url = (string)urlCommand.ExecuteScalar();
+
+            connection.Close();
+
+            return url;
         }
     }
 }
