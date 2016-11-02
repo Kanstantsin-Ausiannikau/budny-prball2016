@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AngleSharp.Dom;
+using AngleSharp.Parser.Html;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -148,7 +151,7 @@ namespace prBall
 
         internal static string GetNewUrlFromIdAndCategoryId(int? articleId, int categoryId)
         {
-         //   connection.Open();
+            connection.Open();
 
             SqlCommand urlCommand = new SqlCommand(string.Format("SELECT LinkTitle FROM EasyDNNnewsUrlNewProviderData where ArticleID={0} and ModuleID={1}", articleId, categoryId), connection);
 
@@ -156,7 +159,7 @@ namespace prBall
 
             string url = (string)urlCommand.ExecuteScalar();
 
-         //   connection.Close();
+            connection.Close();
 
             return url;
         }
@@ -198,6 +201,74 @@ namespace prBall
             deleteUrls.Parameters["@ModuleId"].Value = moduleid;
 
             return deleteUrls.ExecuteNonQuery();
+        }
+
+        public static void SetLinksToArticle(int articleID, Hashtable links)
+        {
+            string article = Data.GetArticleTextFromID(articleID);
+
+            bool isEdit = false;
+
+            article = StringToHtml(article);
+
+            var parser = new HtmlParser();
+            var document = parser.Parse(article);
+
+            List<IElement> l = new List<IElement>();
+
+            foreach (IElement element in document.QuerySelectorAll("ul"))
+            {
+                var collections = element.GetElementsByTagName("li");
+
+                l.AddRange(collections);
+            }
+
+            foreach (IElement element in l)
+            {
+                var r = element.GetElementsByTagName("a");
+
+                if (r.Length > 0)
+                {
+                    if (links[r[r.Length - 1].GetAttribute("href")] != null)
+                    {
+                        var p = document.CreateElement("a");
+                        p.SetAttribute("href", (string)links[r[r.Length - 1].GetAttribute("href")]);
+                        p.TextContent = "2016";
+
+                        r[r.Length - 1].After(p);
+                        //var t = element.InnerHtml.Substring(0, element.InnerHtml.IndexOf('<')-1);
+
+                        element.InnerHtml = element.InnerHtml.Replace("a><a", "a>, <a");
+                        //Log.Write(articleID + ";" + (string)links[r[r.Length - 1].GetAttribute("href")] + ";added");
+
+                        isEdit = true;
+
+                    }
+                }
+            }
+
+            if (isEdit)
+            {
+                Data.UpdateArticleText(articleID, HtmlToString(document.Body.InnerHtml));
+            }
+        }
+
+        private static string StringToHtml(string txt)
+        {
+            txt = txt.Replace("&lt;", "<");
+            txt = txt.Replace("&gt;", ">");
+            txt = txt.Replace("&amp;", "&");
+            txt = txt.Replace("&quot;", @"""");
+            return txt;
+        }
+
+        private static string HtmlToString(string html)
+        {
+            html = html.Replace("&", "&amp;");
+            html = html.Replace("<", "&lt;");
+            html = html.Replace(">", "&gt;");
+            html = html.Replace(@"""", "&quot;");
+            return html;
         }
     }
 }

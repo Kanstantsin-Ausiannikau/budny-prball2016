@@ -479,7 +479,12 @@ namespace prBall
 
             foreach(var item in prBall2016Articles)
             {
-                linksTable.Add(Data.GetNewUrlFromIdAndCategoryId(Data.GetCFDataByArticleID(item).PreviousArticleID, 493), Data.GetNewUrlFromIdAndCategoryId(item, 493));
+                linksTable.Add("/abiturient/spsearch/" + UrlsData.GetNewUrlFromIdAndCategoryId(Data.GetCFDataByArticleID(item).PreviousArticleID, 493), "/abiturient/spsearch/" + UrlsData.GetNewUrlFromIdAndCategoryId(item, 493));
+            }
+
+            foreach(int articleId in articles)
+            {
+                UrlsData.SetLinksToArticle(articleId, linksTable);
             }
         }
     }

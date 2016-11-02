@@ -530,19 +530,38 @@ namespace prBall
             return list;
         }
 
-        internal static string GetNewUrlFromIdAndCategoryId(int? articleId, int moduleId)
+        public static string GetArticleTextFromID(int ID)
         {
             connection.Open();
 
-            SqlCommand urlCommand = new SqlCommand(string.Format("SELECT LinkTitle FROM EasyDNNnewsUrlNewProviderData where ArticleID={0} and ModuleID={1}", articleId, moduleId), connection);
+            SqlCommand articleDataCommand = new SqlCommand("select article from EasyDNNNews where ArticleID=" + ID, connection);
 
-            urlCommand.CommandTimeout = 1000000;
+            articleDataCommand.CommandTimeout = 1000000;
 
-            string url = (string)urlCommand.ExecuteScalar();
+            string articleData = (string)articleDataCommand.ExecuteScalar();
 
             connection.Close();
 
-            return url;
+            return articleData;
+        }
+
+        internal static void UpdateArticleText(int articleID, string articleText)
+        {
+            connection.Open();
+
+            string upd = string.Format("update [budnyby_test].[DBO].[EasyDNNNews] SET [Article]=@articletext where [ArticleID]= {0}",
+                articleID.ToString());
+
+            SqlCommand updateNewArticle = new SqlCommand(upd, connection);
+
+            updateNewArticle.CommandTimeout = 1000000;
+
+            updateNewArticle.Parameters.Add("@articletext", System.Data.SqlDbType.NVarChar);
+            updateNewArticle.Parameters["@articletext"].Value = articleText;
+
+            updateNewArticle.ExecuteNonQuery();
+
+            connection.Close();
         }
     }
 }

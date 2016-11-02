@@ -31,13 +31,13 @@
             this.dgvVuzList = new System.Windows.Forms.DataGridView();
             this.dgvArticles = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtLog = new System.Windows.Forms.TextBox();
+            this.btnSetLinksNewVer = new System.Windows.Forms.Button();
             this.btnReduseDB = new System.Windows.Forms.Button();
             this.btnGetUrl = new System.Windows.Forms.Button();
             this.btnSaveSelected = new System.Windows.Forms.Button();
             this.btlLoad = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.txtLog = new System.Windows.Forms.TextBox();
-            this.btnSetLinksNewVer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVuzList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvArticles)).BeginInit();
             this.panel1.SuspendLayout();
@@ -47,9 +47,9 @@
             // 
             this.dgvVuzList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvVuzList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
-            this.dgvVuzList.Location = new System.Drawing.Point(0, 663);
+            this.dgvVuzList.Location = new System.Drawing.Point(6, 34);
             this.dgvVuzList.Name = "dgvVuzList";
-            this.dgvVuzList.Size = new System.Drawing.Size(377, 207);
+            this.dgvVuzList.Size = new System.Drawing.Size(377, 248);
             this.dgvVuzList.TabIndex = 0;
             this.dgvVuzList.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvVuzList_RowEnter);
             // 
@@ -64,10 +64,12 @@
             this.dgvArticles.TabIndex = 1;
             this.dgvArticles.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvArticles_CellBeginEdit);
             this.dgvArticles.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvArticles_CellEndEdit);
+
             // 
             // panel1
             // 
             this.panel1.AutoSize = true;
+            this.panel1.Controls.Add(this.dgvVuzList);
             this.panel1.Controls.Add(this.txtLog);
             this.panel1.Controls.Add(this.btnSetLinksNewVer);
             this.panel1.Controls.Add(this.btnReduseDB);
@@ -80,6 +82,25 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1370, 294);
             this.panel1.TabIndex = 2;
+            // 
+            // txtLog
+            // 
+            this.txtLog.Location = new System.Drawing.Point(809, 4);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtLog.Size = new System.Drawing.Size(540, 287);
+            this.txtLog.TabIndex = 3;
+            // 
+            // btnSetLinksNewVer
+            // 
+            this.btnSetLinksNewVer.Location = new System.Drawing.Point(586, 63);
+            this.btnSetLinksNewVer.Name = "btnSetLinksNewVer";
+            this.btnSetLinksNewVer.Size = new System.Drawing.Size(109, 23);
+            this.btnSetLinksNewVer.TabIndex = 6;
+            this.btnSetLinksNewVer.Text = "Set Links 2016";
+            this.btnSetLinksNewVer.UseVisualStyleBackColor = true;
+            this.btnSetLinksNewVer.Click += new System.EventHandler(this.btnSetLinksNewVer_Click);
             // 
             // btnReduseDB
             // 
@@ -132,25 +153,6 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // txtLog
-            // 
-            this.txtLog.Location = new System.Drawing.Point(809, 4);
-            this.txtLog.Multiline = true;
-            this.txtLog.Name = "txtLog";
-            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(540, 287);
-            this.txtLog.TabIndex = 3;
-            // 
-            // btnSetLinksNewVer
-            // 
-            this.btnSetLinksNewVer.Location = new System.Drawing.Point(586, 63);
-            this.btnSetLinksNewVer.Name = "btnSetLinksNewVer";
-            this.btnSetLinksNewVer.Size = new System.Drawing.Size(109, 23);
-            this.btnSetLinksNewVer.TabIndex = 6;
-            this.btnSetLinksNewVer.Text = "Set Links 2016";
-            this.btnSetLinksNewVer.UseVisualStyleBackColor = true;
-            this.btnSetLinksNewVer.Click += new System.EventHandler(this.btnSetLinksNewVer_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -158,7 +160,6 @@
             this.ClientSize = new System.Drawing.Size(1370, 750);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.dgvArticles);
-            this.Controls.Add(this.dgvVuzList);
             this.Name = "MainForm";
             this.Text = "Проходные баллы";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
