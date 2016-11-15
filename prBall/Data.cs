@@ -211,7 +211,7 @@ namespace prBall
                         case 15: articleData.TypeObuchZaochnoe = (bool)CFReader["Bit"]; break;
                         case 16: articleData.TypeObuchDistanc = (bool)CFReader["Bit"]; break;
                         case 17: articleData.TypeObuchSokrasch = (bool)CFReader["Bit"]; break;
-                        case 46: articleData.PreviousArticleID = (CFReader["Int"]!=DBNull.Value)?(int)CFReader["Int"]:-1; break;
+                        case 46: articleData.PreviousArticleID = (CFReader["Int"]!=DBNull.Value)?(int)CFReader["Int"]:-1; break;//!
 
                         case 18: articleData.PrBallDnevnBudget = (decimal)CFReader["Decimal"]; break;
                         case 20: articleData.PrBallZaochnBudget = (decimal)CFReader["Decimal"]; break;
@@ -222,7 +222,10 @@ namespace prBall
                 }
             }
 
-            //articleData.PreviousArticleID = articleId;
+            if (articleData.PreviousArticleID == 0)
+            {
+                articleData.PreviousArticleID = articleId;
+            }
 
             connection.Close();
 
@@ -562,6 +565,11 @@ namespace prBall
             updateNewArticle.ExecuteNonQuery();
 
             connection.Close();
+        }
+
+        internal static Article GetArticleFromID(int specialityID)
+        {
+            throw new NotImplementedException();
         }
     }
 }

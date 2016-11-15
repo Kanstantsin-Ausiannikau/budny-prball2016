@@ -149,19 +149,44 @@ namespace prBall
             return title;
         }
 
-        internal static string GetNewUrlFromIdAndCategoryId(int? articleId, int categoryId)
+        //internal static string GetNewUrlFromIdAndCategoryId(int? articleId, int categoryId)
+        //{
+        //    connection.Open();
+
+        //    SqlCommand urlCommand = new SqlCommand(string.Format("SELECT LinkTitle FROM EasyDNNnewsUrlNewProviderData where ArticleID={0} and ModuleID={1}", articleId, categoryId), connection);
+
+        //    urlCommand.CommandTimeout = 1000000;
+
+        //    string url = (string)urlCommand.ExecuteScalar();
+
+        //    connection.Close();
+
+        //    return url;
+        //}
+
+        internal static List<string> GetNewUrlFromIdAndCategoryId(int? articleId, int categoryId)
         {
+            List<string> items = new List<string>();
+            
             connection.Open();
 
             SqlCommand urlCommand = new SqlCommand(string.Format("SELECT LinkTitle FROM EasyDNNnewsUrlNewProviderData where ArticleID={0} and ModuleID={1}", articleId, categoryId), connection);
-
+            
             urlCommand.CommandTimeout = 1000000;
 
-            string url = (string)urlCommand.ExecuteScalar();
+            SqlDataReader reader = urlCommand.ExecuteReader();
+
+            using (reader)
+            {
+                while (reader.Read())
+                {
+                    items.Add((string)reader["LinkTitle"]);
+                }
+            }
 
             connection.Close();
 
-            return url;
+            return items;
         }
 
         internal static void UpdateArticleText(int articleID, string articleText)
@@ -205,6 +230,12 @@ namespace prBall
 
         public static void SetLinksToArticle(int articleID, Hashtable links)
         {
+
+            if (articleID==654)
+            {
+                int a = 10;
+            }
+
             string article = Data.GetArticleTextFromID(articleID);
 
             bool isEdit = false;
@@ -229,7 +260,7 @@ namespace prBall
 
                 if (r.Length > 0)
                 {
-                    if (links[r[r.Length - 1].GetAttribute("href")] != null)
+                    if (links[r[r.Length - 1].GetAttribute("href")] != null && r[r.Length - 1].InnerHtml=="2015")
                     {
                         var p = document.CreateElement("a");
                         p.SetAttribute("href", (string)links[r[r.Length - 1].GetAttribute("href")]);

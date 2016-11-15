@@ -399,15 +399,15 @@ namespace prBall
 
         private void btnGetUrl_Click(object sender, EventArgs e)
         {
-            UrlsData.connection.Open();
+            //UrlsData.connection.Open();
 
-            for (int i = 0; i < articles1.Count;i++ )
-            {
-                txtLog.AppendText(UrlsData.GetNewUrlFromIdAndCategoryId(cfData[i].PreviousArticleID, 493));
-            }
+            //for (int i = 0; i < articles1.Count;i++ )
+            //{
+            //    txtLog.AppendText(UrlsData.GetNewUrlFromIdAndCategoryId(cfData[i].PreviousArticleID, 493));
+            //}
 
 
-            UrlsData.connection.Close();
+            //UrlsData.connection.Close();
 
         }
 
@@ -475,16 +475,44 @@ namespace prBall
 
             var prBall2016Articles = Data.GetArticlesIDFromCategoryID(PRBALL2016_CATEGORY_ID);
 
+
+
             Hashtable linksTable = new Hashtable();
 
-            foreach(var item in prBall2016Articles)
+            foreach (var item in prBall2016Articles)
             {
-                linksTable.Add("/abiturient/spsearch/" + UrlsData.GetNewUrlFromIdAndCategoryId(Data.GetCFDataByArticleID(item).PreviousArticleID, 493), "/abiturient/spsearch/" + UrlsData.GetNewUrlFromIdAndCategoryId(item, 493));
+                List<string> currentLinks = UrlsData.GetNewUrlFromIdAndCategoryId(Data.GetCFDataByArticleID(item).PreviousArticleID, 493);
+
+                for (int i = 0;i<currentLinks.Count;i++)
+                {
+                    linksTable.Add("/abiturient/spsearch/"+currentLinks[i], "/abiturient/spsearch/"+UrlsData.GetNewUrlFromIdAndCategoryId(item, 493)[0]);
+                }
             }
+
+           // txtLog.AppendText((string)linksTable["1-31-02-01-geografiia-2015-2"]);
+
+            //foreach(var item in prBall2016Articles)
+            //{
+            //    linksTable.Add("/abiturient/spsearch/" + UrlsData.GetNewUrlFromIdAndCategoryId(Data.GetCFDataByArticleID(item).PreviousArticleID, 493), "/abiturient/spsearch/" + UrlsData.GetNewUrlFromIdAndCategoryId(item, 493));
+            //}
+
+
+
+
 
             foreach(int articleId in articles)
             {
                 UrlsData.SetLinksToArticle(articleId, linksTable);
+            }
+        }
+
+        private void btnSpecialityCorrection_Click(object sender, EventArgs e)
+        {
+            List<int> speciality = Data.GetArticlesIDFromCategoryID(29);
+
+            foreach (int specialityID in speciality)
+            {
+                Article article = Data.GetArticleFromID(specialityID);
             }
         }
     }
