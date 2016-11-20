@@ -230,12 +230,6 @@ namespace prBall
 
         public static void SetLinksToArticle(int articleID, Hashtable links)
         {
-
-            if (articleID==654)
-            {
-                int a = 10;
-            }
-
             string article = Data.GetArticleTextFromID(articleID);
 
             bool isEdit = false;
@@ -260,7 +254,7 @@ namespace prBall
 
                 if (r.Length > 0)
                 {
-                    if (links[r[r.Length - 1].GetAttribute("href")] != null && r[r.Length - 1].InnerHtml=="2015")
+                    if (links[r[r.Length - 1].GetAttribute("href")] != null)
                     {
                         var p = document.CreateElement("a");
                         p.SetAttribute("href", (string)links[r[r.Length - 1].GetAttribute("href")]);

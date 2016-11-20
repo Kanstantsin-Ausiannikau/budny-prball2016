@@ -497,9 +497,6 @@ namespace prBall
             //}
 
 
-
-
-
             foreach(int articleId in articles)
             {
                 UrlsData.SetLinksToArticle(articleId, linksTable);
