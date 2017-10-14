@@ -1,18 +1,20 @@
 ﻿using AngleSharp.Dom;
 using AngleSharp.Parser.Html;
+using HtmlAgilityPack;
+using scanner.Code;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Net;
+
 
 namespace prBall
 {
     class UrlsData
     {
-        public static SqlConnection connection = new SqlConnection(@"Data Source=w05.hosterby.com;Initial Catalog=budnyby_test;User ID=budnyby_admin;Password=dthtcthtdta1!");
+        public static SqlConnection connection = new SqlConnection(@"Data Source=w05.hosterby.com;Initial Catalog=budnyby_test;User ID=budnyby_admin;Password=lDs89nMdm");
 
         public static List<int> GetArticlesIDFromCategoryID(int id)
         {
@@ -59,7 +61,7 @@ namespace prBall
 
             articleIDCommand.CommandTimeout = 1000000;
 
-            int? articleId = (int)articleIDCommand.ExecuteScalar();
+            int? articleId = articleIDCommand.ExecuteScalar() as int?;
 
 
           //  connection.Close();
@@ -112,9 +114,18 @@ namespace prBall
             return articleId == null;
         }
 
-        private static int GetUrlID(string url)
+        public static int GetUrlID(string url)
         {
-            int urlId = int.Parse(url.Substring(url.LastIndexOf('-') + 1, url.Length - url.LastIndexOf('-') - 1));
+            int urlId;
+
+            try
+            {
+                urlId = int.Parse(url.Substring(url.LastIndexOf('-') + 1, url.Length - url.LastIndexOf('-') - 1));
+            }
+            catch
+            {
+                urlId = -1;
+            }
 
             return urlId;
         }
@@ -132,6 +143,26 @@ namespace prBall
           //  connection.Close();
 
             return articleData;
+        }
+
+        public static string GetOriginalUrl(int articleID, int moduleID)
+        {
+            //connection.Open();
+
+            SqlCommand articleDataCommand = new SqlCommand(String.Format("SELECT TOP 1 [OriginalUrlString] FROM [budnyby_test].[dbo].[EasyDNNnewsUrlNewProviderData] WHERE ArticleID = {0} AND ModuleID = {1}", articleID, moduleID), connection);
+
+            articleDataCommand.CommandTimeout = 1000000;
+
+            string originalUrl = (string)articleDataCommand.ExecuteScalar();
+
+            //connection.Close();
+
+            if (originalUrl!=null)
+            {
+                originalUrl = originalUrl.ToLower();
+            }
+
+            return originalUrl;
         }
 
         private static string GetSubTitleFromArticleId(int articleId)
@@ -188,6 +219,7 @@ namespace prBall
 
             return items;
         }
+
 
         internal static void UpdateArticleText(int articleID, string articleText)
         {
@@ -254,31 +286,47 @@ namespace prBall
 
                 if (r.Length > 0)
                 {
-                    if (links[r[r.Length - 1].GetAttribute("href")] != null)
+                    try
                     {
-                        var p = document.CreateElement("a");
-                        p.SetAttribute("href", (string)links[r[r.Length - 1].GetAttribute("href")]);
-                        p.TextContent = "2016";
 
-                        r[r.Length - 1].After(p);
-                        //var t = element.InnerHtml.Substring(0, element.InnerHtml.IndexOf('<')-1);
+                        var link2015 = r[r.Length - 1].GetAttribute("href");
 
-                        element.InnerHtml = element.InnerHtml.Replace("a><a", "a>, <a");
-                        //Log.Write(articleID + ";" + (string)links[r[r.Length - 1].GetAttribute("href")] + ";added");
+                        if (link2015!=null)
+                        {
+                            link2015 = link2015.ToLower();
+                        }
 
-                        isEdit = true;
+                        if (links.ContainsKey(link2015))
+                        {
+                            var link2016 = (string)links[link2015];
+                            var p = document.CreateElement("a");
+                            p.SetAttribute("href", link2016);
+                            p.TextContent = "2016";
 
+                            r[r.Length - 1].After(p);
+                            element.InnerHtml = element.InnerHtml.Replace("a><a", "a>, <a");
+
+                            isEdit = true;
+
+                            System.Diagnostics.Debug.WriteLine("{0};{1};{2}",articleID,link2015,link2016);
+
+                            //System.Diagnostics.Debug.WriteLine(articleID);
+                        }
+                    }
+                    catch
+                    {
+                        System.Diagnostics.Debug.WriteLine("Ups!");
                     }
                 }
             }
 
             if (isEdit)
             {
-                Data.UpdateArticleText(articleID, HtmlToString(document.Body.InnerHtml));
+               Data.UpdateArticleText(articleID, HtmlToString(document.Body.InnerHtml));
             }
         }
 
-        private static string StringToHtml(string txt)
+        public static string StringToHtml(string txt)
         {
             txt = txt.Replace("&lt;", "<");
             txt = txt.Replace("&gt;", ">");
@@ -294,6 +342,192 @@ namespace prBall
             html = html.Replace(">", "&gt;");
             html = html.Replace(@"""", "&quot;");
             return html;
+        }
+
+        internal static void CheckLinksInArticle(int articleID)
+        {
+            string article = Data.GetArticleTextFromID(articleID);
+
+            article = StringToHtml(article);
+
+            var parser = new HtmlParser();
+            var document = parser.Parse(article);
+
+            List<IElement> l = new List<IElement>();
+
+            foreach (IElement element in document.QuerySelectorAll("ul"))
+            {
+                var collections = element.GetElementsByTagName("li");
+
+                l.AddRange(collections);
+            }
+
+            foreach (IElement element in l)
+            {
+                var r = element.GetElementsByTagName("a");
+
+                if (r.Length > 2)
+                {
+
+                    List<string> hrefs = new List<string>();
+
+                    foreach (var item in r)
+                    {
+                        hrefs.Add(item.GetAttribute("href"));
+                    }
+
+
+                    List<string> vuzsFromLinks = new List<string>();
+
+                    for (int i = 1; i < hrefs.Count; i++)
+                    {
+                        vuzsFromLinks.Add(UrlsData.GetVuzFromPrBallLinks(hrefs[i]));
+
+                        //string item = hrefs[i];
+                        //int slashIndex = item.LastIndexOf('/');
+
+                        //if (slashIndex > 0)
+                        //{
+                        //    item = item.Substring(slashIndex + 1).ToLower();
+                        //    if (item.Contains("-2015") || item.Contains("-2016"))
+                        //    {
+                        //        item = item.Substring(0, item.Length - 5);
+                        //    }
+                        //}
+                        //hrefs[i] = item.TrimEnd('-');
+                    }
+
+                    string vuzName = Data.GetVuzNameByVuzCategory(VuzByVuzDictionary.GetVuzID(UrlsData.GetIDFromUrl(r[0].GetAttribute("href"))));
+
+                    int corruptedLinkNumber = isCorruptedVuzs(vuzName, vuzsFromLinks);
+
+                    if (corruptedLinkNumber!=-1)
+                    {
+                       // System.Diagnostics.Debug.WriteLine("{0};{1};{2};{3};{4}", articleID, Data.GetTitleLink(articleID), hrefs[corruptedLinkNumber], corruptedLinkNumber, hrefs.Count);
+
+                        string corruptedLink = r[corruptedLinkNumber+1].InnerHtml;
+                        string specialityNumber = GetSpecialityNumber(Data.GetSubTitleFromArticleId(articleID));
+                        int vuzId = UrlsData.GetIDFromUrl(r[0].GetAttribute("href"));
+                        string vuzTitle = Data.GetTitleFromArticleId(vuzId);
+
+                        var articles = Data.GetArticlesByVuzID(VuzByVuzDictionary.GetVuzID(vuzId), Data.GetCategoryFromYear(corruptedLink));
+
+                        string restoredLink = string.Empty;
+
+                        foreach(var item in articles)
+                        {
+                            if (item.Title.IndexOf(specialityNumber)>-1)
+                            {
+                                restoredLink = string.Format("budny.by/abiturient/spsearch/artmid/493/articleid/{0}/{1}", item.ArticleID, item.TitleLink);
+                            }
+                        }
+
+                        var titleLink = Data.GetTitleLink(articleID);
+
+                        System.Diagnostics.Debug.WriteLine("{0};{1};{2};{3};{4};{5};{6};{7};{8}", articleID, titleLink, r[0].GetAttribute("href") ,r[corruptedLinkNumber+1].GetAttribute("href"), hrefs[corruptedLinkNumber], corruptedLinkNumber, hrefs.Count, corruptedLink, restoredLink);
+
+                        StreamWriter log = new StreamWriter("c:\\errorLinks.txt", true);
+                        log.WriteLine("{0};{1};{2};{3};{4};{5};{6};{7};{8}", articleID, titleLink, r[0].GetAttribute("href"), r[corruptedLinkNumber+1].GetAttribute("href"), hrefs[corruptedLinkNumber], corruptedLinkNumber, hrefs.Count, corruptedLink, restoredLink);
+                        log.Flush();
+                        log.Close();
+                    }
+
+                    //if (isCurruptedLinks(hrefs))
+                    //{
+                    //    System.Diagnostics.Debug.WriteLine("Повреждение {0} ArticleID:{1} - около {2}", Data.GetTitleLink(articleID), articleID, hrefs[0]);
+
+                    //    StreamWriter log = new StreamWriter("c:\\errorLinks.txt", true);
+
+                    //    log.WriteLine("Повреждение {0} ArticleID:{1} - около {2}", Data.GetTitleLink(articleID), articleID, hrefs[0]);
+
+                    //    log.Flush();
+
+                    //    log.Close();
+                    //}
+                }
+            }
+        }
+
+        private static int GetIDFromUrl(string url)
+        {
+            int startPosition = url.ToLower().IndexOf(@"/articleid");
+            int endPosition;
+            if (startPosition>0)
+            {
+                endPosition = url.ToLower().IndexOf("/", startPosition+11);
+                return int.Parse(url.Substring(startPosition + 11, endPosition - 11 - startPosition));
+            }
+
+            return -1;
+
+        }
+
+        private static string GetSpecialityNumber(string title)
+        {
+            return title = title.Remove(0, 5);
+        }
+
+        private static int isCorruptedVuzs(string vuzName, List<string> vuzsFromLinks)
+        {
+            int isCorrupted = -1;
+
+            for(int i=0;i<vuzsFromLinks.Count;i++)
+            {
+                if (vuzName!=vuzsFromLinks[i])
+                {
+                    isCorrupted = i;
+                    break;
+                }
+            }
+
+            return isCorrupted;
+        }
+
+        private static string GetVuzFromPrBallLinks(string url)
+        {
+            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+
+            try
+            {
+                doc = Downloader.DownloadPage("http://budny.by"+url);
+            }
+            catch (WebException)
+            {
+                System.Diagnostics.Debug.WriteLine(url);
+                return null;
+            }
+
+            List<string> links = new List<string>();
+
+            var s = doc.DocumentNode.SelectNodes("//td[@class='EDN_all_fields_table_value']//span");
+
+            string vuzName = null;
+
+            if (s==null)
+            {
+                return null;
+            }
+
+            if (s.Count>3)
+            {
+                vuzName = s[1].InnerText;
+            }
+            return vuzName;
+        }
+
+        private static bool isCurruptedLinks(List<string> hrefs)
+        {
+            bool isCorrupted = false;
+
+            for(int i = 1;i<hrefs.Count-1;i++)
+            {
+                if (hrefs[i]!=hrefs[i+1])
+                {
+                    isCorrupted = true;
+                }
+            }
+
+            return isCorrupted;
         }
     }
 }

@@ -31,6 +31,9 @@
             this.dgvVuzList = new System.Windows.Forms.DataGridView();
             this.dgvArticles = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnLostLinks = new System.Windows.Forms.Button();
+            this.btnUrlLinker = new System.Windows.Forms.Button();
+            this.btnSpecialityCorrection = new System.Windows.Forms.Button();
             this.txtLog = new System.Windows.Forms.TextBox();
             this.btnSetLinksNewVer = new System.Windows.Forms.Button();
             this.btnReduseDB = new System.Windows.Forms.Button();
@@ -38,7 +41,6 @@
             this.btnSaveSelected = new System.Windows.Forms.Button();
             this.btlLoad = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.btnSpecialityCorrection = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVuzList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvArticles)).BeginInit();
             this.panel1.SuspendLayout();
@@ -61,7 +63,7 @@
             this.dgvArticles.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dgvArticles.Location = new System.Drawing.Point(0, 0);
             this.dgvArticles.Name = "dgvArticles";
-            this.dgvArticles.Size = new System.Drawing.Size(1370, 657);
+            this.dgvArticles.Size = new System.Drawing.Size(1354, 657);
             this.dgvArticles.TabIndex = 1;
             this.dgvArticles.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvArticles_CellBeginEdit);
             this.dgvArticles.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvArticles_CellEndEdit);
@@ -69,6 +71,8 @@
             // panel1
             // 
             this.panel1.AutoSize = true;
+            this.panel1.Controls.Add(this.btnLostLinks);
+            this.panel1.Controls.Add(this.btnUrlLinker);
             this.panel1.Controls.Add(this.btnSpecialityCorrection);
             this.panel1.Controls.Add(this.dgvVuzList);
             this.panel1.Controls.Add(this.txtLog);
@@ -79,10 +83,40 @@
             this.panel1.Controls.Add(this.btlLoad);
             this.panel1.Controls.Add(this.btnSave);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 456);
+            this.panel1.Location = new System.Drawing.Point(0, 439);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1370, 294);
+            this.panel1.Size = new System.Drawing.Size(1354, 294);
             this.panel1.TabIndex = 2;
+            // 
+            // btnLostLinks
+            // 
+            this.btnLostLinks.Location = new System.Drawing.Point(586, 32);
+            this.btnLostLinks.Name = "btnLostLinks";
+            this.btnLostLinks.Size = new System.Drawing.Size(193, 23);
+            this.btnLostLinks.TabIndex = 9;
+            this.btnLostLinks.Text = "Поиск пропущенных ссылок";
+            this.btnLostLinks.UseVisualStyleBackColor = true;
+            this.btnLostLinks.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnUrlLinker
+            // 
+            this.btnUrlLinker.Location = new System.Drawing.Point(586, 160);
+            this.btnUrlLinker.Name = "btnUrlLinker";
+            this.btnUrlLinker.Size = new System.Drawing.Size(151, 23);
+            this.btnUrlLinker.TabIndex = 8;
+            this.btnUrlLinker.Text = "Open UrlFriendlyLinker";
+            this.btnUrlLinker.UseVisualStyleBackColor = true;
+            this.btnUrlLinker.Click += new System.EventHandler(this.btnUrlLinker_Click);
+            // 
+            // btnSpecialityCorrection
+            // 
+            this.btnSpecialityCorrection.Location = new System.Drawing.Point(586, 133);
+            this.btnSpecialityCorrection.Name = "btnSpecialityCorrection";
+            this.btnSpecialityCorrection.Size = new System.Drawing.Size(151, 23);
+            this.btnSpecialityCorrection.TabIndex = 7;
+            this.btnSpecialityCorrection.Text = "Speciality SEO Correction";
+            this.btnSpecialityCorrection.UseVisualStyleBackColor = true;
+            this.btnSpecialityCorrection.Click += new System.EventHandler(this.btnSpecialityCorrection_Click);
             // 
             // txtLog
             // 
@@ -95,7 +129,7 @@
             // 
             // btnSetLinksNewVer
             // 
-            this.btnSetLinksNewVer.Location = new System.Drawing.Point(586, 63);
+            this.btnSetLinksNewVer.Location = new System.Drawing.Point(586, 103);
             this.btnSetLinksNewVer.Name = "btnSetLinksNewVer";
             this.btnSetLinksNewVer.Size = new System.Drawing.Size(151, 23);
             this.btnSetLinksNewVer.TabIndex = 6;
@@ -105,7 +139,7 @@
             // 
             // btnReduseDB
             // 
-            this.btnReduseDB.Location = new System.Drawing.Point(586, 34);
+            this.btnReduseDB.Location = new System.Drawing.Point(586, 74);
             this.btnReduseDB.Name = "btnReduseDB";
             this.btnReduseDB.Size = new System.Drawing.Size(151, 23);
             this.btnReduseDB.TabIndex = 4;
@@ -119,7 +153,7 @@
             this.btnGetUrl.Name = "btnGetUrl";
             this.btnGetUrl.Size = new System.Drawing.Size(75, 23);
             this.btnGetUrl.TabIndex = 3;
-            this.btnGetUrl.Text = "GetUrl";
+            this.btnGetUrl.Text = "UrlChecker";
             this.btnGetUrl.UseVisualStyleBackColor = true;
             this.btnGetUrl.Click += new System.EventHandler(this.btnGetUrl_Click);
             // 
@@ -154,21 +188,11 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // btnSpecialityCorrection
-            // 
-            this.btnSpecialityCorrection.Location = new System.Drawing.Point(586, 93);
-            this.btnSpecialityCorrection.Name = "btnSpecialityCorrection";
-            this.btnSpecialityCorrection.Size = new System.Drawing.Size(151, 23);
-            this.btnSpecialityCorrection.TabIndex = 7;
-            this.btnSpecialityCorrection.Text = "Speciality SEO Correction";
-            this.btnSpecialityCorrection.UseVisualStyleBackColor = true;
-            this.btnSpecialityCorrection.Click += new System.EventHandler(this.btnSpecialityCorrection_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1370, 750);
+            this.ClientSize = new System.Drawing.Size(1354, 733);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.dgvArticles);
             this.Name = "MainForm";
@@ -196,7 +220,8 @@
         private System.Windows.Forms.Button btnReduseDB;
         private System.Windows.Forms.Button btnSetLinksNewVer;
         private System.Windows.Forms.Button btnSpecialityCorrection;
-
+        private System.Windows.Forms.Button btnUrlLinker;
+        private System.Windows.Forms.Button btnLostLinks;
     }
 }
 

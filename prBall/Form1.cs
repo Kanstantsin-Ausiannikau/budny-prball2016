@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.SqlClient;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 
 
@@ -87,7 +82,7 @@ namespace prBall
             dgvArticles.Columns["PrBallSokrDnevnPlatn"].HeaderText = "СкрДнев\nПлатное";
 
             dgvArticles.Columns["PrBallSokrZaochBudget"].Width = 60;
-            dgvArticles.Columns["PrBallSokrZaochBudget"].HeaderText = "СкрЗаоч\nДневн";
+            dgvArticles.Columns["PrBallSokrZaochBudget"].HeaderText = "СкрЗаоч\nБюдж";
 
             dgvArticles.Columns["PrBallSokrZaochPlatnoe"].Width = 60;
             dgvArticles.Columns["PrBallSokrZaochPlatnoe"].HeaderText = "СкрЗаоч\nПлатн";
@@ -399,15 +394,19 @@ namespace prBall
 
         private void btnGetUrl_Click(object sender, EventArgs e)
         {
-            //UrlsData.connection.Open();
+            const int SPECIALITY_CATEGORY_ID = 29;
+            const int VUZ_CATEGORY_ID = 5;
 
-            //for (int i = 0; i < articles1.Count;i++ )
-            //{
-            //    txtLog.AppendText(UrlsData.GetNewUrlFromIdAndCategoryId(cfData[i].PreviousArticleID, 493));
-            //}
+            var articles = Data.GetArticlesIDFromCategoryID(SPECIALITY_CATEGORY_ID);
+            articles.AddRange(Data.GetArticlesIDFromCategoryID(VUZ_CATEGORY_ID));
 
+            System.Diagnostics.Debug.WriteLine(articles.Count);
 
-            //UrlsData.connection.Close();
+            foreach (int articleId in articles)
+            {
+                UrlsData.CheckLinksInArticle(articleId);
+                System.Diagnostics.Debug.WriteLine("{0} обработано", articleId);
+            }
 
         }
 
@@ -475,29 +474,30 @@ namespace prBall
 
             var prBall2016Articles = Data.GetArticlesIDFromCategoryID(PRBALL2016_CATEGORY_ID);
 
-
-
             Hashtable linksTable = new Hashtable();
+
+            UrlsData.connection.Open();
 
             foreach (var item in prBall2016Articles)
             {
-                List<string> currentLinks = UrlsData.GetNewUrlFromIdAndCategoryId(Data.GetCFDataByArticleID(item).PreviousArticleID, 493);
 
-                for (int i = 0;i<currentLinks.Count;i++)
-                {
-                    linksTable.Add("/abiturient/spsearch/"+currentLinks[i], "/abiturient/spsearch/"+UrlsData.GetNewUrlFromIdAndCategoryId(item, 493)[0]);
-                }
+                var cfData2016 = Data.GetCFDataByArticleID(item);
+
+                string link2015 = String.Format("/abiturient/spsearch/artmid/493/articleid/{0}/{1}", cfData2016.PreviousArticleID, Data.GetTitleLink(cfData2016.PreviousArticleID)).ToLower();
+                string link2016 = String.Format("/abiturient/spsearch/artmid/493/articleid/{0}/{1}", cfData2016.ArticleID, Data.GetTitleLink(cfData2016.ArticleID)).ToLower();
+
+                //6772
+
+                linksTable.Add(link2015, link2016);
+
+                System.Diagnostics.Debug.WriteLine(item);
             }
 
-           // txtLog.AppendText((string)linksTable["1-31-02-01-geografiia-2015-2"]);
+            UrlsData.connection.Close();
 
-            //foreach(var item in prBall2016Articles)
-            //{
-            //    linksTable.Add("/abiturient/spsearch/" + UrlsData.GetNewUrlFromIdAndCategoryId(Data.GetCFDataByArticleID(item).PreviousArticleID, 493), "/abiturient/spsearch/" + UrlsData.GetNewUrlFromIdAndCategoryId(item, 493));
-            //}
+            System.Diagnostics.Debug.WriteLine("__________________________________");
 
-
-            foreach(int articleId in articles)
+            foreach (int articleId in articles)
             {
                 UrlsData.SetLinksToArticle(articleId, linksTable);
             }
@@ -507,9 +507,91 @@ namespace prBall
         {
             List<int> speciality = Data.GetArticlesIDFromCategoryID(29);
 
-            foreach (int specialityID in speciality)
+            foreach (int articleId in speciality)
             {
-                Article article = Data.GetArticleFromID(specialityID);
+                Article article = Data.GetArticleFromID(articleId);
+            }
+        }
+
+        private void btnUrlLinker_Click(object sender, EventArgs e)
+        {
+            UrlFriendlyLinkerForm linkerForm = new UrlFriendlyLinkerForm();
+
+            linkerForm.Show();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ParseYear("2013");
+            ParseYear("2014");
+            ParseYear("2015");
+            ParseYear("2016");
+        }
+
+        private static void ParseYear(string YEAR)
+        {
+            const int VUZ_CATEGORY_ID = 5;
+
+            var articles = Data.GetArticlesIDFromCategoryID(VUZ_CATEGORY_ID);
+
+            List<string> list = new List<string>();
+
+            foreach (var articleId in articles)
+            {
+                string article = Data.GetArticleTextFromID(articleId);
+
+                article = UrlsData.StringToHtml(article);
+
+                HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+
+                doc.LoadHtml(article);
+
+                var s = doc.DocumentNode.SelectNodes("//li//a");
+
+                if (s != null)
+                {
+
+                    foreach (var item in s)
+                    {
+                        if (item.InnerText == YEAR)
+                        {
+                            list.Add(item.GetAttributeValue("href", null).ToLower());
+                        }
+                    }
+
+                    var prBalls = Data.GetArticlesIDFromCategoryID(Data.GetCategoryFromYear(YEAR));
+
+                    Hashtable linksTable = new Hashtable();
+
+                    //UrlsData.connection.Open();
+
+                    foreach (var item in prBalls)
+                    {
+
+                        var vuzIdByCF = Data.GetVuzIDFromCFDataByArticleID(item);
+                        int vuzId = VuzByVuzDictionary.GetVuzArticleIDFromCategoryID(vuzIdByCF);
+
+                        if (articleId == vuzId)
+                        {
+                            string link = String.Format("/abiturient/spsearch/artmid/493/articleid/{0}/{1}", item, Data.GetTitleLink(item)).ToLower();
+
+                            if (list.Find(x => x == link) == null)
+                            {
+
+                                var title = Data.GetTitleFromArticleId(articleId);
+                                System.Diagnostics.Debug.WriteLine("Не найден - {0};{1};{2}", link, title, YEAR);
+
+                                StreamWriter log = new StreamWriter("c:\\missedLinks.txt", true);
+                                log.WriteLine("{0};{1};{2}", link, title, YEAR);
+                                log.Flush();
+                                log.Close();
+
+
+                            }
+                        }
+                    }
+                }
+
             }
         }
     }

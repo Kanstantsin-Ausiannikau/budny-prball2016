@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace prBall
 {
     class Data
     {//Data Source=w05.hosterby.com;Initial Catalog=budnyby_test;User ID=budnyby_admin;Password=dthtcthtdta1!
-        static SqlConnection connection = new SqlConnection(@"Data Source=w05.hosterby.com;Initial Catalog=budnyby_test;User ID=budnyby_admin;Password=dthtcthtdta1!");
+        static SqlConnection connection = new SqlConnection(@"Data Source=w05.hosterby.com;Initial Catalog=budnyby_test;User ID=budnyby_admin;Password=lDs89nMdm");
 
         public static List<Vuz> GetVuzList()
         {
@@ -34,11 +32,11 @@ namespace prBall
             return vuzList;
         }
 
-        public static List<int> GetArticlesList()
+        public static List<int> GetAllArticlesIds()
         {
             connection.Open();
 
-            SqlCommand articleCommand = new SqlCommand("select * from [EasyDNNNews] where CFGroupeID=5", connection);
+            SqlCommand articleCommand = new SqlCommand("select ArticleID from [EasyDNNNews]", connection);
 
             SqlDataReader articleReader = articleCommand.ExecuteReader();
 
@@ -57,12 +55,33 @@ namespace prBall
             return articles;
         }
 
-        public static List<Article> GetArticlesByVuzID(int vuzID)
+        public static string GetTitleLink(int articleID)
+        {
+            if (Cache.TitleLinks.ContainsKey(articleID))
+            {
+                return Cache.TitleLinks[articleID];
+            }
+            else
+            {
+                connection.Open();
+
+                SqlCommand titleLinkCommand = new SqlCommand("select TitleLink from [EasyDNNNews] where ArticleID=" + articleID, connection);
+
+                string articleLink = (string)titleLinkCommand.ExecuteScalar();
+
+                connection.Close();
+
+                Cache.TitleLinks.Add(articleID, articleLink);
+
+                return articleLink;
+            }
+        }
+
+        public static List<Article> GetArticlesByVuzID(int vuzID, int categoryID = 72)
         {
             connection.Open();
 
-            SqlCommand articleListCommand = new SqlCommand("SELECT * FROM [budnyby_test].[dbo].[EasyDNNNewsCategories] INNER JOIN [budnyby_test].[dbo].[EasyDNNNews] ON [budnyby_test].[dbo].[EasyDNNNewsCategories].ArticleID=[budnyby_test].[dbo].[EasyDNNNews].ArticleID INNER JOIN [budnyby_test].[dbo].[EasyDNNfieldsMultiSelected] ON [budnyby_test].[dbo].[EasyDNNNews].ArticleID =  [budnyby_test].[dbo].[EasyDNNfieldsMultiSelected].ArticleID WHERE CategoryID=72 AND [CustomFieldID]=12 AND [FieldElementID]="
-                + vuzID, connection);
+            SqlCommand articleListCommand = new SqlCommand(String.Format("SELECT * FROM [budnyby_test].[dbo].[EasyDNNNewsCategories] INNER JOIN [budnyby_test].[dbo].[EasyDNNNews] ON [budnyby_test].[dbo].[EasyDNNNewsCategories].ArticleID=[budnyby_test].[dbo].[EasyDNNNews].ArticleID INNER JOIN [budnyby_test].[dbo].[EasyDNNfieldsMultiSelected] ON [budnyby_test].[dbo].[EasyDNNNews].ArticleID =  [budnyby_test].[dbo].[EasyDNNfieldsMultiSelected].ArticleID WHERE CategoryID={0} AND [CustomFieldID]=12 AND [FieldElementID]={1}", categoryID ,vuzID), connection);
 
             SqlDataReader articleReader = articleListCommand.ExecuteReader();
 
@@ -247,7 +266,7 @@ namespace prBall
             return title;
         }
 
-        private static string GetSubTitleFromArticleId(int articleId)
+        public static string GetSubTitleFromArticleId(int articleId)
         {
             connection.Open();
 
@@ -511,41 +530,60 @@ namespace prBall
         public static List<int> GetArticlesIDFromCategoryID(int id)
         {
 
-            connection.Open();
-
-            SqlCommand listCommand = new SqlCommand("SELECT * FROM [budnyby_test].[dbo].[EasyDNNNewsCategories] where categoryid=" + id, connection);
-
-
-            SqlDataReader reader = listCommand.ExecuteReader();
-
-            List<int> list = new List<int>();
-
-            using (reader)
+            if (Cache.ArticlesIDs.ContainsKey(id))
             {
-                while (reader.Read())
-                {
-                    list.Add((int)reader["ArticleID"]);
-                }
+                return Cache.ArticlesIDs[id];
             }
+            else
+            {
 
-            connection.Close();
+                connection.Open();
 
-            return list;
+                SqlCommand listCommand = new SqlCommand("SELECT * FROM [budnyby_test].[dbo].[EasyDNNNewsCategories] where categoryid=" + id, connection);
+
+
+                SqlDataReader reader = listCommand.ExecuteReader();
+
+                List<int> list = new List<int>();
+
+                using (reader)
+                {
+                    while (reader.Read())
+                    {
+                        list.Add((int)reader["ArticleID"]);
+                    }
+                }
+
+                connection.Close();
+
+                Cache.ArticlesIDs.Add(id, list);
+
+                return list;
+            }
         }
 
         public static string GetArticleTextFromID(int ID)
         {
-            connection.Open();
+            if (Cache.ArticleTexts.ContainsKey(ID))
+            {
+                return Cache.ArticleTexts[ID];
+            }
+            else
+            {
+                connection.Open();
 
-            SqlCommand articleDataCommand = new SqlCommand("select article from EasyDNNNews where ArticleID=" + ID, connection);
+                SqlCommand articleDataCommand = new SqlCommand("select article from EasyDNNNews where ArticleID=" + ID, connection);
 
-            articleDataCommand.CommandTimeout = 1000000;
+                articleDataCommand.CommandTimeout = 1000000;
 
-            string articleData = (string)articleDataCommand.ExecuteScalar();
+                string articleData = (string)articleDataCommand.ExecuteScalar();
 
-            connection.Close();
+                connection.Close();
 
-            return articleData;
+                Cache.ArticleTexts.Add(ID, articleData);
+
+                return articleData;
+            }
         }
 
         internal static void UpdateArticleText(int articleID, string articleText)
@@ -567,9 +605,130 @@ namespace prBall
             connection.Close();
         }
 
-        internal static Article GetArticleFromID(int specialityID)
+        internal static Article GetArticleFromID(int articleId)
         {
             throw new NotImplementedException();
+        }
+
+        internal static void AddLinksRedirectToDb(string linkOld, string linkNew)
+        {
+            connection.Open();
+
+            SqlCommand cmd = new SqlCommand("insert into [budnyby_test].[dbo].[wns_simpleredirect]  ([ModuleId],[RedirectFrom],[RedirectTo]) Values (748, @oldLink,@newLink)", connection);
+
+            cmd.Parameters.Add("@oldLink", SqlDbType.NVarChar).Value = linkOld;
+            cmd.Parameters.Add("@newLink", SqlDbType.NVarChar).Value = linkNew;
+
+            cmd.ExecuteNonQuery();
+
+            connection.Close();
+
+        }
+
+        internal static string GetTitleFromArticleId(int? articleId)
+        {
+            if (Cache.Titles.ContainsKey(articleId))
+            {
+                return Cache.Titles[articleId];
+            }
+            else
+            {
+                connection.Open();
+
+                SqlCommand articleListCommand = new SqlCommand("SELECT Title FROM [budnyby_test].[dbo].[EasyDNNNews] WHERE articleID=" + articleId, connection);
+
+                string title = (string)articleListCommand.ExecuteScalar();
+
+                connection.Close();
+
+                Cache.Titles.Add(articleId, title);
+
+                return title;
+            }
+        }
+
+        internal static int GetCategoryFromYear(string year)
+        {
+            int categoryId = -1;
+
+            if(year=="2013")
+            {
+                categoryId = 34;
+            }
+
+            if (year == "2014")
+            {
+                categoryId = 43;
+            }
+
+            if (year == "2015")
+            {
+                categoryId = 72;
+            }
+
+            if (year == "2016")
+            {
+                categoryId = 79;
+            }
+
+
+            return categoryId;
+
+        }
+
+        internal static string GetVuzNameByVuzCategory(int vuzCategoryID)
+        {
+            connection.Open();
+
+            SqlCommand articleDataCommand = new SqlCommand("SELECT TEXT FROM [budnyby_test].[dbo].[EasyDNNfieldsMultiElements] WHERE FieldElementID=" + vuzCategoryID, connection);
+
+            articleDataCommand.CommandTimeout = 1000000;
+
+            string vuzName = (string)articleDataCommand.ExecuteScalar();
+
+            connection.Close();
+
+            return vuzName;
+        }
+
+
+        public static int GetVuzIDFromCFDataByArticleID(int id)
+        {
+            if (Cache.VuzIDs.ContainsKey(id))
+            {
+                return Cache.VuzIDs[id];
+            }
+            else
+            {
+                connection.Open();
+
+                int vuzId = -1;
+
+                SqlCommand customFieldsMultyCommand = new SqlCommand("select * from [EasyDNNfieldsMultiSelected] where ArticleID=" + id, connection);
+
+                SqlDataReader CFMultyReader = customFieldsMultyCommand.ExecuteReader();
+
+                using (CFMultyReader)
+                {
+                    while (CFMultyReader.Read())
+                    {
+                        int fieldElementId = (int)CFMultyReader["FieldElementID"];
+                        int customFieldId = (int)CFMultyReader["CustomFieldID"];
+
+                        if (customFieldId == 12)
+                        {
+                            vuzId = fieldElementId;
+                            break;
+                        }
+
+                    }
+                }
+                connection.Close();
+
+                Cache.VuzIDs.Add(id, vuzId);
+
+                return vuzId;
+            }
         }
     }
 }
