@@ -34,13 +34,14 @@
             this.btnLostLinks = new System.Windows.Forms.Button();
             this.btnUrlLinker = new System.Windows.Forms.Button();
             this.btnSpecialityCorrection = new System.Windows.Forms.Button();
-            this.txtLog = new System.Windows.Forms.TextBox();
             this.btnSetLinksNewVer = new System.Windows.Forms.Button();
             this.btnReduseDB = new System.Windows.Forms.Button();
             this.btnGetUrl = new System.Windows.Forms.Button();
             this.btnSaveSelected = new System.Windows.Forms.Button();
             this.btlLoad = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
+            this.btnSaveToExcel = new System.Windows.Forms.Button();
+            this.sfdToExcel = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVuzList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvArticles)).BeginInit();
             this.panel1.SuspendLayout();
@@ -59,11 +60,11 @@
             // dgvArticles
             // 
             this.dgvArticles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvArticles.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dgvArticles.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvArticles.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dgvArticles.Location = new System.Drawing.Point(0, 0);
             this.dgvArticles.Name = "dgvArticles";
-            this.dgvArticles.Size = new System.Drawing.Size(1354, 657);
+            this.dgvArticles.Size = new System.Drawing.Size(1354, 733);
             this.dgvArticles.TabIndex = 1;
             this.dgvArticles.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvArticles_CellBeginEdit);
             this.dgvArticles.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvArticles_CellEndEdit);
@@ -71,11 +72,11 @@
             // panel1
             // 
             this.panel1.AutoSize = true;
+            this.panel1.Controls.Add(this.btnSaveToExcel);
             this.panel1.Controls.Add(this.btnLostLinks);
             this.panel1.Controls.Add(this.btnUrlLinker);
             this.panel1.Controls.Add(this.btnSpecialityCorrection);
             this.panel1.Controls.Add(this.dgvVuzList);
-            this.panel1.Controls.Add(this.txtLog);
             this.panel1.Controls.Add(this.btnSetLinksNewVer);
             this.panel1.Controls.Add(this.btnReduseDB);
             this.panel1.Controls.Add(this.btnGetUrl);
@@ -83,14 +84,14 @@
             this.panel1.Controls.Add(this.btlLoad);
             this.panel1.Controls.Add(this.btnSave);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 439);
+            this.panel1.Location = new System.Drawing.Point(0, 448);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1354, 294);
+            this.panel1.Size = new System.Drawing.Size(1354, 285);
             this.panel1.TabIndex = 2;
             // 
             // btnLostLinks
             // 
-            this.btnLostLinks.Location = new System.Drawing.Point(586, 32);
+            this.btnLostLinks.Location = new System.Drawing.Point(1142, 33);
             this.btnLostLinks.Name = "btnLostLinks";
             this.btnLostLinks.Size = new System.Drawing.Size(193, 23);
             this.btnLostLinks.TabIndex = 9;
@@ -100,7 +101,7 @@
             // 
             // btnUrlLinker
             // 
-            this.btnUrlLinker.Location = new System.Drawing.Point(586, 160);
+            this.btnUrlLinker.Location = new System.Drawing.Point(1142, 161);
             this.btnUrlLinker.Name = "btnUrlLinker";
             this.btnUrlLinker.Size = new System.Drawing.Size(151, 23);
             this.btnUrlLinker.TabIndex = 8;
@@ -110,7 +111,7 @@
             // 
             // btnSpecialityCorrection
             // 
-            this.btnSpecialityCorrection.Location = new System.Drawing.Point(586, 133);
+            this.btnSpecialityCorrection.Location = new System.Drawing.Point(1142, 134);
             this.btnSpecialityCorrection.Name = "btnSpecialityCorrection";
             this.btnSpecialityCorrection.Size = new System.Drawing.Size(151, 23);
             this.btnSpecialityCorrection.TabIndex = 7;
@@ -118,18 +119,9 @@
             this.btnSpecialityCorrection.UseVisualStyleBackColor = true;
             this.btnSpecialityCorrection.Click += new System.EventHandler(this.btnSpecialityCorrection_Click);
             // 
-            // txtLog
-            // 
-            this.txtLog.Location = new System.Drawing.Point(809, 4);
-            this.txtLog.Multiline = true;
-            this.txtLog.Name = "txtLog";
-            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(540, 287);
-            this.txtLog.TabIndex = 3;
-            // 
             // btnSetLinksNewVer
             // 
-            this.btnSetLinksNewVer.Location = new System.Drawing.Point(586, 103);
+            this.btnSetLinksNewVer.Location = new System.Drawing.Point(1142, 104);
             this.btnSetLinksNewVer.Name = "btnSetLinksNewVer";
             this.btnSetLinksNewVer.Size = new System.Drawing.Size(151, 23);
             this.btnSetLinksNewVer.TabIndex = 6;
@@ -139,7 +131,7 @@
             // 
             // btnReduseDB
             // 
-            this.btnReduseDB.Location = new System.Drawing.Point(586, 74);
+            this.btnReduseDB.Location = new System.Drawing.Point(1142, 75);
             this.btnReduseDB.Name = "btnReduseDB";
             this.btnReduseDB.Size = new System.Drawing.Size(151, 23);
             this.btnReduseDB.TabIndex = 4;
@@ -149,7 +141,7 @@
             // 
             // btnGetUrl
             // 
-            this.btnGetUrl.Location = new System.Drawing.Point(586, 3);
+            this.btnGetUrl.Location = new System.Drawing.Point(1142, 4);
             this.btnGetUrl.Name = "btnGetUrl";
             this.btnGetUrl.Size = new System.Drawing.Size(75, 23);
             this.btnGetUrl.TabIndex = 3;
@@ -159,7 +151,7 @@
             // 
             // btnSaveSelected
             // 
-            this.btnSaveSelected.Location = new System.Drawing.Point(256, 4);
+            this.btnSaveSelected.Location = new System.Drawing.Point(215, 5);
             this.btnSaveSelected.Name = "btnSaveSelected";
             this.btnSaveSelected.Size = new System.Drawing.Size(168, 23);
             this.btnSaveSelected.TabIndex = 2;
@@ -180,13 +172,27 @@
             // btnSave
             // 
             this.btnSave.Enabled = false;
-            this.btnSave.Location = new System.Drawing.Point(148, 3);
+            this.btnSave.Location = new System.Drawing.Point(134, 3);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 0;
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnSaveToExcel
+            // 
+            this.btnSaveToExcel.Location = new System.Drawing.Point(410, 5);
+            this.btnSaveToExcel.Name = "btnSaveToExcel";
+            this.btnSaveToExcel.Size = new System.Drawing.Size(121, 23);
+            this.btnSaveToExcel.TabIndex = 10;
+            this.btnSaveToExcel.Text = "Сохранить в Excel";
+            this.btnSaveToExcel.UseVisualStyleBackColor = true;
+            this.btnSaveToExcel.Click += new System.EventHandler(this.btnSaveToExcel_Click);
+            // 
+            // sfdToExcel
+            // 
+            this.sfdToExcel.DefaultExt = "xlsx";
             // 
             // MainForm
             // 
@@ -201,7 +207,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvVuzList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvArticles)).EndInit();
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -216,12 +221,13 @@
         private System.Windows.Forms.Button btlLoad;
         private System.Windows.Forms.Button btnSaveSelected;
         private System.Windows.Forms.Button btnGetUrl;
-        private System.Windows.Forms.TextBox txtLog;
         private System.Windows.Forms.Button btnReduseDB;
         private System.Windows.Forms.Button btnSetLinksNewVer;
         private System.Windows.Forms.Button btnSpecialityCorrection;
         private System.Windows.Forms.Button btnUrlLinker;
         private System.Windows.Forms.Button btnLostLinks;
+        private System.Windows.Forms.Button btnSaveToExcel;
+        private System.Windows.Forms.SaveFileDialog sfdToExcel;
     }
 }
 

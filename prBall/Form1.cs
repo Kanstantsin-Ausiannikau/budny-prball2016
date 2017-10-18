@@ -440,14 +440,9 @@ namespace prBall
             {
                 List<int> list = UrlsData.GetArticlesIDFromCategoryID(item.CategoryID);
 
-                txtLog.AppendText(string.Format("CaregoryID:{0}\n", item.CategoryID));
-
-                int articlesCount = 0;
-
                 foreach (int articleId in list)
                 {
                     UrlsData.RemoveUnusedUrls(articleId, item.CategoryID, item.ModuleID);
-                    txtLog.AppendText(string.Format("id:{0} passed:{1}\n", articleId, articlesCount++));
                 }
             }
 
@@ -593,6 +588,26 @@ namespace prBall
                 }
 
             }
+        }
+
+        private void btnSaveToExcel_Click(object sender, EventArgs e)
+        {
+            List<CFData2016> data = (List<CFData2016>)dgvArticles.DataSource;
+
+            if (sfdToExcel.ShowDialog()==DialogResult.OK)
+            {
+                try
+                {
+                    ExcelData.SaveToExcel(data, sfdToExcel.FileName);
+                }
+                catch
+                {
+                    MessageBox.Show("Ошибка сохранения данных в файл Excel");
+                }
+
+            }
+
+            
         }
     }
 }

@@ -7,7 +7,13 @@ namespace prBall
 {
     class Data
     {//Data Source=w05.hosterby.com;Initial Catalog=budnyby_test;User ID=budnyby_admin;Password=dthtcthtdta1!
+
         static SqlConnection connection = new SqlConnection(@"Data Source=w05.hosterby.com;Initial Catalog=budnyby_test;User ID=budnyby_admin;Password=lDs89nMdm");
+
+        public const int PREVIOUS_YEAR_CATEGORY_ID = 79;
+        public const int CURRENT_YEAR_CATEGORY_ID = 80;
+        public const string PREVIOUS_YEAR = "2016";
+        public const string CURRENT_YEAR = "2017";
 
         public static List<Vuz> GetVuzList()
         {
@@ -77,7 +83,7 @@ namespace prBall
             }
         }
 
-        public static List<Article> GetArticlesByVuzID(int vuzID, int categoryID = 72)
+        public static List<Article> GetArticlesByVuzID(int vuzID, int categoryID = PREVIOUS_YEAR_CATEGORY_ID)
         {
             connection.Open();
 
@@ -236,7 +242,12 @@ namespace prBall
                         case 20: articleData.PrBallZaochnBudget = (decimal)CFReader["Decimal"]; break;
                         case 21: articleData.PrBallZaochnPlatn = (decimal)CFReader["Decimal"]; break;
                         case 22: articleData.PrBallDnevnPlatnoe = (decimal)CFReader["Decimal"]; break;
-
+                        case 39: articleData.PrBallSokrDnevnBudg = (decimal)CFReader["Decimal"]; break;
+                        case 41: articleData.PrBallSokrZaochBudget = (decimal)CFReader["Decimal"]; break;
+                        case 42: articleData.PrBallSokrDnevnPlatn = (decimal)CFReader["Decimal"]; break;
+                        case 43: articleData.PrBallSokrZaochPlatnoe = (decimal)CFReader["Decimal"]; break;
+                        case 44: articleData.PrBallDistBudget = (decimal)CFReader["Decimal"]; break;
+                        case 45: articleData.PrBallDistPlatnoe = (decimal)CFReader["Decimal"]; break;
                     }
                 }
             }
@@ -298,20 +309,20 @@ namespace prBall
 
             string titleLink;
 
-            if (article.TitleLink.Contains("2015"))
+            if (article.TitleLink.Contains(PREVIOUS_YEAR))
             {
-                titleLink = article.TitleLink.Replace("2015", "2016");
+                titleLink = article.TitleLink.Replace(PREVIOUS_YEAR, CURRENT_YEAR);
             }
             else
             {
-                titleLink = article.TitleLink+"-2016";
+                titleLink = article.TitleLink+"-"+CURRENT_YEAR;
             }
 
-            string articleText = article.ArticleText.Replace("2015", "2016");
-            string cleanArticleData = article.CleanArticleData.Replace("2015", "2016");
+            string articleText = article.ArticleText.Replace(PREVIOUS_YEAR, CURRENT_YEAR);
+            string cleanArticleData = article.CleanArticleData.Replace(PREVIOUS_YEAR, CURRENT_YEAR);
 
 
-            string upd = string.Format("update [budnyby_test].[DBO].[EasyDNNNews] SET [PublishDate]='9/14/2016 16:05:07', [DateAdded]='9/14/2016 16:05:07', [LastModified]='9/14/2016 16:05:07', [NumberOfViews]=0, [RatingValue]=0, [RatingCount]=0, [Title]=@title, [TitleLink]=@titlelink, [Article]=@articletext, [CleanArticleData]=@cleanarticletext, [CFGroupeID]=13  where [ArticleID]= {0}",
+            string upd = string.Format("update [budnyby_test].[DBO].[EasyDNNNews] SET [PublishDate]='9/14/2017 16:05:07', [DateAdded]='9/14/2017 16:05:07', [LastModified]='9/14/2017 16:05:07', [NumberOfViews]=0, [RatingValue]=0, [RatingCount]=0, [Title]=@title, [TitleLink]=@titlelink, [Article]=@articletext, [CleanArticleData]=@cleanarticletext, [CFGroupeID]=13  where [ArticleID]= {0}",
                 articleId.ToString());
 
             SqlCommand updateNewArticle = new SqlCommand(upd, connection);
@@ -340,7 +351,7 @@ namespace prBall
         {
             connection.Open();
 
-            SqlCommand gorodCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNNewsCategories]  ([ArticleID],[CategoryID]) Values ({0},{1})", id, 79), connection);
+            SqlCommand gorodCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNNewsCategories]  ([ArticleID],[CategoryID]) Values ({0},{1})", id, CURRENT_YEAR_CATEGORY_ID), connection);
             gorodCommand.ExecuteNonQuery();
 
             connection.Close();
@@ -671,6 +682,10 @@ namespace prBall
                 categoryId = 79;
             }
 
+            if (year == "2017")
+            {
+                categoryId = 80;
+            }
 
             return categoryId;
 

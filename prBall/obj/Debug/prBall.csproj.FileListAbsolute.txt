@@ -28,3 +28,4 @@ c:\projects\budny-prball2016\budny-prball2016\prBall\obj\Debug\prBall.UrlFriendl
 c:\projects\budny-prball2016\budny-prball2016\prBall\obj\Debug\prBall.csproj.GenerateResource.Cache
 c:\projects\budny-prball2016\budny-prball2016\prBall\obj\Debug\prBall.exe
 c:\projects\budny-prball2016\budny-prball2016\prBall\obj\Debug\prBall.pdb
+c:\projects\budny-prball2016\prBall\bin\Debug\EPPlus.dll
