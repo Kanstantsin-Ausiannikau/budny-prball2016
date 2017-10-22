@@ -29,8 +29,9 @@
         private void InitializeComponent()
         {
             this.dgvVuzList = new System.Windows.Forms.DataGridView();
-            this.dgvArticles = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnLoadExcel = new System.Windows.Forms.Button();
+            this.btnSaveToExcel = new System.Windows.Forms.Button();
             this.btnLostLinks = new System.Windows.Forms.Button();
             this.btnUrlLinker = new System.Windows.Forms.Button();
             this.btnSpecialityCorrection = new System.Windows.Forms.Button();
@@ -40,38 +41,28 @@
             this.btnSaveSelected = new System.Windows.Forms.Button();
             this.btlLoad = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.btnSaveToExcel = new System.Windows.Forms.Button();
             this.sfdToExcel = new System.Windows.Forms.SaveFileDialog();
+            this.ofdLoadExcel = new System.Windows.Forms.OpenFileDialog();
+            this.dgvArticles = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVuzList)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvArticles)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvArticles)).BeginInit();
             this.SuspendLayout();
             // 
             // dgvVuzList
             // 
             this.dgvVuzList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvVuzList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
-            this.dgvVuzList.Location = new System.Drawing.Point(6, 34);
+            this.dgvVuzList.Location = new System.Drawing.Point(8, 42);
+            this.dgvVuzList.Margin = new System.Windows.Forms.Padding(4);
             this.dgvVuzList.Name = "dgvVuzList";
-            this.dgvVuzList.Size = new System.Drawing.Size(377, 248);
+            this.dgvVuzList.Size = new System.Drawing.Size(503, 305);
             this.dgvVuzList.TabIndex = 0;
             this.dgvVuzList.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvVuzList_RowEnter);
             // 
-            // dgvArticles
-            // 
-            this.dgvArticles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvArticles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvArticles.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.dgvArticles.Location = new System.Drawing.Point(0, 0);
-            this.dgvArticles.Name = "dgvArticles";
-            this.dgvArticles.Size = new System.Drawing.Size(1354, 733);
-            this.dgvArticles.TabIndex = 1;
-            this.dgvArticles.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvArticles_CellBeginEdit);
-            this.dgvArticles.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvArticles_CellEndEdit);
-            // 
             // panel1
             // 
-            this.panel1.AutoSize = true;
+            this.panel1.Controls.Add(this.btnLoadExcel);
             this.panel1.Controls.Add(this.btnSaveToExcel);
             this.panel1.Controls.Add(this.btnLostLinks);
             this.panel1.Controls.Add(this.btnUrlLinker);
@@ -84,16 +75,39 @@
             this.panel1.Controls.Add(this.btlLoad);
             this.panel1.Controls.Add(this.btnSave);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 448);
+            this.panel1.Location = new System.Drawing.Point(0, 539);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1354, 285);
+            this.panel1.Size = new System.Drawing.Size(1805, 363);
             this.panel1.TabIndex = 2;
+            // 
+            // btnLoadExcel
+            // 
+            this.btnLoadExcel.Location = new System.Drawing.Point(547, 42);
+            this.btnLoadExcel.Name = "btnLoadExcel";
+            this.btnLoadExcel.Size = new System.Drawing.Size(161, 27);
+            this.btnLoadExcel.TabIndex = 11;
+            this.btnLoadExcel.Text = "Загрузить из Excel";
+            this.btnLoadExcel.UseVisualStyleBackColor = true;
+            this.btnLoadExcel.Click += new System.EventHandler(this.btnLoadExcel_Click);
+            // 
+            // btnSaveToExcel
+            // 
+            this.btnSaveToExcel.Location = new System.Drawing.Point(547, 6);
+            this.btnSaveToExcel.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSaveToExcel.Name = "btnSaveToExcel";
+            this.btnSaveToExcel.Size = new System.Drawing.Size(161, 28);
+            this.btnSaveToExcel.TabIndex = 10;
+            this.btnSaveToExcel.Text = "Сохранить в Excel";
+            this.btnSaveToExcel.UseVisualStyleBackColor = true;
+            this.btnSaveToExcel.Click += new System.EventHandler(this.btnSaveToExcel_Click);
             // 
             // btnLostLinks
             // 
-            this.btnLostLinks.Location = new System.Drawing.Point(1142, 33);
+            this.btnLostLinks.Location = new System.Drawing.Point(1523, 41);
+            this.btnLostLinks.Margin = new System.Windows.Forms.Padding(4);
             this.btnLostLinks.Name = "btnLostLinks";
-            this.btnLostLinks.Size = new System.Drawing.Size(193, 23);
+            this.btnLostLinks.Size = new System.Drawing.Size(257, 28);
             this.btnLostLinks.TabIndex = 9;
             this.btnLostLinks.Text = "Поиск пропущенных ссылок";
             this.btnLostLinks.UseVisualStyleBackColor = true;
@@ -101,9 +115,10 @@
             // 
             // btnUrlLinker
             // 
-            this.btnUrlLinker.Location = new System.Drawing.Point(1142, 161);
+            this.btnUrlLinker.Location = new System.Drawing.Point(1523, 198);
+            this.btnUrlLinker.Margin = new System.Windows.Forms.Padding(4);
             this.btnUrlLinker.Name = "btnUrlLinker";
-            this.btnUrlLinker.Size = new System.Drawing.Size(151, 23);
+            this.btnUrlLinker.Size = new System.Drawing.Size(201, 28);
             this.btnUrlLinker.TabIndex = 8;
             this.btnUrlLinker.Text = "Open UrlFriendlyLinker";
             this.btnUrlLinker.UseVisualStyleBackColor = true;
@@ -111,9 +126,10 @@
             // 
             // btnSpecialityCorrection
             // 
-            this.btnSpecialityCorrection.Location = new System.Drawing.Point(1142, 134);
+            this.btnSpecialityCorrection.Location = new System.Drawing.Point(1523, 165);
+            this.btnSpecialityCorrection.Margin = new System.Windows.Forms.Padding(4);
             this.btnSpecialityCorrection.Name = "btnSpecialityCorrection";
-            this.btnSpecialityCorrection.Size = new System.Drawing.Size(151, 23);
+            this.btnSpecialityCorrection.Size = new System.Drawing.Size(201, 28);
             this.btnSpecialityCorrection.TabIndex = 7;
             this.btnSpecialityCorrection.Text = "Speciality SEO Correction";
             this.btnSpecialityCorrection.UseVisualStyleBackColor = true;
@@ -121,9 +137,10 @@
             // 
             // btnSetLinksNewVer
             // 
-            this.btnSetLinksNewVer.Location = new System.Drawing.Point(1142, 104);
+            this.btnSetLinksNewVer.Location = new System.Drawing.Point(1523, 128);
+            this.btnSetLinksNewVer.Margin = new System.Windows.Forms.Padding(4);
             this.btnSetLinksNewVer.Name = "btnSetLinksNewVer";
-            this.btnSetLinksNewVer.Size = new System.Drawing.Size(151, 23);
+            this.btnSetLinksNewVer.Size = new System.Drawing.Size(201, 28);
             this.btnSetLinksNewVer.TabIndex = 6;
             this.btnSetLinksNewVer.Text = "Set Links 2016";
             this.btnSetLinksNewVer.UseVisualStyleBackColor = true;
@@ -131,9 +148,10 @@
             // 
             // btnReduseDB
             // 
-            this.btnReduseDB.Location = new System.Drawing.Point(1142, 75);
+            this.btnReduseDB.Location = new System.Drawing.Point(1523, 92);
+            this.btnReduseDB.Margin = new System.Windows.Forms.Padding(4);
             this.btnReduseDB.Name = "btnReduseDB";
-            this.btnReduseDB.Size = new System.Drawing.Size(151, 23);
+            this.btnReduseDB.Size = new System.Drawing.Size(201, 28);
             this.btnReduseDB.TabIndex = 4;
             this.btnReduseDB.Text = "Start Reduse DB";
             this.btnReduseDB.UseVisualStyleBackColor = true;
@@ -141,9 +159,10 @@
             // 
             // btnGetUrl
             // 
-            this.btnGetUrl.Location = new System.Drawing.Point(1142, 4);
+            this.btnGetUrl.Location = new System.Drawing.Point(1523, 5);
+            this.btnGetUrl.Margin = new System.Windows.Forms.Padding(4);
             this.btnGetUrl.Name = "btnGetUrl";
-            this.btnGetUrl.Size = new System.Drawing.Size(75, 23);
+            this.btnGetUrl.Size = new System.Drawing.Size(100, 28);
             this.btnGetUrl.TabIndex = 3;
             this.btnGetUrl.Text = "UrlChecker";
             this.btnGetUrl.UseVisualStyleBackColor = true;
@@ -151,9 +170,10 @@
             // 
             // btnSaveSelected
             // 
-            this.btnSaveSelected.Location = new System.Drawing.Point(215, 5);
+            this.btnSaveSelected.Location = new System.Drawing.Point(287, 6);
+            this.btnSaveSelected.Margin = new System.Windows.Forms.Padding(4);
             this.btnSaveSelected.Name = "btnSaveSelected";
-            this.btnSaveSelected.Size = new System.Drawing.Size(168, 23);
+            this.btnSaveSelected.Size = new System.Drawing.Size(224, 28);
             this.btnSaveSelected.TabIndex = 2;
             this.btnSaveSelected.Text = "Сохранить выделенное";
             this.btnSaveSelected.UseVisualStyleBackColor = true;
@@ -161,9 +181,10 @@
             // 
             // btlLoad
             // 
-            this.btlLoad.Location = new System.Drawing.Point(6, 4);
+            this.btlLoad.Location = new System.Drawing.Point(8, 5);
+            this.btlLoad.Margin = new System.Windows.Forms.Padding(4);
             this.btlLoad.Name = "btlLoad";
-            this.btlLoad.Size = new System.Drawing.Size(106, 23);
+            this.btlLoad.Size = new System.Drawing.Size(141, 28);
             this.btlLoad.TabIndex = 1;
             this.btlLoad.Text = "Загрузить вузы";
             this.btlLoad.UseVisualStyleBackColor = true;
@@ -172,50 +193,59 @@
             // btnSave
             // 
             this.btnSave.Enabled = false;
-            this.btnSave.Location = new System.Drawing.Point(134, 3);
+            this.btnSave.Location = new System.Drawing.Point(179, 4);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.Size = new System.Drawing.Size(100, 28);
             this.btnSave.TabIndex = 0;
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // btnSaveToExcel
-            // 
-            this.btnSaveToExcel.Location = new System.Drawing.Point(410, 5);
-            this.btnSaveToExcel.Name = "btnSaveToExcel";
-            this.btnSaveToExcel.Size = new System.Drawing.Size(121, 23);
-            this.btnSaveToExcel.TabIndex = 10;
-            this.btnSaveToExcel.Text = "Сохранить в Excel";
-            this.btnSaveToExcel.UseVisualStyleBackColor = true;
-            this.btnSaveToExcel.Click += new System.EventHandler(this.btnSaveToExcel_Click);
-            // 
             // sfdToExcel
             // 
             this.sfdToExcel.DefaultExt = "xlsx";
             // 
+            // ofdLoadExcel
+            // 
+            this.ofdLoadExcel.DefaultExt = "xlsx";
+            // 
+            // dgvArticles
+            // 
+            this.dgvArticles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvArticles.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dgvArticles.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.dgvArticles.Location = new System.Drawing.Point(0, 0);
+            this.dgvArticles.Margin = new System.Windows.Forms.Padding(4);
+            this.dgvArticles.Name = "dgvArticles";
+            this.dgvArticles.Size = new System.Drawing.Size(1805, 532);
+            this.dgvArticles.TabIndex = 1;
+            this.dgvArticles.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvArticles_CellBeginEdit);
+            this.dgvArticles.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvArticles_CellEndEdit);
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1354, 733);
-            this.Controls.Add(this.panel1);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(1805, 902);
             this.Controls.Add(this.dgvArticles);
+            this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "Проходные баллы";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.dgvVuzList)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvArticles)).EndInit();
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvArticles)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.DataGridView dgvVuzList;
-        private System.Windows.Forms.DataGridView dgvArticles;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btlLoad;
@@ -228,6 +258,9 @@
         private System.Windows.Forms.Button btnLostLinks;
         private System.Windows.Forms.Button btnSaveToExcel;
         private System.Windows.Forms.SaveFileDialog sfdToExcel;
+        private System.Windows.Forms.Button btnLoadExcel;
+        private System.Windows.Forms.OpenFileDialog ofdLoadExcel;
+        private System.Windows.Forms.DataGridView dgvArticles;
     }
 }
 
