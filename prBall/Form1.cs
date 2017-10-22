@@ -12,7 +12,7 @@ namespace prBall
     {
         List<CFData2016> cfData = new List<CFData2016>();
 
-        List<Article> articles1 = new List<Article>();
+        List<Article> articles = new List<Article>();
 
         bool isEdit = false;
 
@@ -27,18 +27,11 @@ namespace prBall
 
         private void dgvVuzList_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
-           
             cfData.Clear();
 
             int vuzId = (int)dgvVuzList.Rows[e.RowIndex].Cells["ID"].Value;
 
-            dgvArticles.DataSource = Data.GetArticlesByVuzID(vuzId);
-
-            List<Article> articles = Data.GetArticlesByVuzID(vuzId);
-
-            articles1 = articles;
-
-
+            articles = Data.GetArticlesByVuzID(vuzId);
 
             foreach (var article in articles)
             {
@@ -48,68 +41,25 @@ namespace prBall
             SetDataGridProperty(dgvArticles);
 
             dgvArticles.DataSource = cfData;
-
-            dgvArticles.Columns["ArticleID"].Visible = false;
-            dgvArticles.Columns["GorodID"].Visible = false;
-            dgvArticles.Columns["VuzID"].Visible = false;
-            dgvArticles.Columns["FakultetID"].Visible = false;
-            dgvArticles.Columns["NapravleniePodgotovki"].Visible = false;
-
-            dgvArticles.Columns["PrBallDnevnBudget"].Width = 60;
-            dgvArticles.Columns["PrBallDnevnBudget"].HeaderText = "Дневное\nбюджет";
-            //dgvArticles.Columns["PrBallDnevnBudget"].HeaderCell.Style.Font.Size = 5;
-
-          //  dgvArticles.Columns["PrBallDnevnBudgetLgotn"].Width = 20;
-
-            dgvArticles.Columns["PrBallDnevnPlatnoe"].Width = 60;
-            dgvArticles.Columns["PrBallDnevnPlatnoe"].HeaderText = "Дневное\nплатное";
-
-          //  dgvArticles.Columns["PrBallZaochnBudgetLgotn"].Width = 20;
-
-            dgvArticles.Columns["PrBallZaochnBudget"].Width = 60;
-            dgvArticles.Columns["PrBallZaochnBudget"].HeaderText = "Заочное\nБюджет";
-
-
-          //  dgvArticles.Columns["PrBallZaochnPlatnLgotn"].Width = 20;
-
-            dgvArticles.Columns["PrBallZaochnPlatn"].Width = 60;
-            dgvArticles.Columns["PrBallZaochnPlatn"].HeaderText = "Заочное\nПлатное";
-            
-            dgvArticles.Columns["PrBallSokrDnevnBudg"].Width = 60;
-            dgvArticles.Columns["PrBallSokrDnevnBudg"].HeaderText = "СкрДнев\nБюдж";
-
-            dgvArticles.Columns["PrBallSokrDnevnPlatn"].Width = 60;
-            dgvArticles.Columns["PrBallSokrDnevnPlatn"].HeaderText = "СкрДнев\nПлатное";
-
-            dgvArticles.Columns["PrBallSokrZaochBudget"].Width = 60;
-            dgvArticles.Columns["PrBallSokrZaochBudget"].HeaderText = "СкрЗаоч\nБюдж";
-
-            dgvArticles.Columns["PrBallSokrZaochPlatnoe"].Width = 60;
-            dgvArticles.Columns["PrBallSokrZaochPlatnoe"].HeaderText = "СкрЗаоч\nПлатн";
-
-            dgvArticles.Columns["PrBallDistBudget"].Width = 60;
-            dgvArticles.Columns["PrBallDistBudget"].HeaderText = "Дистанц\nБюдж";
-
-            dgvArticles.Columns["PrBallDistPlatnoe"].Width = 60;
-            dgvArticles.Columns["PrBallDistPlatnoe"].HeaderText = "Дистанц\nПлатное";
-
- 
-
-         //   dgvArticles.Columns["PrBallSokraschLgotn"].Width = 20;
-
-           // dgvArticles.Columns["PrBallSokrasch"].Width = 70;
-           // dgvArticles.Columns["PrBallSokrasch"].HeaderText = "Сокращен\nбюджет";
-
-           // dgvArticles.Columns["PrBallSokraschPlatn"].Width = 70;
-           // dgvArticles.Columns["PrBallSokraschPlatn"].HeaderText = "Сокращен\nплатное";
-
-            dgvArticles.Columns["Title"].Width = 270;
-        
         }
 
         private void SetDataGridProperty(DataGridView dgvArticles)
         {
-            DataGridViewCheckBoxColumn typeObuchDnevnoe = new DataGridViewCheckBoxColumn()
+
+            dgvArticles.Visible = false;
+            DataGridViewCheckBoxColumn saveColumn = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Shr",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 20,
+                DataPropertyName = "saveColumn"
+            };
+
+            dgvArticles.Columns.Add(saveColumn);
+
+             DataGridViewCheckBoxColumn typeObuchDnevnoe = new DataGridViewCheckBoxColumn()
             {
                 Name = "Дневное",
                 FalseValue = false,
@@ -153,12 +103,52 @@ namespace prBall
 
             };
 
-
-
             dgvArticles.Columns.Add(typeObuchDnevnoe);
             dgvArticles.Columns.Add(TypeObuchZaochnoe);
             dgvArticles.Columns.Add(TypeObuchDistanc);
             dgvArticles.Columns.Add(TypeObuchSokrasch);
+
+            dgvArticles.ColumnCount = 17;
+
+            dgvArticles.Columns[5].Name = "Дневное\nбюджет";
+            dgvArticles.Columns[5].DataPropertyName = "PrBallDnevnBudget";
+            dgvArticles.Columns[5].Width = 60;
+            dgvArticles.Columns[6].Name = "Дневное\nплатное";
+            dgvArticles.Columns[6].DataPropertyName = "PrBallDnevnPlatnoe";
+            dgvArticles.Columns[6].Width = 60;
+            dgvArticles.Columns[7].Name = "Заочное\nБюджет";
+            dgvArticles.Columns[7].DataPropertyName = "PrBallZaochnBudget";
+            dgvArticles.Columns[7].Width = 60;
+            dgvArticles.Columns[8].Name = "Заочное\nПлатное";
+            dgvArticles.Columns[8].DataPropertyName = "PrBallZaochnPlatn";
+            dgvArticles.Columns[8].Width = 60;
+            dgvArticles.Columns[9].Name = "Дневное\nбюджет";
+            dgvArticles.Columns[9].DataPropertyName = "PrBallSokrDnevnBudg";
+            dgvArticles.Columns[9].Width = 60;
+            dgvArticles.Columns[10].Name = "СкрДнев\nБюдж";
+            dgvArticles.Columns[10].DataPropertyName = "PrBallSokrDnevnBudg";
+            dgvArticles.Columns[10].Width = 60;
+            dgvArticles.Columns[11].Name = "СкрДнев\nПлатное";
+            dgvArticles.Columns[11].DataPropertyName = "PrBallSokrDnevnPlatn";
+            dgvArticles.Columns[11].Width = 60;
+            dgvArticles.Columns[12].Name = "СкрЗаоч\nБюдж";
+            dgvArticles.Columns[12].DataPropertyName = "PrBallSokrZaochBudget";
+            dgvArticles.Columns[12].Width = 60;
+            dgvArticles.Columns[13].Name = "СкрЗаоч\nПлатн";
+            dgvArticles.Columns[13].DataPropertyName = "PrBallSokrZaochPlatnoe";
+            dgvArticles.Columns[13].Width = 60;
+            dgvArticles.Columns[14].Name = "Дистанц\nБюдж";
+            dgvArticles.Columns[14].DataPropertyName = "PrBallDistBudget";
+            dgvArticles.Columns[14].Width = 60;
+            dgvArticles.Columns[15].Name = "Дистанц\nПлатное";
+            dgvArticles.Columns[15].DataPropertyName = "PrBallDistPlatnoe";
+            dgvArticles.Columns[15].Width = 60;
+
+
+            dgvArticles.Columns[16].DataPropertyName = "Title";
+            dgvArticles.Columns[16].Name = "Title";
+            dgvArticles.Columns[16].Width = 270;
+            dgvArticles.Columns["Title"].DisplayIndex=1;
 
             DataGridViewCheckBoxColumn CertRusskiy = new DataGridViewCheckBoxColumn()
             {
@@ -298,12 +288,31 @@ namespace prBall
             dgvArticles.Columns.Add(CertGeografia);
             dgvArticles.Columns.Add(CertProfSobesed);
 
+            dgvArticles.Columns[15].DataPropertyName = "PrBallDistPlatnoe";
 
 
+            dgvArticles.ColumnCount = dgvArticles.ColumnCount + 5;
 
+            dgvArticles.Columns[29].DataPropertyName = "ArticleID";
+            dgvArticles.Columns[30].DataPropertyName = "GorodID";
+            dgvArticles.Columns[31].DataPropertyName = "VuzID";
+            dgvArticles.Columns[32].DataPropertyName = "FakultetID";
+            dgvArticles.Columns[33].DataPropertyName = "NapravleniePodgotovki";
+            dgvArticles.Columns[29].Name = "ArticleID";
+            dgvArticles.Columns[30].Name = "GorodID";
+            dgvArticles.Columns[31].Name = "VuzID";
+            dgvArticles.Columns[32].Name = "FakultetID";
+            dgvArticles.Columns[33].Name = "NapravleniePodgotovki";
+
+            dgvArticles.Columns["ArticleID"].Visible = false;
+            dgvArticles.Columns["GorodID"].Visible = false;
+            dgvArticles.Columns["VuzID"].Visible = false;
+            dgvArticles.Columns["FakultetID"].Visible = false;
+            dgvArticles.Columns["NapravleniePodgotovki"].Visible = false;
+
+            dgvArticles.Visible = true;
+          
         }
-
-
         private void dgvArticles_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == 0)
@@ -344,7 +353,7 @@ namespace prBall
                 
                 for (int i = 0; i < cfData.Count; i++)
                 {
-                    Data.CreateNewArticle(articles1[i], cfData[i]);
+                    Data.CreateNewArticle(articles[i], cfData[i]);
                 }
 
                 isEdit = false;
@@ -385,7 +394,7 @@ namespace prBall
             {
                 if ((dgvArticles["Shr", i].Value!=null)&&((bool)dgvArticles["Shr", i].Value == true))
                 {
-                    Data.CreateNewArticle(articles1[i], cfData[i]);
+                    Data.CreateNewArticle(articles[i], cfData[i]);
                     dgvArticles["Shr", i].Value = false;
                 }
             }
@@ -608,6 +617,19 @@ namespace prBall
             }
 
             
+        }
+
+        private void btnLoadExcel_Click(object sender, EventArgs e)
+        {
+
+
+            if (ofdLoadExcel.ShowDialog()==DialogResult.OK)
+            {
+
+                SetDataGridProperty(dgvArticles);
+
+                dgvArticles.DataSource = ExcelData.LoadFromExcel(ofdLoadExcel.FileName);
+            }
         }
     }
 }
