@@ -244,20 +244,20 @@ namespace prBall
         {
             //moduleid=493;
             //categoryids = 79,72,43,34
-            SqlCommand deleteUrls = new SqlCommand("[budnyby_test].[dbo].[DeleteUnusedUrls]", connection);
+            //SqlCommand deleteUrls = new SqlCommand("[budnyby_test].[dbo].[DeleteUnusedUrls]", connection);
 
-            deleteUrls.CommandType = System.Data.CommandType.StoredProcedure;
+            //deleteUrls.CommandType = System.Data.CommandType.StoredProcedure;
 
 
-            deleteUrls.CommandTimeout = 1000000;
+            //deleteUrls.CommandTimeout = 1000000;
 
-            deleteUrls.Parameters.Add("@ArticleId", System.Data.SqlDbType.Int);
-            deleteUrls.Parameters["@ArticleId"].Value = articleId;
+            //deleteUrls.Parameters.Add("@ArticleId", System.Data.SqlDbType.Int);
+            //deleteUrls.Parameters["@ArticleId"].Value = articleId;
 
-            deleteUrls.Parameters.Add("@ModuleId", System.Data.SqlDbType.Int);
-            deleteUrls.Parameters["@ModuleId"].Value = moduleid;
+            //deleteUrls.Parameters.Add("@ModuleId", System.Data.SqlDbType.Int);
+            //deleteUrls.Parameters["@ModuleId"].Value = moduleid;
 
-            return deleteUrls.ExecuteNonQuery();
+            //return deleteUrls.ExecuteNonQuery();
         }
 
         public static void SetLinksToArticle(int articleID, Hashtable links)
