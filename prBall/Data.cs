@@ -87,7 +87,7 @@ namespace prBall
         {
             connection.Open();
 
-            SqlCommand articleListCommand = new SqlCommand(String.Format("SELECT * FROM [budnyby_test].[dbo].[EasyDNNNewsCategories] INNER JOIN [budnyby_test].[dbo].[EasyDNNNews] ON [budnyby_test].[dbo].[EasyDNNNewsCategories].ArticleID=[budnyby_test].[dbo].[EasyDNNNews].ArticleID INNER JOIN [budnyby_test].[dbo].[EasyDNNfieldsMultiSelected] ON [budnyby_test].[dbo].[EasyDNNNews].ArticleID =  [budnyby_test].[dbo].[EasyDNNfieldsMultiSelected].ArticleID WHERE CategoryID={0} AND [CustomFieldID]=12 AND [FieldElementID]={1}", categoryID ,vuzID), connection);
+            SqlCommand articleListCommand = new SqlCommand(String.Format("SELECT * FROM [budnyby_test].[dbo].[EasyDNNNewsCategories] INNER JOIN [budnyby_test].[dbo].[EasyDNNNews] ON [budnyby_test].[dbo].[EasyDNNNewsCategories].ArticleID=[budnyby_test].[dbo].[EasyDNNNews].ArticleID INNER JOIN [budnyby_test].[dbo].[EasyDNNfieldsMultiSelected] ON [budnyby_test].[dbo].[EasyDNNNews].ArticleID =  [budnyby_test].[dbo].[EasyDNNfieldsMultiSelected].ArticleID WHERE CategoryID={0} AND [CustomFieldID]=12 AND [FieldElementID]={1}", categoryID, vuzID), connection);
 
             SqlDataReader articleReader = articleListCommand.ExecuteReader();
 
@@ -210,7 +210,7 @@ namespace prBall
                                 case 77: articleData.CertVsemirIstoria = true; break;
                                 case 78: articleData.CertInostrYazik = true; break;
                                 case 79: articleData.CertGeografia = true; break;
-                                case 141: articleData.CertSpecEkzamen= true; break;
+                                case 141: articleData.CertSpecEkzamen = true; break;
 
                             }; break;
                         case 30: articleData.NapravleniePodgotovki = fieldElementId; break;
@@ -236,7 +236,7 @@ namespace prBall
                         case 15: articleData.TypeObuchZaochnoe = (bool)CFReader["Bit"]; break;
                         case 16: articleData.TypeObuchDistanc = (bool)CFReader["Bit"]; break;
                         case 17: articleData.TypeObuchSokrasch = (bool)CFReader["Bit"]; break;
-                        case 46: articleData.PreviousArticleID = (CFReader["Int"]!=DBNull.Value)?(int)CFReader["Int"]:-1; break;//!
+                        case 46: articleData.PreviousArticleID = (CFReader["Int"] != DBNull.Value) ? (int)CFReader["Int"] : -1; break;//!
 
                         case 18: articleData.PrBallDnevnBudget = (decimal)CFReader["Decimal"]; break;
                         case 20: articleData.PrBallZaochnBudget = (decimal)CFReader["Decimal"]; break;
@@ -300,7 +300,6 @@ namespace prBall
 
             newArticleCommand.ExecuteNonQuery();
 
-
             SqlCommand lastIdentity = new SqlCommand("SELECT MAX( [ArticleID]) FROM [budnyby_test].[dbo].[EasyDNNNews]", connection);
 
             int articleId = (int)lastIdentity.ExecuteScalar();
@@ -315,7 +314,7 @@ namespace prBall
             }
             else
             {
-                titleLink = article.TitleLink+"-"+CURRENT_YEAR;
+                titleLink = article.TitleLink + "-" + CURRENT_YEAR;
             }
 
             string articleText = article.ArticleText.Replace(PREVIOUS_YEAR, CURRENT_YEAR);
@@ -326,18 +325,18 @@ namespace prBall
                 articleId.ToString());
 
             SqlCommand updateNewArticle = new SqlCommand(upd, connection);
-            updateNewArticle.Parameters.Add("@title",System.Data.SqlDbType.NVarChar);
+            updateNewArticle.Parameters.Add("@title", System.Data.SqlDbType.NVarChar);
             updateNewArticle.Parameters["@title"].Value = title;
 
-            updateNewArticle.Parameters.Add("@titlelink",System.Data.SqlDbType.NVarChar);
+            updateNewArticle.Parameters.Add("@titlelink", System.Data.SqlDbType.NVarChar);
             updateNewArticle.Parameters["@titlelink"].Value = titleLink;
 
-            updateNewArticle.Parameters.Add("@articletext",System.Data.SqlDbType.NVarChar);
+            updateNewArticle.Parameters.Add("@articletext", System.Data.SqlDbType.NVarChar);
             updateNewArticle.Parameters["@articletext"].Value = articleText;
 
-            updateNewArticle.Parameters.Add("@cleanarticletext",System.Data.SqlDbType.NVarChar);
+            updateNewArticle.Parameters.Add("@cleanarticletext", System.Data.SqlDbType.NVarChar);
             updateNewArticle.Parameters["@cleanarticletext"].Value = cleanArticleData;
-           
+
             updateNewArticle.ExecuteNonQuery();
 
             connection.Close();
@@ -450,7 +449,7 @@ namespace prBall
 
             }
 
-            SqlCommand typeObDnevnCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Bit]) Values ({0},{1},{2})", 14, id, data.TypeObuchDnevnoe==true?1:0), connection);
+            SqlCommand typeObDnevnCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Bit]) Values ({0},{1},{2})", 14, id, data.TypeObuchDnevnoe == true ? 1 : 0), connection);
             typeObDnevnCommand.ExecuteNonQuery();
 
             SqlCommand TypeObuchZaochnoeCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Bit]) Values ({0},{1},{2})", 15, id, data.TypeObuchZaochnoe == true ? 1 : 0), connection);
@@ -464,7 +463,7 @@ namespace prBall
 
             if (data.PrBallDnevnBudget != null)
             {
-                SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 18, id,  ToSql(data.PrBallDnevnBudget)), connection);
+                SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 18, id, ToSql(data.PrBallDnevnBudget)), connection);
                 prCommand.ExecuteNonQuery();
             }
 
@@ -531,6 +530,90 @@ namespace prBall
 
             connection.Close();
 
+        }
+
+        internal static void UpdateArticleCFData(CFData2016 currentData)
+        {
+            int id = GetCurrentArticleID(currentData.PreviousArticleID);
+
+            if (id < 0)
+            {
+                return;
+            }
+
+            CFData2016 previousData = GetCFDataByArticleID(id);
+
+            SqlCommand typeObDnevnCommand = new SqlCommand(string.Format("update [budnyby_test].[DBO].[EasyDNNfieldsValues] SET [Bit] = {0} WHERE ArticleID= {1} AND CustomFieldID = {2}", currentData.TypeObuchDnevnoe == true ? 1 : 0, id, 14), connection);
+            typeObDnevnCommand.ExecuteNonQuery();
+
+            SqlCommand TypeObuchZaochnoeCommand = new SqlCommand(string.Format("update [budnyby_test].[DBO].[EasyDNNfieldsValues] SET [Bit] = {0} WHERE ArticleID= {1} AND CustomFieldID = {2}", currentData.TypeObuchZaochnoe == true ? 1 : 0, id, 15), connection);
+            TypeObuchZaochnoeCommand.ExecuteNonQuery();
+
+            SqlCommand TypeObuchDistancCommand = new SqlCommand(string.Format("update [budnyby_test].[DBO].[EasyDNNfieldsValues] SET [Bit] = {0} WHERE ArticleID= {1} AND CustomFieldID = {2}", currentData.TypeObuchDistanc == true ? 1 : 0, id, 16), connection);
+            TypeObuchDistancCommand.ExecuteNonQuery();
+
+            SqlCommand TypeObuchSokraschCommand = new SqlCommand(string.Format("update [budnyby_test].[DBO].[EasyDNNfieldsValues] SET [Bit] = {0} WHERE ArticleID= {1} AND CustomFieldID = {2}", currentData.TypeObuchSokrasch == true ? 1 : 0, id, 17), connection); ;
+            TypeObuchSokraschCommand.ExecuteNonQuery();
+
+
+            UpdateBalls(id, currentData.PrBallDnevnBudget, previousData.PrBallDnevnBudget, 18);
+            UpdateBalls(id, currentData.PrBallSokrZaochBudget, previousData.PrBallSokrZaochBudget, 20);
+            UpdateBalls(id, currentData.PrBallZaochnPlatn, previousData.PrBallZaochnPlatn, 21);
+            UpdateBalls(id, currentData.PrBallDnevnPlatnoe, previousData.PrBallDnevnPlatnoe, 22);
+            UpdateBalls(id, currentData.PrBallSokrDnevnBudg, previousData.PrBallSokrDnevnBudg, 39);
+            UpdateBalls(id, currentData.PrBallSokrDnevnPlatn, previousData.PrBallSokrDnevnPlatn, 42);
+            UpdateBalls(id, currentData.PrBallSokrZaochBudget, previousData.PrBallSokrZaochBudget, 41);
+            UpdateBalls(id, currentData.PrBallSokrZaochPlatnoe, previousData.PrBallSokrZaochPlatnoe, 43);
+            UpdateBalls(id, currentData.PrBallDistPlatnoe, previousData.PrBallDistPlatnoe, 45);
+            UpdateBalls(id, currentData.PrBallDistBudget, previousData.PrBallDistBudget, 44);
+        }
+
+        private static void UpdateBalls(int articleID, decimal? previousBall, decimal? currentBall, int customFieldID)
+        {
+            connection.Open();
+
+            if (currentBall != null)
+            {
+                if (currentBall != previousBall)
+                {
+                    if (previousBall != null)
+                    {
+                        SqlCommand prCommand = new SqlCommand(string.Format("update [budnyby_test].[DBO].[EasyDNNfieldsValues]  SET[Decimal] = {0} WHERE [ArticleID] = {1} AND [CusmomFieldID] = {2}", ToSql(currentBall), articleID, customFieldID), connection);
+
+                        prCommand.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", customFieldID, articleID, ToSql(currentBall)), connection);
+                        prCommand.ExecuteNonQuery();
+                    }
+                }
+            }
+            else
+            {
+                if (previousBall != null)
+                {
+                    SqlCommand delCommand = new SqlCommand(string.Format("delete from [budnyby_test].[DBO].[EasyDNNfieldsValues] WHERE [CustomFieldID] = {0} ,[ArticleID] = {1}", customFieldID, articleID), connection);
+                    delCommand.ExecuteNonQuery();
+                }
+            }
+
+            connection.Close();
+        }
+
+        internal static int GetCurrentArticleID(int previousArticleID)
+        {
+            connection.Open();
+
+            int result = -1;
+
+            SqlCommand cmd = new SqlCommand("SELECT TOP(1) [Int] FROM[budnyby_test].[dbo].[EasyDNNfieldsValues] WHERE CustomFieldID = 46 and Int = " + previousArticleID, connection);
+
+            result = (int)cmd.ExecuteScalar();
+
+            connection.Close();
+
+            return result;
         }
 
         private static string ToSql(decimal? dvalue)
@@ -662,7 +745,7 @@ namespace prBall
         {
             int categoryId = -1;
 
-            if(year=="2013")
+            if (year == "2013")
             {
                 categoryId = 34;
             }

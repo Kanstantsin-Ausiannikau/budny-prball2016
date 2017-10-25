@@ -240,8 +240,8 @@ namespace prBall
           //  connection.Close();
         }
 
-        public static int RemoveUnusedUrls(int articleId, int categoryId, int moduleid)
-        {
+ //       public static int RemoveUnusedUrls(int articleId, int categoryId, int moduleid)
+//        {
             //moduleid=493;
             //categoryids = 79,72,43,34
             //SqlCommand deleteUrls = new SqlCommand("[budnyby_test].[dbo].[DeleteUnusedUrls]", connection);
@@ -258,7 +258,7 @@ namespace prBall
             //deleteUrls.Parameters["@ModuleId"].Value = moduleid;
 
             //return deleteUrls.ExecuteNonQuery();
-        }
+ //       }
 
         public static void SetLinksToArticle(int articleID, Hashtable links)
         {
