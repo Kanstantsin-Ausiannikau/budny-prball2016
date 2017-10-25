@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 
@@ -27,7 +28,7 @@ namespace prBall
         private void SetDataGridProperty(DataGridView dgvArticles)
         {
 
-            dgvArticles.Columns.Clear();
+            //dgvArticles.Columns.Clear();
 
             DataGridViewCheckBoxColumn saveColumn = new DataGridViewCheckBoxColumn()
             {
@@ -242,19 +243,19 @@ namespace prBall
 
             dgvArticles.Columns["PrBallSokrDnevnBudg"].Width = 60;
             dgvArticles.Columns["PrBallSokrDnevnBudg"].HeaderText = "СкрДнев\nБюдж";
-            
+
             dgvArticles.Columns["PrBallSokrDnevnPlatn"].Width = 60;
             dgvArticles.Columns["PrBallSokrDnevnPlatn"].HeaderText = "СкрДнев\nПлатное";
-            
+
             dgvArticles.Columns["PrBallSokrZaochBudget"].Width = 60;
             dgvArticles.Columns["PrBallSokrZaochBudget"].HeaderText = "СкрЗаоч\nДневн";
-            
+
             dgvArticles.Columns["PrBallSokrZaochPlatnoe"].Width = 60;
             dgvArticles.Columns["PrBallSokrZaochPlatnoe"].HeaderText = "СкрЗаоч\nПлатн";
-            
+
             dgvArticles.Columns["PrBallDistBudget"].Width = 60;
             dgvArticles.Columns["PrBallDistBudget"].HeaderText = "Дистанц\nБюдж";
-            
+
             dgvArticles.Columns["PrBallDistPlatnoe"].Width = 60;
             dgvArticles.Columns["PrBallDistPlatnoe"].HeaderText = "Дистанц\nПлатное";
 
@@ -294,7 +295,7 @@ namespace prBall
         }
         private void dgvArticles_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 0)
+            if (e.ColumnIndex == ((DataGridView)sender).Columns["Shr"].Index)
             {
                 return;
             }
@@ -306,7 +307,7 @@ namespace prBall
                 isEdit = true;
                 btnSave.Enabled = true;
 
-                ((DataGridView)sender)[0, e.RowIndex].Value = true;
+                ((DataGridView)sender)["Shr", e.RowIndex].Value = true;
 
             }
             
@@ -610,11 +611,17 @@ namespace prBall
 
             if (ofdLoadExcel.ShowDialog()==DialogResult.OK)
             {
-                dgvArticles.DataSource = typeof(List<CFData2016>);
+                dgvArticles.DataSource = null;
+                dgvArticles.Columns.Clear();
 
                 dgvArticles.DataSource = ExcelData.LoadFromExcel(ofdLoadExcel.FileName);
 
                 SetDataGridProperty(dgvArticles);
+
+                for (int i = 0; i < dgvArticles.RowCount; i++)
+                {
+                    dgvArticles["Shr", i].Value = true;
+                }
             }
         }
 
@@ -632,11 +639,29 @@ namespace prBall
             }
 
             dgvArticles.DataSource = typeof(List<CFData2016>);
+            dgvArticles.Columns.Clear();
 
             dgvArticles.DataSource = cfData;
 
             SetDataGridProperty(dgvArticles);
 
+        }
+
+        private void btnUpdateBalls_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < dgvArticles.RowCount; i++)
+            {
+                if ((dgvArticles["Shr", i].Value != null) && ((bool)dgvArticles["Shr", i].Value == true))
+                {
+                    if (Data.GetCurrentArticleID(cfData[i].PreviousArticleID)>0)
+                    {
+                        Data.UpdateArticleCFData(cfData[i]);
+                    }
+
+                    dgvArticles["Shr", i].Value = false;
+                }
+            }
+            isEdit = false;
         }
     }
 }

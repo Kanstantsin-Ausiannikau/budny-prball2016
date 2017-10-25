@@ -300,7 +300,6 @@ namespace prBall
 
             newArticleCommand.ExecuteNonQuery();
 
-
             SqlCommand lastIdentity = new SqlCommand("SELECT MAX( [ArticleID]) FROM [budnyby_test].[dbo].[EasyDNNNews]", connection);
 
             int articleId = (int)lastIdentity.ExecuteScalar();
@@ -531,6 +530,50 @@ namespace prBall
 
             connection.Close();
 
+        }
+
+        internal static void UpdateArticleCFData(CFData2016 currentData)
+        {
+            int id = GetCurrentArticleID(currentData.PreviousArticleID);
+
+            if (id<0)
+            {
+                return;
+            }
+
+            CFData2016 previousData = GetCFDataByArticleID(id);
+
+            connection.Open();
+
+            if (previousData.PrBallDistBudget!=currentData.PrBallDistBudget)
+            {
+                if (currentData.PrBallDistBudget != null)
+                {
+                    SqlCommand delCommand = new SqlCommand(string.Format("delete from [budnyby_test].[DBO].[EasyDNNfieldsValues] WHERE [CustomFieldID] = 44 ,[ArticleID] = ", id), connection);
+                    delCommand.ExecuteNonQuery();
+
+                    SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Decimal]) Values ({0},{1},{2})", 44, id, ToSql(currentData.PrBallDistBudget)), connection);
+                    prCommand.ExecuteNonQuery();
+                }
+            }
+
+            connection.Close();
+
+        }
+
+        internal static int GetCurrentArticleID(int previousArticleID)
+        {
+            connection.Open();
+
+            int result = -1;
+
+            SqlCommand cmd = new SqlCommand("SELECT TOP(1) [Int] FROM[budnyby_test].[dbo].[EasyDNNfieldsValues] WHERE CustomFieldID = 46 and Int = " + previousArticleID, connection);
+
+            result = (int)cmd.ExecuteScalar();
+
+            connection.Close();
+
+            return result;
         }
 
         private static string ToSql(decimal? dvalue)
