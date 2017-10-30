@@ -72,6 +72,8 @@
     <Compile Include="Cache.cs" />
     <Compile Include="CFData2015.cs" />
     <Compile Include="CFData2016.cs" />
+    <Compile Include="Code\HtmlHelper.cs" />
+    <Compile Include="Code\StringTable.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="Downloader.cs" />
     <Compile Include="ExcelData.cs" />

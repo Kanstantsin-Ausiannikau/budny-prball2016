@@ -1,4 +1,5 @@
-﻿using System;
+﻿using prBall.Code;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -380,7 +381,7 @@ namespace prBall
             {
                 if ((dgvArticles["Shr", i].Value!=null)&&((bool)dgvArticles["Shr", i].Value == true))
                 {
-                    Data.CreateNewArticle(articles[i], cfData[i]);
+                    Data.CreateNewArticle(articles.Find(a=>a.ArticleID==cfData[i].ArticleID), cfData[i]);
                     dgvArticles["Shr", i].Value = false;
                 }
             }
@@ -407,6 +408,36 @@ namespace prBall
 
         private void btnReduseDB_Click(object sender, EventArgs e)
         {
+
+            var data = cfData.FindAll(t => t.PrBallZaochnPlatn != null);
+
+            StringTable st = new StringTable(data.Count + 1, 2);
+            st.AddHeader("Специальности (направления специальностей)", "Проходной балл");
+
+            var specArticles = Data.GetArticlesIDFromCategoryID(29);
+
+            List<Article> articles = new List<Article>();
+
+            foreach(int id in specArticles)
+            {
+                articles.Add(Data.GetArticleFromID(id));
+            }
+
+            for (int i = 0;i<data.Count;i++)
+            {
+                var currentArticle = articles.Find(a => a.SubTitle.Contains(data[i].Title.Substring(0, 10)));
+
+                string link = String.Format("/abiturient/specialnosty/artmid/520/articleid/{0}/{1}", currentArticle.ArticleID, currentArticle.TitleLink).ToLower();
+
+                string aTeg = HtmlHelper.CreateLink(link, data[i].Title);
+
+                st.AddRow(aTeg, cfData[i].PrBallZaochnPlatn.ToString());
+            }
+
+            string result = HtmlHelper.AddAdaptiveDesignTable(null, st);
+
+
+
             //List<ModuleCategory> moduleCategoryList = new List<ModuleCategory>() 
             //{
             //    new ModuleCategory(){ModuleID=493, CategoryID=34}, //пр баллы 2013
@@ -614,7 +645,10 @@ namespace prBall
                 dgvArticles.DataSource = null;
                 dgvArticles.Columns.Clear();
 
-                dgvArticles.DataSource = ExcelData.LoadFromExcel(ofdLoadExcel.FileName);
+                cfData = ExcelData.LoadFromExcel(ofdLoadExcel.FileName);
+                articles = Data.GetArticlesByVuzID(cfData[0].VuzID);
+
+                dgvArticles.DataSource = cfData;
 
                 SetDataGridProperty(dgvArticles);
 
