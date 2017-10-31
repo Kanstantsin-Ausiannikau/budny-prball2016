@@ -1,6 +1,6 @@
 ﻿namespace prBall
 {
-    class CFData2016
+    public class CFData2016
     {
         public string Title { get; set; }
         public int ArticleID { get; set; }

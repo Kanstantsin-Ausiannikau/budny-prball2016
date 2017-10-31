@@ -7,13 +7,13 @@ using System.Windows.Forms;
 
 namespace prBall.Code
 {
-    enum TypeLearning { Dnevnoe, Zaochnoe, Distancionnoe, Sokraschennoe };
+    public enum TypeLearning { DnevnoeBudg, DnevnoePlatn, ZaochnoeBudg, ZaochnoePlatnoe, DistancionnoeBudg, DistancionnoePlatn, SokraschennoeBudg, SokraschennoePlatn };
 
-    public class HtmlHelper
+    public static class HtmlHelper
     {
-        public static string AddAdaptiveDesignTable(string html, StringTable st)
+        public static string GetAdaptiveDesignTable(StringTable st)
         {
-            StringBuilder sbHtml = new StringBuilder(html);
+            StringBuilder sbHtml = new StringBuilder();
 
             sbHtml.Append(@"<table class=""table table-striped table-bordered"">");
             sbHtml.Append(@"<tbody>");
@@ -24,11 +24,7 @@ namespace prBall.Code
 
                 for (int j=0;j<st.ColumnCount;j++)
                 {
-                    sbHtml.Append("<td>");
-
-                    sbHtml.Append(st[i, j]);
-
-                    sbHtml.Append("</td>");
+                    sbHtml.Append(st[i, j].TD());
                 }
                 sbHtml.Append("</tr>");
             }
@@ -39,9 +35,40 @@ namespace prBall.Code
             return sbHtml.ToString();
         }
 
-        internal static string CreateLink(string link, string text)
+        public static string TR(this string str)
         {
-            return String.Format("<a href={0}>{1}</a>", link, text);
+            return String.Format("<tr>{0}</tr>", str);
+        }
+
+        public static string P(this string str)
+        {
+            return String.Format("<p>{0}</p>", str);
+        }
+
+        public static string TD(this string str)
+        {
+            return String.Format("<td>{0}</td>", str);
+        }
+
+
+        public static string A(this string text, string link)
+        {
+            return String.Format(@"<a href=""{0}"">{1}</a>", link, text);
+        }
+
+        public static string H2(this string  str)
+        {
+            return String.Format("<h2>{0}</h2>", str);
+        }
+
+        internal static string H1(this string str)
+        {
+            return String.Format("<h1>{0}</h1>", str);
+        }
+
+        public static string Strong(this string str)
+        {
+            return String.Format("<strong>{0}</strong>", str);
         }
     }
 }

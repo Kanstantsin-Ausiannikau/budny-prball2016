@@ -14,6 +14,7 @@ namespace prBall
         public const int CURRENT_YEAR_CATEGORY_ID = 80;
         public const string PREVIOUS_YEAR = "2016";
         public const string CURRENT_YEAR = "2017";
+        private static object articleListCommand;
 
         public static List<Vuz> GetVuzList()
         {
@@ -344,6 +345,19 @@ namespace prBall
             CreateNewCFData(articleId, data);
 
             SetCategoryID(articleId);
+        }
+
+        internal static string GetFacultyNameByID(int id)
+        {
+            connection.Open();
+
+            SqlCommand vuzNameCommand = new SqlCommand(String.Format("SELECT [Text] FROM[budnyby_test].[dbo].[EasyDNNfieldsMultiElements] WHERE[FieldElementID] = {0}",id), connection);
+
+            string name = (string)vuzNameCommand.ExecuteScalar();
+
+            connection.Close();
+
+            return name;
         }
 
         private static void SetCategoryID(int id)
