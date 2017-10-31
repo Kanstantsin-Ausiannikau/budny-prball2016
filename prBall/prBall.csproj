@@ -68,6 +68,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddPrBallArticleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddPrBallArticleForm.Designer.cs">
+      <DependentUpon>AddPrBallArticleForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Article.cs" />
     <Compile Include="Cache.cs" />
     <Compile Include="CFData2015.cs" />
@@ -96,6 +102,9 @@
     <Compile Include="UrlsData.cs" />
     <Compile Include="Vuz.cs" />
     <Compile Include="VuzByVuzDictionary.cs" />
+    <EmbeddedResource Include="AddPrBallArticleForm.resx">
+      <DependentUpon>AddPrBallArticleForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

@@ -1,3 +1,5 @@
 $ cat .gitignore
 prBall/bin
 prBall/obj
+*.exe
+*.obj

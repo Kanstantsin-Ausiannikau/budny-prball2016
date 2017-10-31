@@ -26,6 +26,8 @@ namespace prBall.Code
         {
             _html.Append(name.P().Strong());
             _html.Append(HtmlHelper.GetAdaptiveDesignTable(st));
+
+            _html = _html.Replace("<td>Проходной балл</td>", @"<td style=""width:130px"">Проходной балл</td>");
         }
 
         public string GetHtml()

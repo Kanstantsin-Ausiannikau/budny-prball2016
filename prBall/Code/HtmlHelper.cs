@@ -47,7 +47,7 @@ namespace prBall.Code
 
         public static string TD(this string str)
         {
-            return String.Format("<td>{0}</td>", str);
+            return $"<td>{str}</td>";
         }
 
 
