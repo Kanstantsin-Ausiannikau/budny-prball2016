@@ -45,6 +45,7 @@
             this.sfdToExcel = new System.Windows.Forms.SaveFileDialog();
             this.ofdLoadExcel = new System.Windows.Forms.OpenFileDialog();
             this.dgvArticles = new System.Windows.Forms.DataGridView();
+            this.btnBallsFormOpen = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVuzList)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvArticles)).BeginInit();
@@ -62,6 +63,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnBallsFormOpen);
             this.panel1.Controls.Add(this.btnUpdateBalls);
             this.panel1.Controls.Add(this.btnLoadExcel);
             this.panel1.Controls.Add(this.btnSaveToExcel);
@@ -84,7 +86,7 @@
             // btnUpdateBalls
             // 
             this.btnUpdateBalls.Location = new System.Drawing.Point(389, 219);
-            this.btnUpdateBalls.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnUpdateBalls.Margin = new System.Windows.Forms.Padding(2);
             this.btnUpdateBalls.Name = "btnUpdateBalls";
             this.btnUpdateBalls.Size = new System.Drawing.Size(168, 24);
             this.btnUpdateBalls.TabIndex = 12;
@@ -95,7 +97,7 @@
             // btnLoadExcel
             // 
             this.btnLoadExcel.Location = new System.Drawing.Point(587, 34);
-            this.btnLoadExcel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnLoadExcel.Margin = new System.Windows.Forms.Padding(2);
             this.btnLoadExcel.Name = "btnLoadExcel";
             this.btnLoadExcel.Size = new System.Drawing.Size(121, 22);
             this.btnLoadExcel.TabIndex = 11;
@@ -224,6 +226,16 @@
             this.dgvArticles.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvArticles_CellBeginEdit);
             this.dgvArticles.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvArticles_CellEndEdit);
             // 
+            // btnBallsFormOpen
+            // 
+            this.btnBallsFormOpen.Location = new System.Drawing.Point(587, 61);
+            this.btnBallsFormOpen.Name = "btnBallsFormOpen";
+            this.btnBallsFormOpen.Size = new System.Drawing.Size(121, 23);
+            this.btnBallsFormOpen.TabIndex = 13;
+            this.btnBallsFormOpen.Text = "OpenBallsForm";
+            this.btnBallsFormOpen.UseVisualStyleBackColor = true;
+            this.btnBallsFormOpen.Click += new System.EventHandler(this.btnBallsFormOpen_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -262,6 +274,7 @@
         private System.Windows.Forms.OpenFileDialog ofdLoadExcel;
         private System.Windows.Forms.DataGridView dgvArticles;
         private System.Windows.Forms.Button btnUpdateBalls;
+        private System.Windows.Forms.Button btnBallsFormOpen;
     }
 }
 

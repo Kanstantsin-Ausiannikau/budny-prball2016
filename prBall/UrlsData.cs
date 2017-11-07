@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Net;
-
+using System.Text;
 
 namespace prBall
 {
@@ -112,6 +112,40 @@ namespace prBall
          //   connection.Close();
 
             return articleId == null;
+        }
+
+        public static string GetUrlStringFromTitle(string title)
+        {
+            connection.Open();
+
+            StringBuilder str = new  StringBuilder();
+
+            foreach (char litera in title)
+            {
+                if (litera==' ')
+                {
+                    str.Append('-');
+                    continue;
+                }
+                if (char.IsNumber(litera))
+                {
+                    str.Append(litera);
+                    continue;
+                }
+
+                SqlCommand articleIDCommand = new SqlCommand($"SELECT[NewChar]   FROM[budnyby_test].[dbo].[EasyDNNnewsCharList] WHERE OriginalChar = '{litera}'", connection);
+
+                articleIDCommand.CommandTimeout = 1000000;
+
+                string s = (string)articleIDCommand.ExecuteScalar();
+
+                str.Append(s.ToLower());
+
+            }
+
+            connection.Close();
+
+            return str.ToString();
         }
 
         public static int GetUrlID(string url)

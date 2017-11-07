@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using prBall.Code;
+using OfficeOpenXml.Style;
 
 namespace prBall
 {
@@ -129,6 +131,137 @@ namespace prBall
                 }
                 return list;
             }
+        }
+
+        internal static void SaveToExcel(List<CFData2016> data, List<BallsParsingItem> parseList, string fileName)
+        {
+            if (File.Exists(fileName))
+            {
+                try
+                {
+                    File.Delete(fileName);
+                }
+                catch (FieldAccessException ex)
+                {
+                    throw ex;
+                }
+            }
+
+            FileInfo file = new FileInfo(fileName);
+            using (ExcelPackage package = new ExcelPackage(file))
+            {
+                package.Workbook.Worksheets.Add("Лист 1");
+                ExcelWorksheet worksheet = package.Workbook.Worksheets["Лист 1"];
+
+                SetHeader(worksheet);
+
+                int i = 2;
+                foreach (CFData2016 item in data)
+                {
+                    worksheet.Cells[i, 1].Value = item.Title;
+                    worksheet.Cells[i, 2].Value = item.TypeObuchDnevnoe == true ? "+" : "";
+                    worksheet.Cells[i, 3].Value = item.TypeObuchZaochnoe == true ? "+" : "";
+                    worksheet.Cells[i, 4].Value = item.TypeObuchSokrasch == true ? "+" : "";
+                    worksheet.Cells[i, 5].Value = item.TypeObuchDistanc == true ? "+" : "";
+                    worksheet.Cells[i, 6].Value = item.PrBallDnevnBudget;
+                    worksheet.Cells[i, 7].Value = item.PrBallDnevnPlatnoe;
+                    worksheet.Cells[i, 8].Value = item.PrBallZaochnBudget;
+                    worksheet.Cells[i, 9].Value = item.PrBallZaochnPlatn;
+                    worksheet.Cells[i, 10].Value = item.PrBallSokrDnevnBudg;
+                    worksheet.Cells[i, 11].Value = item.PrBallSokrDnevnPlatn;
+                    worksheet.Cells[i, 12].Value = item.PrBallSokrZaochBudget;
+                    worksheet.Cells[i, 13].Value = item.PrBallSokrZaochPlatnoe;
+                    worksheet.Cells[i, 14].Value = item.PrBallDistBudget;
+                    worksheet.Cells[i, 15].Value = item.PrBallDistPlatnoe;
+
+                    var r = parseList.FindAll(t => item.Title.ToLower().Contains(t.Speciality.ToLower()));
+
+                    foreach (var s in r)
+                    {
+                        switch (s.Type)
+                        {
+                            case TypeLearning.DnevnoeBudg:
+                                worksheet.Cells[i, 6].Value = s.Value;
+                                worksheet.Cells[i, 6].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[i, 6].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
+                                break;
+                            case TypeLearning.DnevnoePlatn:
+                                worksheet.Cells[i, 7].Value = s.Value;
+                                worksheet.Cells[i, 7].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[i,7].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
+                                break;
+                            case TypeLearning.ZaochnoeBudg:
+                                worksheet.Cells[i, 8].Value = s.Value;
+                                worksheet.Cells[i, 8].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[i, 8].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
+                                break;
+                            case TypeLearning.ZaochnoePlatnoe:
+                                worksheet.Cells[i, 9].Value = s.Value;
+                                worksheet.Cells[i, 9].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[i, 9].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
+                                break;
+                            case TypeLearning.SokrDnevnBudget:
+                                worksheet.Cells[i, 10].Value = s.Value;
+                                worksheet.Cells[i, 10].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[i, 10].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
+                                break;
+                            case TypeLearning.SokrDnevnPlatn:
+                                worksheet.Cells[i, 11].Value = s.Value;
+                                worksheet.Cells[i, 11].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[i, 11].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
+                                break;
+                            case TypeLearning.SokrZaochBudg:
+                                worksheet.Cells[i, 12].Value = s.Value;
+                                worksheet.Cells[i, 12].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[i, 12].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
+                                break;
+                            case TypeLearning.SokrZaochPlatn:
+                                worksheet.Cells[i, 13].Value = s.Value;
+                                worksheet.Cells[i, 13].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[i, 13].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
+                                break;
+                            case TypeLearning.DistancionnoeBudg:
+                                worksheet.Cells[i, 14].Value = s.Value;
+                                worksheet.Cells[i, 14].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[i, 14].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
+                                break;
+                            case TypeLearning.DistancionnoePlatn:
+                                worksheet.Cells[i, 15].Value = s.Value;
+                                worksheet.Cells[i, 15].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[i, 15].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                
+
+
+                    worksheet.Cells[i, 16].Value = item.CertBiologia == true ? "+" : "";
+                    worksheet.Cells[i, 17].Value = item.CertFizika == true ? "+" : "";
+                    worksheet.Cells[i, 18].Value = item.CertGeografia == true ? "+" : "";
+                    worksheet.Cells[i, 19].Value = item.CertHimia == true ? "+" : "";
+                    worksheet.Cells[i, 20].Value = item.CertInostrYazik == true ? "+" : "";
+                    worksheet.Cells[i, 21].Value = item.CertIstoriaBelorus == true ? "+" : "";
+                    worksheet.Cells[i, 22].Value = item.CertMatemat == true ? "+" : "";
+                    worksheet.Cells[i, 23].Value = item.CertObschestvoved == true ? "+" : "";
+                    worksheet.Cells[i, 24].Value = item.CertProfSobesed == true ? "+" : "";
+                    worksheet.Cells[i, 25].Value = item.CertRusskiy == true ? "+" : "";
+                    worksheet.Cells[i, 26].Value = item.CertSpecEkzamen == true ? "+" : "";
+                    worksheet.Cells[i, 27].Value = item.CertVsemirIstoria == true ? "+" : "";
+                    worksheet.Cells[i, 28].Value = item.NapravleniePodgotovki;
+                    worksheet.Cells[i, 29].Value = item.GorodID;
+                    worksheet.Cells[i, 30].Value = item.VuzID;
+                    worksheet.Cells[i, 31].Value = item.FakultetID;
+                    worksheet.Cells[i, 32].Value = item.ArticleID;
+                    worksheet.Cells[i, 33].Value = item.PreviousArticleID;
+
+                    i++;
+                }
+                package.SaveAs(file);
+            }
+
+
         }
 
         internal static void SaveToExcel(List<CFData2016> data, string fileName)

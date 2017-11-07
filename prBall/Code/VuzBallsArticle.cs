@@ -70,11 +70,17 @@ namespace prBall.Code
                     case TypeLearning.DistancionnoePlatn:
                         st.AddRow(aTeg, data[i].PrBallDistPlatnoe.ToString());
                         break;
-                    case TypeLearning.SokraschennoeBudg:
+                    case TypeLearning.SokrDnevnBudget:
                         st.AddRow(aTeg, data[i].PrBallSokrDnevnBudg.ToString());
                         break;
-                    case TypeLearning.SokraschennoePlatn:
+                    case TypeLearning.SokrDnevnPlatn:
                         st.AddRow(aTeg, data[i].PrBallSokrDnevnPlatn.ToString());
+                        break;
+                    case TypeLearning.SokrZaochBudg:
+                        st.AddRow(aTeg, data[i].PrBallSokrZaochBudget.ToString());
+                        break;
+                    case TypeLearning.SokrZaochPlatn:
+                        st.AddRow(aTeg, data[i].PrBallSokrZaochPlatnoe.ToString());
                         break;
                     default:
                         break;

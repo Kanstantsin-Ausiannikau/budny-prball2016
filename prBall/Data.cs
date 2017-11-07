@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace prBall
 {
@@ -921,6 +922,275 @@ namespace prBall
 
                 return vuzId;
             }
+        }
+
+        public static void SetDataGridProperty(DataGridView dgvArticles)
+        {
+
+            //dgvArticles.Columns.Clear();
+
+            DataGridViewCheckBoxColumn saveColumn = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Shr",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 20,
+                DataPropertyName = "saveColumn"
+            };
+
+            dgvArticles.Columns.Add(saveColumn);
+
+            DataGridViewCheckBoxColumn typeObuchDnevnoe = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Дневное",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "TypeObuchDnevnoe"
+
+            };
+
+            DataGridViewCheckBoxColumn TypeObuchZaochnoe = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Заочное",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "TypeObuchZaochnoe"
+
+            };
+
+            DataGridViewCheckBoxColumn TypeObuchDistanc = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Дистанционное",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "TypeObuchDistanc"
+
+            };
+
+            DataGridViewCheckBoxColumn TypeObuchSokrasch = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Сокращенное",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "TypeObuchSokrasch"
+
+            };
+
+            dgvArticles.Columns.Add(typeObuchDnevnoe);
+            dgvArticles.Columns.Add(TypeObuchZaochnoe);
+            dgvArticles.Columns.Add(TypeObuchDistanc);
+            dgvArticles.Columns.Add(TypeObuchSokrasch);
+
+            DataGridViewCheckBoxColumn CertRusskiy = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Русский",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertRusskiy"
+
+            };
+
+            DataGridViewCheckBoxColumn CertMatemat = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Математика",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertMatemat"
+
+            };
+
+            DataGridViewCheckBoxColumn CertHimia = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Химия",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertHimia"
+
+            };
+
+            DataGridViewCheckBoxColumn CertIstoriaBelorus = new DataGridViewCheckBoxColumn()
+            {
+                Name = "ИстБелор",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertIstoriaBelorus"
+
+            };
+            DataGridViewCheckBoxColumn CertInostrYazik = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Иностранный",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertInostrYazik"
+
+            };
+            DataGridViewCheckBoxColumn CertSpecEkzamen = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Спец.экз",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertSpecEkzamen"
+
+            };
+            DataGridViewCheckBoxColumn CertBiologia = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Биология",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertBiologia"
+
+            };
+            DataGridViewCheckBoxColumn CertFizika = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Физика",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertFizika"
+
+            };
+
+            DataGridViewCheckBoxColumn CertObschestvoved = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Обществовед",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertObschestvoved"
+
+            };
+            DataGridViewCheckBoxColumn CertVsemirIstoria = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Всемир.история",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertVsemirIstoria"
+
+            };
+            DataGridViewCheckBoxColumn CertGeografia = new DataGridViewCheckBoxColumn()
+            {
+                Name = "География",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertGeografia"
+
+            };
+            DataGridViewCheckBoxColumn CertProfSobesed = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Проф.собесед",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertProfSobesed"
+
+            };
+
+            dgvArticles.Columns.Add(CertRusskiy);
+            dgvArticles.Columns.Add(CertMatemat);
+            dgvArticles.Columns.Add(CertHimia);
+            dgvArticles.Columns.Add(CertIstoriaBelorus);
+            dgvArticles.Columns.Add(CertInostrYazik);
+            dgvArticles.Columns.Add(CertSpecEkzamen);
+            dgvArticles.Columns.Add(CertBiologia);
+            dgvArticles.Columns.Add(CertFizika);
+            dgvArticles.Columns.Add(CertObschestvoved);
+            dgvArticles.Columns.Add(CertVsemirIstoria);
+            dgvArticles.Columns.Add(CertGeografia);
+            dgvArticles.Columns.Add(CertProfSobesed);
+
+            dgvArticles.Columns["PrBallDnevnBudget"].Width = 60;
+            dgvArticles.Columns["PrBallDnevnBudget"].HeaderText = "Дневное\nбюджет";
+
+            dgvArticles.Columns["PrBallDnevnPlatnoe"].Width = 60;
+            dgvArticles.Columns["PrBallDnevnPlatnoe"].HeaderText = "Дневное\nплатное";
+
+            dgvArticles.Columns["PrBallZaochnBudget"].Width = 60;
+            dgvArticles.Columns["PrBallZaochnBudget"].HeaderText = "Заочное\nБюджет";
+
+            dgvArticles.Columns["PrBallZaochnPlatn"].Width = 60;
+            dgvArticles.Columns["PrBallZaochnPlatn"].HeaderText = "Заочное\nПлатное";
+
+            dgvArticles.Columns["PrBallSokrDnevnBudg"].Width = 60;
+            dgvArticles.Columns["PrBallSokrDnevnBudg"].HeaderText = "СкрДнев\nБюдж";
+
+            dgvArticles.Columns["PrBallSokrDnevnPlatn"].Width = 60;
+            dgvArticles.Columns["PrBallSokrDnevnPlatn"].HeaderText = "СкрДнев\nПлатное";
+
+            dgvArticles.Columns["PrBallSokrZaochBudget"].Width = 60;
+            dgvArticles.Columns["PrBallSokrZaochBudget"].HeaderText = "СкрЗаоч\nДневн";
+
+            dgvArticles.Columns["PrBallSokrZaochPlatnoe"].Width = 60;
+            dgvArticles.Columns["PrBallSokrZaochPlatnoe"].HeaderText = "СкрЗаоч\nПлатн";
+
+            dgvArticles.Columns["PrBallDistBudget"].Width = 60;
+            dgvArticles.Columns["PrBallDistBudget"].HeaderText = "Дистанц\nБюдж";
+
+            dgvArticles.Columns["PrBallDistPlatnoe"].Width = 60;
+            dgvArticles.Columns["PrBallDistPlatnoe"].HeaderText = "Дистанц\nПлатное";
+
+            dgvArticles.Columns["TypeObuchDnevnoe"].Visible = false;
+            dgvArticles.Columns["TypeObuchZaochnoe"].Visible = false;
+            dgvArticles.Columns["TypeObuchDistanc"].Visible = false;
+            dgvArticles.Columns["TypeObuchSokrasch"].Visible = false;
+            dgvArticles.Columns["CertRusskiy"].Visible = false;
+            dgvArticles.Columns["CertMatemat"].Visible = false;
+            dgvArticles.Columns["CertHimia"].Visible = false;
+            dgvArticles.Columns["CertIstoriaBelorus"].Visible = false;
+            dgvArticles.Columns["CertBiologia"].Visible = false;
+            dgvArticles.Columns["CertFizika"].Visible = false;
+            dgvArticles.Columns["CertObschestvoved"].Visible = false;
+            dgvArticles.Columns["CertVsemirIstoria"].Visible = false;
+            dgvArticles.Columns["CertGeografia"].Visible = false;
+            dgvArticles.Columns["CertProfSobesed"].Visible = false;
+            dgvArticles.Columns["CertInostrYazik"].Visible = false;
+            dgvArticles.Columns["CertSpecEkzamen"].Visible = false;
+            dgvArticles.Columns["ArticleID"].Visible = false;
+            dgvArticles.Columns["GorodID"].Visible = false;
+            dgvArticles.Columns["VuzID"].Visible = false;
+            dgvArticles.Columns["FakultetID"].Visible = false;
+            dgvArticles.Columns["NapravleniePodgotovki"].Visible = false;
+            dgvArticles.Columns["PreviousArticleID"].Visible = false;
+
+            dgvArticles.Columns["Shr"].DisplayIndex = 0;
+            dgvArticles.Columns["Title"].Width = 300;
+
+            dgvArticles.Columns["Title"].DisplayIndex = 1;
+            dgvArticles.Columns["Дневное"].DisplayIndex = 2;
+            dgvArticles.Columns["Заочное"].DisplayIndex = 3;
+            dgvArticles.Columns["Дистанционное"].DisplayIndex = 4;
+            dgvArticles.Columns["Сокращенное"].DisplayIndex = 5;
+
+
         }
     }
 }

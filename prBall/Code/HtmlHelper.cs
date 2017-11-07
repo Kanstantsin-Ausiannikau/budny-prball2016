@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace prBall.Code
 {
-    public enum TypeLearning { DnevnoeBudg, DnevnoePlatn, ZaochnoeBudg, ZaochnoePlatnoe, DistancionnoeBudg, DistancionnoePlatn, SokraschennoeBudg, SokraschennoePlatn };
+    public enum TypeLearning { DnevnoeBudg, DnevnoePlatn, ZaochnoeBudg, ZaochnoePlatnoe, SokrDnevnBudget, SokrDnevnPlatn, SokrZaochBudg, SokrZaochPlatn , DistancionnoeBudg, DistancionnoePlatn};
 
     public static class HtmlHelper
     {
