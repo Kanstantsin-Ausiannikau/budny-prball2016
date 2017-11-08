@@ -14,6 +14,7 @@ namespace prBall
         public const int CURRENT_YEAR_CATEGORY_ID = 80;
         public const string PREVIOUS_YEAR = "2016";
         public const string CURRENT_YEAR = "2017";
+        private static object articleListCommand;
 
         public static List<Vuz> GetVuzList()
         {
@@ -236,7 +237,7 @@ namespace prBall
                         case 15: articleData.TypeObuchZaochnoe = (bool)CFReader["Bit"]; break;
                         case 16: articleData.TypeObuchDistanc = (bool)CFReader["Bit"]; break;
                         case 17: articleData.TypeObuchSokrasch = (bool)CFReader["Bit"]; break;
-                        case 46: articleData.PreviousArticleID = (CFReader["Int"] != DBNull.Value) ? (int)CFReader["Int"] : -1; break;//!
+                        //case 46: articleData.PreviousArticleID = (CFReader["Int"] != DBNull.Value) ? (int)CFReader["Int"] : -1; break;//!
 
                         case 18: articleData.PrBallDnevnBudget = (decimal)CFReader["Decimal"]; break;
                         case 20: articleData.PrBallZaochnBudget = (decimal)CFReader["Decimal"]; break;
@@ -252,10 +253,10 @@ namespace prBall
                 }
             }
 
-            if (articleData.PreviousArticleID == 0)
-            {
+           // if (articleData.PreviousArticleID == 0)
+           // {
                 articleData.PreviousArticleID = articleId;
-            }
+           // }
 
             connection.Close();
 
@@ -344,6 +345,19 @@ namespace prBall
             CreateNewCFData(articleId, data);
 
             SetCategoryID(articleId);
+        }
+
+        internal static string GetFacultyNameByID(int id)
+        {
+            connection.Open();
+
+            SqlCommand vuzNameCommand = new SqlCommand(String.Format("SELECT [Text] FROM[budnyby_test].[dbo].[EasyDNNfieldsMultiElements] WHERE[FieldElementID] = {0}",id), connection);
+
+            string name = (string)vuzNameCommand.ExecuteScalar();
+
+            connection.Close();
+
+            return name;
         }
 
         private static void SetCategoryID(int id)
@@ -524,6 +538,7 @@ namespace prBall
 
             if (data.PreviousArticleID != 0)
             {
+
                 SqlCommand prCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNfieldsValues]  ([CustomFieldID],[ArticleID],[Int]) Values ({0},{1},{2})", 46, id, data.PreviousArticleID), connection);
                 prCommand.ExecuteNonQuery();
             }
@@ -534,7 +549,7 @@ namespace prBall
 
         internal static void UpdateArticleCFData(CFData2016 currentData)
         {
-            int id = GetCurrentArticleID(currentData.PreviousArticleID);
+            int id = GetCurrentArticleID(currentData.ArticleID);
 
             if (id < 0)
             {
@@ -542,6 +557,8 @@ namespace prBall
             }
 
             CFData2016 previousData = GetCFDataByArticleID(id);
+
+            connection.Open();
 
             SqlCommand typeObDnevnCommand = new SqlCommand(string.Format("update [budnyby_test].[DBO].[EasyDNNfieldsValues] SET [Bit] = {0} WHERE ArticleID= {1} AND CustomFieldID = {2}", currentData.TypeObuchDnevnoe == true ? 1 : 0, id, 14), connection);
             typeObDnevnCommand.ExecuteNonQuery();
@@ -552,9 +569,10 @@ namespace prBall
             SqlCommand TypeObuchDistancCommand = new SqlCommand(string.Format("update [budnyby_test].[DBO].[EasyDNNfieldsValues] SET [Bit] = {0} WHERE ArticleID= {1} AND CustomFieldID = {2}", currentData.TypeObuchDistanc == true ? 1 : 0, id, 16), connection);
             TypeObuchDistancCommand.ExecuteNonQuery();
 
-            SqlCommand TypeObuchSokraschCommand = new SqlCommand(string.Format("update [budnyby_test].[DBO].[EasyDNNfieldsValues] SET [Bit] = {0} WHERE ArticleID= {1} AND CustomFieldID = {2}", currentData.TypeObuchSokrasch == true ? 1 : 0, id, 17), connection); ;
+            SqlCommand TypeObuchSokraschCommand = new SqlCommand(string.Format("update [budnyby_test].[DBO].[EasyDNNfieldsValues] SET [Bit] = {0} WHERE ArticleID= {1} AND CustomFieldID = {2}", currentData.TypeObuchSokrasch == true ? 1 : 0, id, 17), connection);
             TypeObuchSokraschCommand.ExecuteNonQuery();
 
+            connection.Close();
 
             UpdateBalls(id, currentData.PrBallDnevnBudget, previousData.PrBallDnevnBudget, 18);
             UpdateBalls(id, currentData.PrBallSokrZaochBudget, previousData.PrBallSokrZaochBudget, 20);
@@ -568,7 +586,7 @@ namespace prBall
             UpdateBalls(id, currentData.PrBallDistBudget, previousData.PrBallDistBudget, 44);
         }
 
-        private static void UpdateBalls(int articleID, decimal? previousBall, decimal? currentBall, int customFieldID)
+        private static void UpdateBalls(int articleID, decimal? currentBall, decimal? previousBall, int customFieldID)
         {
             connection.Open();
 
@@ -578,7 +596,7 @@ namespace prBall
                 {
                     if (previousBall != null)
                     {
-                        SqlCommand prCommand = new SqlCommand(string.Format("update [budnyby_test].[DBO].[EasyDNNfieldsValues]  SET[Decimal] = {0} WHERE [ArticleID] = {1} AND [CusmomFieldID] = {2}", ToSql(currentBall), articleID, customFieldID), connection);
+                        SqlCommand prCommand = new SqlCommand(string.Format("update [budnyby_test].[DBO].[EasyDNNfieldsValues]  SET[Decimal] = {0} WHERE [ArticleID] = {1} AND [CustomFieldID] = {2}", ToSql(currentBall), articleID, customFieldID), connection);
 
                         prCommand.ExecuteNonQuery();
                     }
@@ -593,7 +611,7 @@ namespace prBall
             {
                 if (previousBall != null)
                 {
-                    SqlCommand delCommand = new SqlCommand(string.Format("delete from [budnyby_test].[DBO].[EasyDNNfieldsValues] WHERE [CustomFieldID] = {0} ,[ArticleID] = {1}", customFieldID, articleID), connection);
+                    SqlCommand delCommand = new SqlCommand(string.Format("delete from [budnyby_test].[DBO].[EasyDNNfieldsValues] WHERE [CustomFieldID] = {0} AND [ArticleID] = {1}", customFieldID, articleID), connection);
                     delCommand.ExecuteNonQuery();
                 }
             }
@@ -607,7 +625,7 @@ namespace prBall
 
             int result = -1;
 
-            SqlCommand cmd = new SqlCommand("SELECT TOP(1) [Int] FROM[budnyby_test].[dbo].[EasyDNNfieldsValues] WHERE CustomFieldID = 46 and Int = " + previousArticleID, connection);
+            SqlCommand cmd = new SqlCommand("SELECT TOP(1) [ArticleID] FROM[budnyby_test].[dbo].[EasyDNNfieldsValues] WHERE CustomFieldID = 46 and Int = " + previousArticleID, connection);
 
             result = (int)cmd.ExecuteScalar();
 
@@ -701,7 +719,83 @@ namespace prBall
 
         internal static Article GetArticleFromID(int articleId)
         {
-            throw new NotImplementedException();
+            connection.Open();
+
+            SqlCommand articleListCommand = new SqlCommand(String.Format("SELECT * FROM [budnyby_test].[dbo].[EasyDNNNews] WHERE [ArticleId]={0}", articleId), connection);
+
+            SqlDataReader articleReader = articleListCommand.ExecuteReader();
+
+            Article article = null;
+
+            using (articleReader)
+            {
+                while (articleReader.Read())
+                {
+                    //      articles.Add((int)articleReader["ArticleID"]);
+                    article =  new Article()
+                        {
+                            ArticleID = (int)articleReader["ArticleID"],
+                            PortalID = (int)articleReader["PortalID"],
+                            UserID = (int)articleReader["UserID"],
+                            Title = (string)articleReader["Title"],
+                            SubTitle = (string)articleReader["SubTitle"],
+                            Summary = (string)articleReader["Summary"],
+                            ArticleText = (string)articleReader["Article"],
+                            ArticleImage = (string)articleReader["ArticleImage"],
+                            DateAdded = (DateTime)articleReader["DateAdded"],
+                            LastModified = (DateTime)articleReader["LastModified"],
+                            PublishDate = (DateTime)articleReader["PublishDate"],
+                            ExpireDate = (DateTime)articleReader["ExpireDate"],
+                            NumberOfViews = 0,
+                            RatingValue = 0,
+                            RatingCount = 0,
+                            TitleLink = (string)articleReader["TitleLink"],
+                            DetailType = (string)articleReader["DetailType"],
+                            DetailTypeData = (string)articleReader["DetailTypeData"],
+                            DetailsTemplate = (string)articleReader["DetailsTemplate"],
+                            DetailsTheme = (string)articleReader["DetailsTheme"],
+                            GalleryPosition = (string)articleReader["GalleryPosition"],
+                            GalleryDisplayType = (string)articleReader["GalleryDisplayType"],
+                            CommentsTheme = (string)articleReader["CommentsTheme"],
+                            ArticleImageFolder = (string)articleReader["ArticleImageFolder"],
+                            NumberOfComments = (int)articleReader["NumberOfComments"],
+                            MetaDecription = (string)articleReader["MetaDecription"],
+                            MetaKeywords = (string)articleReader["MetaKeywords"],
+                            DisplayStyle = (string)articleReader["DisplayStyle"],
+                            DetailTarget = (string)articleReader["DetailTarget"],
+                            CleanArticleData = (string)articleReader["CleanArticleData"],
+                            ArticleFromRSS = (bool)articleReader["ArticleFromRSS"],
+                            HasPermissions = (bool)articleReader["HasPermissions"],
+                            EventArticle = (bool)articleReader["EventArticle"],
+                            DetailMediaType = (string)articleReader["DetailMediaType"],
+                            DetailMediaData = (string)articleReader["DetailMediaData"],
+                            AuthorAliasName = (string)articleReader["AuthorAliasName"],
+                            ShowGallery = (bool)articleReader["ShowGallery"],
+                            ArticleGalleryID = (articleReader["ArticleGalleryID"] != DBNull.Value) ? (int?)articleReader["ArticleGalleryID"] : null,
+                            MainImageTitle = (string)articleReader["MainImageTitle"],
+                            MainImageDescription = (string)articleReader["MainImageDescription"],
+                            HideDefaultLocale = (bool)articleReader["HideDefaultLocale"],
+                            Featured = (bool)articleReader["Featured"],
+                            Approved = (bool)articleReader["Approved"],
+                            AllowComments = (bool)articleReader["AllowComments"],
+                            Active = (bool)articleReader["Active"],
+                            ShowMainImage = (bool)articleReader["ShowMainImage"],
+                            ShowMainImageFront = (bool)articleReader["ShowMainImageFront"],
+                            ArticleImageSet = (bool)articleReader["ArticleImageSet"],
+                            CFGroupeID = articleReader["CFGroupeID"]==DBNull.Value? -1: (int)articleReader["CFGroupeID"],
+                            DetailsDocumentsTemplate = (articleReader["DetailsDocumentsTemplate"] == DBNull.Value ? null : (string)articleReader["DetailsDocumentsTemplate"]),
+                            DetailsLinksTemplate = (articleReader["DetailsLinksTemplate"] == DBNull.Value ? null : (string)articleReader["DetailsLinksTemplate"]),
+                            DetailsRelatedArticlesTemplate = (articleReader["DetailsRelatedArticlesTemplate"] == DBNull.Value ? null : (string)articleReader["DetailsRelatedArticlesTemplate"]),
+                            ContactEmail = (articleReader["ContactEmail"] == DBNull.Value ? null : (string)articleReader["ContactEmail"]),
+                            TitleTag = (articleReader["TitleTag"] == DBNull.Value ? null : (string)articleReader["TitleTag"])
+                            //FieldElementID = (int)articleReader["FieldElementID"],
+                            //CustomFieldID = (int)articleReader["CustomFieldID"]
+                        };
+                }
+            }
+
+            connection.Close();
+            return article;
         }
 
         internal static void AddLinksRedirectToDb(string linkOld, string linkNew)

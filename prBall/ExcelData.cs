@@ -27,10 +27,44 @@ namespace prBall
                     CFData2016 item = new CFData2016();
 
                     item.Title = worksheet.Cells[i, 1].Value.ToString();
-                    item.TypeObuchDnevnoe = worksheet.Cells[i, 2].Value.ToString() == "+";
-                    item.TypeObuchZaochnoe = worksheet.Cells[i, 3].Value.ToString() == "+";
-                    item.TypeObuchSokrasch = worksheet.Cells[i, 4].Value.ToString() == "+";
-                    item.TypeObuchDistanc = worksheet.Cells[i, 5].Value.ToString() == "+";
+
+                    if (worksheet.Cells[i, 2].Value != null)
+                    {
+                        item.TypeObuchDnevnoe = worksheet.Cells[i, 2].Value.ToString() == "+";
+                    }
+                    else
+                    {
+                        item.TypeObuchDnevnoe = false;
+                    }
+
+                    if (worksheet.Cells[i, 3].Value!=null)
+                    {
+                        item.TypeObuchZaochnoe = worksheet.Cells[i, 3].Value.ToString() == "+";
+                    }
+                    else
+                    {
+                        item.TypeObuchZaochnoe = false;
+                    }
+
+                    if (worksheet.Cells[i, 4].Value != null)
+                    {
+                        item.TypeObuchSokrasch = worksheet.Cells[i, 4].Value.ToString() == "+";
+                    }
+                    else
+                    {
+                        item.TypeObuchSokrasch = false;
+                    }
+
+                    if (worksheet.Cells[i, 5].Value != null)
+                    {
+                        item.TypeObuchDistanc = worksheet.Cells[i, 5].Value.ToString() == "+";
+                    }
+                    else
+                    {
+                        item.TypeObuchDistanc = false;
+                    }
+
+
                     if (worksheet.Cells[i, 6].Value != null)
                     {
                         item.PrBallDnevnBudget = Convert.ToDecimal(worksheet.Cells[i, 6].Value);

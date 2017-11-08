@@ -1,8 +1,10 @@
-﻿using System;
+﻿using prBall.Code;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -350,23 +352,6 @@ namespace prBall
 
             dgvVuzList.Columns["ID"].Visible = false;
             dgvVuzList.Columns["Name"].Width = 300;
-
-
-            //dgvArticles.RowEnter += DgvArticles_RowEnter;
-
-            //this.dgvVuzList.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvVuzList_RowEnter);
-
-
-            //DataGridViewCheckBoxColumn saveColumn = new DataGridViewCheckBoxColumn()
-            //{
-            //    Name = "Shr",
-            //    FalseValue = false,
-            //    TrueValue = true,
-            //    Visible = true,
-            //    Width = 20,
-            //    DataPropertyName = "saveColumn"
-            //};
-            //dgvArticles.Columns.Insert(0, saveColumn);
         }
 
         private void dgvArticles_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
@@ -380,7 +365,7 @@ namespace prBall
             {
                 if ((dgvArticles["Shr", i].Value!=null)&&((bool)dgvArticles["Shr", i].Value == true))
                 {
-                    Data.CreateNewArticle(articles[i], cfData[i]);
+                    Data.CreateNewArticle(articles.Find(a=>a.ArticleID==cfData[i].ArticleID), cfData[i]);
                     dgvArticles["Shr", i].Value = false;
                 }
             }
@@ -407,6 +392,89 @@ namespace prBall
 
         private void btnReduseDB_Click(object sender, EventArgs e)
         {
+            string shortName = "БГУ";
+            string year = "2017";
+
+            VuzBallsArticle article = new VuzBallsArticle();
+
+            article.AddBallsCategory($"Проходные баллы в {shortName} на бюджет в {year} году");
+
+            var allFakulties = cfData.Select(x => x.FakultetID).Distinct();
+
+            foreach(var id in allFakulties)
+            {
+                var facultyName = Data.GetFacultyNameByID(id);
+
+                var data = cfData.FindAll(t => t.PrBallDnevnBudget != null && t.FakultetID==id);
+
+                if (data.Count > 0)
+                {
+                    StringTable st = VuzBallsArticle.GetStringTableFromCFData(data, TypeLearning.DnevnoeBudg);
+
+                    article.AddSection(st, facultyName);
+
+                    article.AddPTag();
+                }
+            }
+
+            article.AddBallsCategory($"Проходные баллы в {shortName} на заочное отделение в {year} году");
+
+            foreach (var id in allFakulties)
+            {
+                var facultyName = Data.GetFacultyNameByID(id);
+
+                var data = cfData.FindAll(t => t.PrBallZaochnBudget != null && t.FakultetID == id);
+
+                if (data.Count > 0)
+                {
+                    StringTable st = VuzBallsArticle.GetStringTableFromCFData(data, TypeLearning.ZaochnoeBudg);
+
+                    article.AddSection(st, facultyName);
+
+                    article.AddPTag();
+                }
+            }
+
+            article.AddBallsCategory($"{shortName}: Проходные баллы на платное (дневную платную форму обучения) в {year} году");
+
+            foreach (var id in allFakulties)
+            {
+                var facultyName = Data.GetFacultyNameByID(id);
+
+                var data = cfData.FindAll(t => t.PrBallDnevnPlatnoe != null && t.FakultetID == id);
+
+                if (data.Count > 0)
+                {
+                    StringTable st = VuzBallsArticle.GetStringTableFromCFData(data, TypeLearning.DnevnoePlatn);
+
+                    article.AddSection(st, facultyName);
+
+                    article.AddPTag();
+                }
+            }
+
+            article.AddBallsCategory($"{shortName}: Проходные баллы на заочное платное (заочную платную форму обучения) в {year} году");
+
+            foreach (var id in allFakulties)
+            {
+                var facultyName = Data.GetFacultyNameByID(id);
+
+                var data = cfData.FindAll(t => t.PrBallZaochnPlatn != null && t.FakultetID == id);
+
+                if (data.Count > 0)
+                {
+                    StringTable st = VuzBallsArticle.GetStringTableFromCFData(data, TypeLearning.ZaochnoePlatnoe);
+
+                    article.AddSection(st, facultyName);
+
+                    article.AddPTag();
+                }
+            }
+
+            article.AddPTag("Поиск по проходным баллам по другим вузам и другим формам обучения, по сертификатам ЦТ можно найти " + "здесь".A("/abiturient/spsearch"));
+
+            var r = article.GetHtml();
+
             //List<ModuleCategory> moduleCategoryList = new List<ModuleCategory>() 
             //{
             //    new ModuleCategory(){ModuleID=493, CategoryID=34}, //пр баллы 2013
@@ -443,6 +511,7 @@ namespace prBall
 
             //UrlsData.connection.Close();
         }
+
 
         internal class ModuleCategory
         {
@@ -614,7 +683,10 @@ namespace prBall
                 dgvArticles.DataSource = null;
                 dgvArticles.Columns.Clear();
 
-                dgvArticles.DataSource = ExcelData.LoadFromExcel(ofdLoadExcel.FileName);
+                cfData = ExcelData.LoadFromExcel(ofdLoadExcel.FileName);
+                articles = Data.GetArticlesByVuzID(cfData[0].VuzID);
+
+                dgvArticles.DataSource = cfData;
 
                 SetDataGridProperty(dgvArticles);
 
