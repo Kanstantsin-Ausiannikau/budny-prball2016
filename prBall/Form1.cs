@@ -1,10 +1,13 @@
-﻿using prBall.Code;
+﻿using AngleSharp.Dom;
+using AngleSharp.Parser.Html;
+using prBall.Code;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -27,274 +30,7 @@ namespace prBall
         }
 
 
-        private void SetDataGridProperty(DataGridView dgvArticles)
-        {
-
-            //dgvArticles.Columns.Clear();
-
-            DataGridViewCheckBoxColumn saveColumn = new DataGridViewCheckBoxColumn()
-            {
-                Name = "Shr",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 20,
-                DataPropertyName = "saveColumn"
-            };
-
-            dgvArticles.Columns.Add(saveColumn);
-
-             DataGridViewCheckBoxColumn typeObuchDnevnoe = new DataGridViewCheckBoxColumn()
-            {
-                Name = "Дневное",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 60,
-                DataPropertyName = "TypeObuchDnevnoe"
-
-            };
-
-            DataGridViewCheckBoxColumn TypeObuchZaochnoe = new DataGridViewCheckBoxColumn()
-            {
-                Name = "Заочное",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 60,
-                DataPropertyName = "TypeObuchZaochnoe"
-
-            };
-
-            DataGridViewCheckBoxColumn TypeObuchDistanc = new DataGridViewCheckBoxColumn()
-            {
-                Name = "Дистанционное",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 60,
-                DataPropertyName = "TypeObuchDistanc"
-
-            };
-
-            DataGridViewCheckBoxColumn TypeObuchSokrasch = new DataGridViewCheckBoxColumn()
-            {
-                Name = "Сокращенное",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 60,
-                DataPropertyName = "TypeObuchSokrasch"
-
-            };
-
-            dgvArticles.Columns.Add(typeObuchDnevnoe);
-            dgvArticles.Columns.Add(TypeObuchZaochnoe);
-            dgvArticles.Columns.Add(TypeObuchDistanc);
-            dgvArticles.Columns.Add(TypeObuchSokrasch);
-
-            DataGridViewCheckBoxColumn CertRusskiy = new DataGridViewCheckBoxColumn()
-            {
-                Name = "Русский",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 60,
-                DataPropertyName = "CertRusskiy"
-
-            };
-
-            DataGridViewCheckBoxColumn CertMatemat = new DataGridViewCheckBoxColumn()
-            {
-                Name = "Математика",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 60,
-                DataPropertyName = "CertMatemat"
-
-            };
-
-            DataGridViewCheckBoxColumn CertHimia = new DataGridViewCheckBoxColumn()
-            {
-                Name = "Химия",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 60,
-                DataPropertyName = "CertHimia"
-
-            };
-
-            DataGridViewCheckBoxColumn CertIstoriaBelorus = new DataGridViewCheckBoxColumn()
-            {
-                Name = "ИстБелор",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 60,
-                DataPropertyName = "CertIstoriaBelorus"
-
-            };
-            DataGridViewCheckBoxColumn CertInostrYazik = new DataGridViewCheckBoxColumn()
-            {
-                Name = "Иностранный",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 60,
-                DataPropertyName = "CertInostrYazik"
-
-            };
-            DataGridViewCheckBoxColumn CertSpecEkzamen = new DataGridViewCheckBoxColumn()
-            {
-                Name = "Спец.экз",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 60,
-                DataPropertyName = "CertSpecEkzamen"
-
-            };
-            DataGridViewCheckBoxColumn CertBiologia = new DataGridViewCheckBoxColumn()
-            {
-                Name = "Биология",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 60,
-                DataPropertyName = "CertBiologia"
-
-            };
-            DataGridViewCheckBoxColumn CertFizika = new DataGridViewCheckBoxColumn()
-            {
-                Name = "Физика",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 60,
-                DataPropertyName = "CertFizika"
-
-            };
-
-            DataGridViewCheckBoxColumn CertObschestvoved = new DataGridViewCheckBoxColumn()
-            {
-                Name = "Обществовед",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 60,
-                DataPropertyName = "CertObschestvoved"
-
-            };
-            DataGridViewCheckBoxColumn CertVsemirIstoria = new DataGridViewCheckBoxColumn()
-            {
-                Name = "Всемир.история",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 60,
-                DataPropertyName = "CertVsemirIstoria"
-
-            };
-            DataGridViewCheckBoxColumn CertGeografia = new DataGridViewCheckBoxColumn()
-            {
-                Name = "География",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 60,
-                DataPropertyName = "CertGeografia"
-
-            };
-            DataGridViewCheckBoxColumn CertProfSobesed = new DataGridViewCheckBoxColumn()
-            {
-                Name = "Проф.собесед",
-                FalseValue = false,
-                TrueValue = true,
-                Visible = true,
-                Width = 60,
-                DataPropertyName = "CertProfSobesed"
-
-            };
-
-            dgvArticles.Columns.Add(CertRusskiy);
-            dgvArticles.Columns.Add(CertMatemat);
-            dgvArticles.Columns.Add(CertHimia);
-            dgvArticles.Columns.Add(CertIstoriaBelorus);
-            dgvArticles.Columns.Add(CertInostrYazik);
-            dgvArticles.Columns.Add(CertSpecEkzamen);
-            dgvArticles.Columns.Add(CertBiologia);
-            dgvArticles.Columns.Add(CertFizika);
-            dgvArticles.Columns.Add(CertObschestvoved);
-            dgvArticles.Columns.Add(CertVsemirIstoria);
-            dgvArticles.Columns.Add(CertGeografia);
-            dgvArticles.Columns.Add(CertProfSobesed);
-
-            dgvArticles.Columns["PrBallDnevnBudget"].Width = 60;
-            dgvArticles.Columns["PrBallDnevnBudget"].HeaderText = "Дневное\nбюджет";
-
-            dgvArticles.Columns["PrBallDnevnPlatnoe"].Width = 60;
-            dgvArticles.Columns["PrBallDnevnPlatnoe"].HeaderText = "Дневное\nплатное";
-
-            dgvArticles.Columns["PrBallZaochnBudget"].Width = 60;
-            dgvArticles.Columns["PrBallZaochnBudget"].HeaderText = "Заочное\nБюджет";
-
-            dgvArticles.Columns["PrBallZaochnPlatn"].Width = 60;
-            dgvArticles.Columns["PrBallZaochnPlatn"].HeaderText = "Заочное\nПлатное";
-
-            dgvArticles.Columns["PrBallSokrDnevnBudg"].Width = 60;
-            dgvArticles.Columns["PrBallSokrDnevnBudg"].HeaderText = "СкрДнев\nБюдж";
-
-            dgvArticles.Columns["PrBallSokrDnevnPlatn"].Width = 60;
-            dgvArticles.Columns["PrBallSokrDnevnPlatn"].HeaderText = "СкрДнев\nПлатное";
-
-            dgvArticles.Columns["PrBallSokrZaochBudget"].Width = 60;
-            dgvArticles.Columns["PrBallSokrZaochBudget"].HeaderText = "СкрЗаоч\nДневн";
-
-            dgvArticles.Columns["PrBallSokrZaochPlatnoe"].Width = 60;
-            dgvArticles.Columns["PrBallSokrZaochPlatnoe"].HeaderText = "СкрЗаоч\nПлатн";
-
-            dgvArticles.Columns["PrBallDistBudget"].Width = 60;
-            dgvArticles.Columns["PrBallDistBudget"].HeaderText = "Дистанц\nБюдж";
-
-            dgvArticles.Columns["PrBallDistPlatnoe"].Width = 60;
-            dgvArticles.Columns["PrBallDistPlatnoe"].HeaderText = "Дистанц\nПлатное";
-
-            dgvArticles.Columns["TypeObuchDnevnoe"].Visible = false;
-            dgvArticles.Columns["TypeObuchZaochnoe"].Visible = false;
-            dgvArticles.Columns["TypeObuchDistanc"].Visible = false;
-            dgvArticles.Columns["TypeObuchSokrasch"].Visible = false;
-            dgvArticles.Columns["CertRusskiy"].Visible = false;
-            dgvArticles.Columns["CertMatemat"].Visible = false;
-            dgvArticles.Columns["CertHimia"].Visible = false;
-            dgvArticles.Columns["CertIstoriaBelorus"].Visible = false;
-            dgvArticles.Columns["CertBiologia"].Visible = false;
-            dgvArticles.Columns["CertFizika"].Visible = false;
-            dgvArticles.Columns["CertObschestvoved"].Visible = false;
-            dgvArticles.Columns["CertVsemirIstoria"].Visible = false;
-            dgvArticles.Columns["CertGeografia"].Visible = false;
-            dgvArticles.Columns["CertProfSobesed"].Visible = false;
-            dgvArticles.Columns["CertInostrYazik"].Visible = false;
-            dgvArticles.Columns["CertSpecEkzamen"].Visible = false;
-            dgvArticles.Columns["ArticleID"].Visible = false;
-            dgvArticles.Columns["GorodID"].Visible = false;
-            dgvArticles.Columns["VuzID"].Visible = false;
-            dgvArticles.Columns["FakultetID"].Visible = false;
-            dgvArticles.Columns["NapravleniePodgotovki"].Visible = false;
-            dgvArticles.Columns["PreviousArticleID"].Visible = false;
-
-            dgvArticles.Columns["Shr"].DisplayIndex = 0;
-            dgvArticles.Columns["Title"].Width = 300;
-
-            dgvArticles.Columns["Title"].DisplayIndex = 1;
-            dgvArticles.Columns["Дневное"].DisplayIndex = 2;
-            dgvArticles.Columns["Заочное"].DisplayIndex = 3;
-            dgvArticles.Columns["Дистанционное"].DisplayIndex = 4;
-            dgvArticles.Columns["Сокращенное"].DisplayIndex = 5;
-
-
-        }
+       
         private void dgvArticles_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == ((DataGridView)sender).Columns["Shr"].Index)
@@ -335,7 +71,7 @@ namespace prBall
                 
                 for (int i = 0; i < cfData.Count; i++)
                 {
-                    Data.CreateNewArticle(articles[i], cfData[i]);
+                    Data.CreateNewArticle(articles[i], cfData[i], Data.GetCategoryFromYear((string)cbToYear.SelectedItem));
                 }
 
                 isEdit = false;
@@ -365,11 +101,12 @@ namespace prBall
             {
                 if ((dgvArticles["Shr", i].Value!=null)&&((bool)dgvArticles["Shr", i].Value == true))
                 {
-                    Data.CreateNewArticle(articles.Find(a=>a.ArticleID==cfData[i].ArticleID), cfData[i]);
+                    Data.CreateNewArticle(articles.Find(a=>a.ArticleID==cfData[i].ArticleID), cfData[i], Data.GetCategoryFromYear((string)cbToYear.SelectedItem));
                     dgvArticles["Shr", i].Value = false;
                 }
             }
             isEdit = false;
+            SystemSounds.Beep.Play();
         }
 
         private void btnGetUrl_Click(object sender, EventArgs e)
@@ -392,88 +129,12 @@ namespace prBall
 
         private void btnReduseDB_Click(object sender, EventArgs e)
         {
-            string shortName = "БГУ";
-            string year = "2017";
 
-            VuzBallsArticle article = new VuzBallsArticle();
+            AddPrBallArticleForm frm = new AddPrBallArticleForm();
 
-            article.AddBallsCategory($"Проходные баллы в {shortName} на бюджет в {year} году");
+            frm.ShowDialog();
 
-            var allFakulties = cfData.Select(x => x.FakultetID).Distinct();
-
-            foreach(var id in allFakulties)
-            {
-                var facultyName = Data.GetFacultyNameByID(id);
-
-                var data = cfData.FindAll(t => t.PrBallDnevnBudget != null && t.FakultetID==id);
-
-                if (data.Count > 0)
-                {
-                    StringTable st = VuzBallsArticle.GetStringTableFromCFData(data, TypeLearning.DnevnoeBudg);
-
-                    article.AddSection(st, facultyName);
-
-                    article.AddPTag();
-                }
-            }
-
-            article.AddBallsCategory($"Проходные баллы в {shortName} на заочное отделение в {year} году");
-
-            foreach (var id in allFakulties)
-            {
-                var facultyName = Data.GetFacultyNameByID(id);
-
-                var data = cfData.FindAll(t => t.PrBallZaochnBudget != null && t.FakultetID == id);
-
-                if (data.Count > 0)
-                {
-                    StringTable st = VuzBallsArticle.GetStringTableFromCFData(data, TypeLearning.ZaochnoeBudg);
-
-                    article.AddSection(st, facultyName);
-
-                    article.AddPTag();
-                }
-            }
-
-            article.AddBallsCategory($"{shortName}: Проходные баллы на платное (дневную платную форму обучения) в {year} году");
-
-            foreach (var id in allFakulties)
-            {
-                var facultyName = Data.GetFacultyNameByID(id);
-
-                var data = cfData.FindAll(t => t.PrBallDnevnPlatnoe != null && t.FakultetID == id);
-
-                if (data.Count > 0)
-                {
-                    StringTable st = VuzBallsArticle.GetStringTableFromCFData(data, TypeLearning.DnevnoePlatn);
-
-                    article.AddSection(st, facultyName);
-
-                    article.AddPTag();
-                }
-            }
-
-            article.AddBallsCategory($"{shortName}: Проходные баллы на заочное платное (заочную платную форму обучения) в {year} году");
-
-            foreach (var id in allFakulties)
-            {
-                var facultyName = Data.GetFacultyNameByID(id);
-
-                var data = cfData.FindAll(t => t.PrBallZaochnPlatn != null && t.FakultetID == id);
-
-                if (data.Count > 0)
-                {
-                    StringTable st = VuzBallsArticle.GetStringTableFromCFData(data, TypeLearning.ZaochnoePlatnoe);
-
-                    article.AddSection(st, facultyName);
-
-                    article.AddPTag();
-                }
-            }
-
-            article.AddPTag("Поиск по проходным баллам по другим вузам и другим формам обучения, по сертификатам ЦТ можно найти " + "здесь".A("/abiturient/spsearch"));
-
-            var r = article.GetHtml();
+            return;
 
             //List<ModuleCategory> moduleCategoryList = new List<ModuleCategory>() 
             //{
@@ -512,7 +173,6 @@ namespace prBall
             //UrlsData.connection.Close();
         }
 
-
         internal class ModuleCategory
         {
             public int ModuleID { get; set; }
@@ -523,7 +183,7 @@ namespace prBall
         {
             const int SPECIALITY_CATEGORY_ID = 29;
             const int VUZ_CATEGORY_ID = 5;
-            const int PRBALL2016_CATEGORY_ID = 79;
+            //const int PRBALL2016_CATEGORY_ID = 79;
 
             var articles = Data.GetArticlesIDFromCategoryID(SPECIALITY_CATEGORY_ID);
 
@@ -531,23 +191,28 @@ namespace prBall
 
             List<CFData2016> cfData = new List<CFData2016>();
 
-            var prBall2016Articles = Data.GetArticlesIDFromCategoryID(PRBALL2016_CATEGORY_ID);
+            var prBall2017Articles = Data.GetArticlesIDFromCategoryID(Data.CURRENT_YEAR_CATEGORY_ID);
 
             Hashtable linksTable = new Hashtable();
 
             UrlsData.connection.Open();
 
-            foreach (var item in prBall2016Articles)
+            foreach (var item in prBall2017Articles)
             {
+                Application.DoEvents();
 
-                var cfData2016 = Data.GetCFDataByArticleID(item);
+                var cfData2017 = Data.GetCFDataByArticleID(item);
 
-                string link2015 = String.Format("/abiturient/spsearch/artmid/493/articleid/{0}/{1}", cfData2016.PreviousArticleID, Data.GetTitleLink(cfData2016.PreviousArticleID)).ToLower();
-                string link2016 = String.Format("/abiturient/spsearch/artmid/493/articleid/{0}/{1}", cfData2016.ArticleID, Data.GetTitleLink(cfData2016.ArticleID)).ToLower();
+                if (cfData2017.ArticleID== cfData2017.PreviousArticleID)
+                { continue; }
 
-                //6772
+                string link2016 = String.Format("/abiturient/spsearch/artmid/493/articleid/{0}/{1}", cfData2017.PreviousArticleID, Data.GetTitleLink(cfData2017.PreviousArticleID)).ToLower();
+                string link2017 = String.Format("/abiturient/spsearch/artmid/493/articleid/{0}/{1}", cfData2017.ArticleID, Data.GetTitleLink(cfData2017.ArticleID)).ToLower();
 
-                linksTable.Add(link2015, link2016);
+                if (!linksTable.ContainsKey(link2016))
+                {
+                    linksTable.Add(link2016, link2017);
+                }
 
                 System.Diagnostics.Debug.WriteLine(item);
             }
@@ -558,6 +223,8 @@ namespace prBall
 
             foreach (int articleId in articles)
             {
+                Application.DoEvents();
+
                 UrlsData.SetLinksToArticle(articleId, linksTable);
             }
         }
@@ -688,7 +355,7 @@ namespace prBall
 
                 dgvArticles.DataSource = cfData;
 
-                SetDataGridProperty(dgvArticles);
+                Data.SetDataGridProperty(dgvArticles);
 
                 for (int i = 0; i < dgvArticles.RowCount; i++)
                 {
@@ -703,11 +370,15 @@ namespace prBall
 
             int vuzId = (int)dgvVuzList.Rows[e.RowIndex].Cells["ID"].Value;
 
-            articles = Data.GetArticlesByVuzID(vuzId);
+            articles = Data.GetArticlesByVuzID(vuzId, Data.GetCategoryFromYear((string)cbFromYear.SelectedItem));
 
             foreach (var article in articles)
             {
-                cfData.Add(Data.GetCFDataByArticleID(article.ArticleID));
+                var articleData = Data.GetCFDataByArticleID(article.ArticleID);
+
+                articleData.PreviousArticleID = article.ArticleID;
+
+                cfData.Add(articleData);
             }
 
             dgvArticles.DataSource = typeof(List<CFData2016>);
@@ -715,8 +386,7 @@ namespace prBall
 
             dgvArticles.DataSource = cfData;
 
-            SetDataGridProperty(dgvArticles);
-
+            Data.SetDataGridProperty(dgvArticles);
         }
 
         private void btnUpdateBalls_Click(object sender, EventArgs e)
@@ -734,6 +404,114 @@ namespace prBall
                 }
             }
             isEdit = false;
+        }
+
+        private void btnBallsFormOpen_Click(object sender, EventArgs e)
+        {
+            BallsParserForm frm = new BallsParserForm();
+
+            frm.ShowDialog();
+        }
+
+        private void btnCheckLinks_Click(object sender, EventArgs e)
+        {
+            var articles = Data.GetArticlesIDFromCategoryID(29);//=new List<int>();//
+
+            //articles.Add(54);
+            //articles.Add(8);
+
+            int counter = 1;
+
+            foreach (var articleId in articles)
+            {
+
+                System.Diagnostics.Debug.WriteLine($"{counter} из {articles.Count}");
+                counter++;
+
+                Article article = Data.GetArticleFromID(articleId);
+
+                // bool isEdit = false;
+
+                string html = UrlsData.StringToHtml(article.ArticleText);
+
+                var parser = new HtmlParser();
+                var document = parser.Parse(html);
+
+                List<IElement> l = new List<IElement>();
+
+                foreach (IElement element in document.QuerySelectorAll("ul"))
+                {
+                    var collections = element.GetElementsByTagName("li");
+
+                    l.AddRange(collections);
+                }
+
+                foreach (IElement element in l)
+                {
+                    var r = element.GetElementsByTagName("a");
+
+                    if (r.Length > 0)
+                    {
+                        List<string> vuzIds = new List<string>();
+
+                        UrlRowChecker checker = new UrlRowChecker();
+
+                        for (int i = 1; i < r.Length; i++)
+                        {
+                            int id = UrlsData.ExtractArticleId(r[i]);
+
+                            if (id==-1)
+                            {
+                                StreamWriter log = new StreamWriter("c:\\1\\foundLinks.txt", true);
+                                log.WriteLine($"{articleId};{Data.GetArticleFromID(articleId).Title};{r[0].InnerHtml};{r[i].GetAttribute("href")};id=-1");
+                                log.Flush();
+                                log.Close();
+                                break;
+                            }
+                            checker.AddItem(id,r[i].InnerHtml);
+                        }
+
+                        if (!checker.IsChecked())
+                        {
+                            StreamWriter log = new StreamWriter("c:\\1\\foundLinks.txt", true);
+                            log.WriteLine($"{articleId};{Data.GetArticleFromID(articleId).Title};{checker.BadItem.ArticleId};{Data.GetArticleFromID(checker.BadItem.ArticleId).Title};{checker.BadItem.Year};{r[0].GetAttribute("href")}");
+                            log.Flush();
+                            log.Close();
+                        }
+      
+                    }
+                }
+            }
+        }
+
+        private bool isNotSameValues(List<int> vuzIds)
+        {
+            bool isSame = true;
+
+            if (vuzIds.Count<2)
+            {
+                isSame = false;
+
+                return !isSame;
+            }
+
+            for(int i=1;i<vuzIds.Count;i++)
+            {
+                if (vuzIds[0]!=vuzIds[i])
+                {
+                    isSame = false;
+                    break;
+                }
+            }
+
+            return !isSame;
+
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            cbFromYear.SelectedIndex = 0;
+            cbToYear.SelectedIndex = 0;
         }
     }
 }

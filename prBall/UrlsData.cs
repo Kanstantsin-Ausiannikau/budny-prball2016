@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Net;
-
+using System.Text;
 
 namespace prBall
 {
@@ -112,6 +112,44 @@ namespace prBall
          //   connection.Close();
 
             return articleId == null;
+        }
+
+        public static string GetUrlStringFromTitle(string title)
+        {
+            connection.Open();
+
+            StringBuilder str = new  StringBuilder();
+
+            foreach (char litera in title)
+            {
+                if (litera==' ')
+                {
+                    str.Append('-');
+                    continue;
+                }
+                if (char.IsNumber(litera))
+                {
+                    str.Append(litera);
+                    continue;
+                }
+
+                SqlCommand articleIDCommand = new SqlCommand($"SELECT[NewChar]   FROM[budnyby_test].[dbo].[EasyDNNnewsCharList] WHERE OriginalChar = '{litera}'", connection);
+
+                articleIDCommand.CommandTimeout = 1000000;
+
+                string s = (string)articleIDCommand.ExecuteScalar();
+
+                if (s != null)
+                {
+
+                    str.Append(s.ToLower());
+                }
+
+            }
+
+            connection.Close();
+
+            return str.ToString();
         }
 
         public static int GetUrlID(string url)
@@ -289,26 +327,30 @@ namespace prBall
                     try
                     {
 
-                        var link2015 = r[r.Length - 1].GetAttribute("href");
+                        var link2016 = r[r.Length - 1].GetAttribute("href");
 
-                        if (link2015!=null)
+                        if (link2016!=null)
                         {
-                            link2015 = link2015.ToLower();
+                            link2016 = link2016.ToLower();
                         }
 
-                        if (links.ContainsKey(link2015))
+                        if (links.ContainsKey(link2016)||(links.ContainsKey(link2016.Remove(0, 15))))
                         {
-                            var link2016 = (string)links[link2015];
+                            var link2017 = (string)links[link2016];
+                            if (string.IsNullOrEmpty(link2017))
+                            {
+                                link2017 = (string)links[link2016.Remove(0, 15)];
+                            }
                             var p = document.CreateElement("a");
-                            p.SetAttribute("href", link2016);
-                            p.TextContent = "2016";
+                            p.SetAttribute("href", link2017);
+                            p.TextContent = "2017";
 
                             r[r.Length - 1].After(p);
                             element.InnerHtml = element.InnerHtml.Replace("a><a", "a>, <a");
 
                             isEdit = true;
 
-                            System.Diagnostics.Debug.WriteLine("{0};{1};{2}",articleID,link2015,link2016);
+                            System.Diagnostics.Debug.WriteLine("{0};{1};{2}",articleID,link2016,link2017);
 
                             //System.Diagnostics.Debug.WriteLine(articleID);
                         }
@@ -335,7 +377,7 @@ namespace prBall
             return txt;
         }
 
-        private static string HtmlToString(string html)
+        public static string HtmlToString(string html)
         {
             html = html.Replace("&", "&amp;");
             html = html.Replace("<", "&lt;");
@@ -426,7 +468,7 @@ namespace prBall
 
                         System.Diagnostics.Debug.WriteLine("{0};{1};{2};{3};{4};{5};{6};{7};{8}", articleID, titleLink, r[0].GetAttribute("href") ,r[corruptedLinkNumber+1].GetAttribute("href"), hrefs[corruptedLinkNumber], corruptedLinkNumber, hrefs.Count, corruptedLink, restoredLink);
 
-                        StreamWriter log = new StreamWriter("c:\\errorLinks.txt", true);
+                        StreamWriter log = new StreamWriter("c:\\1\\errorLinks.txt", true);
                         log.WriteLine("{0};{1};{2};{3};{4};{5};{6};{7};{8}", articleID, titleLink, r[0].GetAttribute("href"), r[corruptedLinkNumber+1].GetAttribute("href"), hrefs[corruptedLinkNumber], corruptedLinkNumber, hrefs.Count, corruptedLink, restoredLink);
                         log.Flush();
                         log.Close();
@@ -445,6 +487,26 @@ namespace prBall
                     //    log.Close();
                     //}
                 }
+            }
+        }
+
+        internal static int ExtractArticleId(IElement item)
+        {
+            string href = item.GetAttribute("href");
+
+            if (href.Contains(@"http://budny.by"))
+            {
+                href = href.Remove(0,15);
+            }
+
+            string[] parts = href.Split(new char[] { '/' });
+            try
+            {
+                return int.Parse(parts[6]);
+            }
+            catch
+            {
+                return -1;
             }
         }
 

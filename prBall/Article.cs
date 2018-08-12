@@ -57,7 +57,7 @@ namespace prBall
         public bool ShowMainImage { get; set; }
         public bool ShowMainImageFront { get; set; }
         public bool ArticleImageSet { get; set; }
-        public int CFGroupeID { get; set; }
+        public int? CFGroupeID { get; set; }
 
         public string DetailsDocumentsTemplate { get; set; }
         public string DetailsLinksTemplate { get; set; }

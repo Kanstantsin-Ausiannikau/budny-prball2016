@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace prBall.Code
 {
-    public enum TypeLearning { DnevnoeBudg, DnevnoePlatn, ZaochnoeBudg, ZaochnoePlatnoe, DistancionnoeBudg, DistancionnoePlatn, SokraschennoeBudg, SokraschennoePlatn };
+    public enum TypeLearning { DnevnoeBudg, DnevnoePlatn, ZaochnoeBudg, ZaochnoePlatnoe, SokrDnevnBudget, SokrDnevnPlatn, SokrZaochBudg, SokrZaochPlatn , DistancionnoeBudg, DistancionnoePlatn};
 
     public static class HtmlHelper
     {
@@ -47,7 +47,7 @@ namespace prBall.Code
 
         public static string TD(this string str)
         {
-            return String.Format("<td>{0}</td>", str);
+            return $"<td>{str}</td>";
         }
 
 

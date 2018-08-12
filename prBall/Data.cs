@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace prBall
 {
@@ -14,7 +15,7 @@ namespace prBall
         public const int CURRENT_YEAR_CATEGORY_ID = 80;
         public const string PREVIOUS_YEAR = "2016";
         public const string CURRENT_YEAR = "2017";
-        private static object articleListCommand;
+       // private static object articleListCommand;
 
         public static List<Vuz> GetVuzList()
         {
@@ -170,6 +171,95 @@ namespace prBall
 
         }
 
+        internal static void SetTag(int articleID, int tagId)
+        {
+            connection.Open();
+
+            SqlCommand tagCommand = new SqlCommand($"insert into [budnyby_test].[DBO].[EasyDNNNewsTagsItems]  ([ArticleID],[TagID],[DateAdded]) Values ({articleID},{tagId},CURRENT_TIMESTAMP)", connection);
+            tagCommand.ExecuteNonQuery();
+
+            connection.Close();
+        }
+
+        internal static void CreateNewArticle(Article article)
+        {
+            connection.Open();
+
+            SqlCommand newArticleCommand = new SqlCommand(
+                $"insert into [budnyby_test].[DBO].[EasyDNNNews] ([PortalID] ,[UserID],[Title],[SubTitle],[Summary],[Article],[ArticleImage],[DateAdded],[LastModified],[PublishDate],[ExpireDate],[NumberOfViews],[RatingValue],[RatingCount],[TitleLink],[DetailType]," +
+                $"[DetailTypeData],[DetailsTemplate],[DetailsTheme],[GalleryPosition],[GalleryDisplayType],[CommentsTheme],[ArticleImageFolder],[NumberOfComments],[MetaDecription],[MetaKeywords],[DisplayStyle],[DetailTarget],[CleanArticleData],[ArticleFromRSS],[HasPermissions]," +
+                $"[EventArticle],[DetailMediaType],[DetailMediaData],[AuthorAliasName],[ShowGallery],[ArticleGalleryID],[MainImageTitle],[MainImageDescription],[HideDefaultLocale],[Featured],[Approved],[AllowComments],[Active],[ShowMainImage],[ShowMainImageFront],[ArticleImageSet]," +
+                $"[CFGroupeID],[DetailsDocumentsTemplate],[DetailsLinksTemplate],[DetailsRelatedArticlesTemplate],[ContactEmail],[TitleTag]) values (@PortalID ,@UserID,@Title,@SubTitle,@Summary,@Article,@ArticleImage,@DateAdded,@LastModified,@PublishDate,@ExpireDate,@NumberOfViews,@RatingValue,@RatingCount,@TitleLink,@DetailType," +
+                $"@DetailTypeData,@DetailsTemplate,@DetailsTheme,@GalleryPosition,@GalleryDisplayType,@CommentsTheme,@ArticleImageFolder,@NumberOfComments,@MetaDecription,@MetaKeywords,@DisplayStyle,@DetailTarget,@CleanArticleData,@ArticleFromRSS,@HasPermissions," +
+                $"@EventArticle,@DetailMediaType,@DetailMediaData,@AuthorAliasName,@ShowGallery,@ArticleGalleryID,@MainImageTitle,@MainImageDescription,@HideDefaultLocale,@Featured,@Approved,@AllowComments,@Active,@ShowMainImage,@ShowMainImageFront,@ArticleImageSet," +
+                $"@CFGroupeID,@DetailsDocumentsTemplate,@DetailsLinksTemplate,@DetailsRelatedArticlesTemplate,@ContactEmail,@TitleTag)", connection);
+
+            newArticleCommand.Parameters.AddWithValue("@PortalID", article.PortalID);
+            newArticleCommand.Parameters.AddWithValue("@UserID", article.UserID);
+            newArticleCommand.Parameters.AddWithValue("@Title", article.Title);
+            newArticleCommand.Parameters.AddWithValue("@SubTitle", article.SubTitle);
+            newArticleCommand.Parameters.AddWithValue("@Summary", article.Summary);
+            newArticleCommand.Parameters.AddWithValue("@Article", UrlsData.HtmlToString(article.ArticleText));
+            newArticleCommand.Parameters.AddWithValue("@ArticleImage", article.ArticleImage);
+            newArticleCommand.Parameters.AddWithValue("@DateAdded", article.DateAdded);
+            newArticleCommand.Parameters.AddWithValue("@LastModified", article.LastModified);
+            newArticleCommand.Parameters.AddWithValue("@PublishDate", article.PublishDate);
+            newArticleCommand.Parameters.AddWithValue("@ExpireDate", article.ExpireDate);
+            newArticleCommand.Parameters.AddWithValue("@NumberOfViews", article.NumberOfViews);
+            newArticleCommand.Parameters.AddWithValue("@RatingValue", article.RatingValue);
+            newArticleCommand.Parameters.AddWithValue("@RatingCount", article.RatingCount);
+            newArticleCommand.Parameters.AddWithValue("@TitleLink", article.TitleLink);
+            newArticleCommand.Parameters.AddWithValue("@DetailType", article.DetailType);
+            newArticleCommand.Parameters.AddWithValue("@DetailTypeData", article.DetailTypeData);
+            newArticleCommand.Parameters.AddWithValue("@DetailsTemplate", article.DetailsTemplate);
+            newArticleCommand.Parameters.AddWithValue("@DetailsTheme", article.DetailsTheme);
+            newArticleCommand.Parameters.AddWithValue("@GalleryPosition", article.GalleryPosition);
+            newArticleCommand.Parameters.AddWithValue("@GalleryDisplayType", article.GalleryDisplayType);
+            newArticleCommand.Parameters.AddWithValue("@CommentsTheme", article.CommentsTheme);
+            newArticleCommand.Parameters.AddWithValue("@ArticleImageFolder", article.ArticleImageFolder);
+            newArticleCommand.Parameters.AddWithValue("@NumberOfComments", article.NumberOfComments);
+            newArticleCommand.Parameters.AddWithValue("@MetaDecription", article.MetaDecription);
+            newArticleCommand.Parameters.AddWithValue("@MetaKeywords", article.MetaKeywords);
+            newArticleCommand.Parameters.AddWithValue("@DisplayStyle", article.DisplayStyle);
+            newArticleCommand.Parameters.AddWithValue("@DetailTarget", article.DetailTarget);
+            newArticleCommand.Parameters.AddWithValue("@CleanArticleData", article.CleanArticleData);
+            newArticleCommand.Parameters.AddWithValue("@ArticleFromRSS", article.ArticleFromRSS);
+            newArticleCommand.Parameters.AddWithValue("@HasPermissions", article.HasPermissions);
+            newArticleCommand.Parameters.AddWithValue("@EventArticle", article.EventArticle);
+            newArticleCommand.Parameters.AddWithValue("@DetailMediaType", article.DetailMediaType);
+            newArticleCommand.Parameters.AddWithValue("@DetailMediaData", article.DetailMediaData);
+            newArticleCommand.Parameters.AddWithValue("@AuthorAliasName", article.AuthorAliasName);
+            newArticleCommand.Parameters.AddWithValue("@ShowGallery", article.ShowGallery);
+            newArticleCommand.Parameters.AddWithValue("@ArticleGalleryID", DBNull.Value);
+            newArticleCommand.Parameters.AddWithValue("@MainImageTitle", article.MainImageTitle);
+            newArticleCommand.Parameters.AddWithValue("@MainImageDescription", article.MainImageDescription);
+            newArticleCommand.Parameters.AddWithValue("@HideDefaultLocale", article.HideDefaultLocale);
+            newArticleCommand.Parameters.AddWithValue("@Featured", article.Featured);
+            newArticleCommand.Parameters.AddWithValue("@Approved", article.Approved);
+            newArticleCommand.Parameters.AddWithValue("@AllowComments", article.AllowComments);
+            newArticleCommand.Parameters.AddWithValue("@Active", article.Active);
+            newArticleCommand.Parameters.AddWithValue("@ShowMainImage", article.ShowMainImage);
+            newArticleCommand.Parameters.AddWithValue("@ShowMainImageFront", article.ShowMainImageFront);
+            newArticleCommand.Parameters.AddWithValue("@ArticleImageSet", article.ArticleImageSet);
+            newArticleCommand.Parameters.AddWithValue("@CFGroupeID", DBNull.Value);
+            newArticleCommand.Parameters.AddWithValue("@DetailsDocumentsTemplate", DBNull.Value);
+            newArticleCommand.Parameters.AddWithValue("@DetailsLinksTemplate", DBNull.Value);
+            newArticleCommand.Parameters.AddWithValue("@DetailsRelatedArticlesTemplate", DBNull.Value);
+            newArticleCommand.Parameters.AddWithValue("@ContactEmail", DBNull.Value);
+            newArticleCommand.Parameters.AddWithValue("@TitleTag", DBNull.Value);
+
+
+            newArticleCommand.ExecuteNonQuery();
+
+            SqlCommand lastIdentity = new SqlCommand("SELECT MAX( [ArticleID]) FROM [budnyby_test].[dbo].[EasyDNNNews]", connection);
+
+            int articleId = (int)lastIdentity.ExecuteScalar();
+
+            article.ArticleID = articleId;
+
+            connection.Close();
+        }
+
         public static CFData2016 GetCFDataByArticleID(int articleId)
         {
             connection.Open();
@@ -237,7 +327,7 @@ namespace prBall
                         case 15: articleData.TypeObuchZaochnoe = (bool)CFReader["Bit"]; break;
                         case 16: articleData.TypeObuchDistanc = (bool)CFReader["Bit"]; break;
                         case 17: articleData.TypeObuchSokrasch = (bool)CFReader["Bit"]; break;
-                        //case 46: articleData.PreviousArticleID = (CFReader["Int"] != DBNull.Value) ? (int)CFReader["Int"] : -1; break;//!
+                        case 46: articleData.PreviousArticleID = (CFReader["Int"] != DBNull.Value) ? (int)CFReader["Int"] : -1; break;//!
 
                         case 18: articleData.PrBallDnevnBudget = (decimal)CFReader["Decimal"]; break;
                         case 20: articleData.PrBallZaochnBudget = (decimal)CFReader["Decimal"]; break;
@@ -253,10 +343,10 @@ namespace prBall
                 }
             }
 
-           // if (articleData.PreviousArticleID == 0)
-           // {
+            if (articleData.PreviousArticleID <= 0)
+            {
                 articleData.PreviousArticleID = articleId;
-           // }
+            }
 
             connection.Close();
 
@@ -291,7 +381,7 @@ namespace prBall
             return title;
         }
 
-        public static void CreateNewArticle(Article article, CFData2016 data)
+        public static void CreateNewArticle(Article article, CFData2016 data, int categoryId = CURRENT_YEAR_CATEGORY_ID)
         {
             connection.Open();
 
@@ -344,7 +434,7 @@ namespace prBall
 
             CreateNewCFData(articleId, data);
 
-            SetCategoryID(articleId);
+            SetCategory(articleId, categoryId);
         }
 
         internal static string GetFacultyNameByID(int id)
@@ -360,12 +450,12 @@ namespace prBall
             return name;
         }
 
-        private static void SetCategoryID(int id)
+        public static void SetCategory(int articleId, int categoryId)
         {
             connection.Open();
 
-            SqlCommand gorodCommand = new SqlCommand(string.Format("insert into [budnyby_test].[DBO].[EasyDNNNewsCategories]  ([ArticleID],[CategoryID]) Values ({0},{1})", id, CURRENT_YEAR_CATEGORY_ID), connection);
-            gorodCommand.ExecuteNonQuery();
+            SqlCommand categoryCommand = new SqlCommand($"insert into [budnyby_test].[DBO].[EasyDNNNewsCategories]  ([ArticleID],[CategoryID]) Values ({articleId},{categoryId})", connection);
+            categoryCommand.ExecuteNonQuery();
 
             connection.Close();
         }
@@ -921,6 +1011,275 @@ namespace prBall
 
                 return vuzId;
             }
+        }
+
+        public static void SetDataGridProperty(DataGridView dgvArticles)
+        {
+
+            //dgvArticles.Columns.Clear();
+
+            DataGridViewCheckBoxColumn saveColumn = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Shr",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 20,
+                DataPropertyName = "saveColumn"
+            };
+
+            dgvArticles.Columns.Add(saveColumn);
+
+            DataGridViewCheckBoxColumn typeObuchDnevnoe = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Дневное",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "TypeObuchDnevnoe"
+
+            };
+
+            DataGridViewCheckBoxColumn TypeObuchZaochnoe = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Заочное",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "TypeObuchZaochnoe"
+
+            };
+
+            DataGridViewCheckBoxColumn TypeObuchDistanc = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Дистанционное",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "TypeObuchDistanc"
+
+            };
+
+            DataGridViewCheckBoxColumn TypeObuchSokrasch = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Сокращенное",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "TypeObuchSokrasch"
+
+            };
+
+            dgvArticles.Columns.Add(typeObuchDnevnoe);
+            dgvArticles.Columns.Add(TypeObuchZaochnoe);
+            dgvArticles.Columns.Add(TypeObuchDistanc);
+            dgvArticles.Columns.Add(TypeObuchSokrasch);
+
+            DataGridViewCheckBoxColumn CertRusskiy = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Русский",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertRusskiy"
+
+            };
+
+            DataGridViewCheckBoxColumn CertMatemat = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Математика",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertMatemat"
+
+            };
+
+            DataGridViewCheckBoxColumn CertHimia = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Химия",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertHimia"
+
+            };
+
+            DataGridViewCheckBoxColumn CertIstoriaBelorus = new DataGridViewCheckBoxColumn()
+            {
+                Name = "ИстБелор",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertIstoriaBelorus"
+
+            };
+            DataGridViewCheckBoxColumn CertInostrYazik = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Иностранный",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertInostrYazik"
+
+            };
+            DataGridViewCheckBoxColumn CertSpecEkzamen = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Спец.экз",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertSpecEkzamen"
+
+            };
+            DataGridViewCheckBoxColumn CertBiologia = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Биология",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertBiologia"
+
+            };
+            DataGridViewCheckBoxColumn CertFizika = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Физика",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertFizika"
+
+            };
+
+            DataGridViewCheckBoxColumn CertObschestvoved = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Обществовед",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertObschestvoved"
+
+            };
+            DataGridViewCheckBoxColumn CertVsemirIstoria = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Всемир.история",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertVsemirIstoria"
+
+            };
+            DataGridViewCheckBoxColumn CertGeografia = new DataGridViewCheckBoxColumn()
+            {
+                Name = "География",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertGeografia"
+
+            };
+            DataGridViewCheckBoxColumn CertProfSobesed = new DataGridViewCheckBoxColumn()
+            {
+                Name = "Проф.собесед",
+                FalseValue = false,
+                TrueValue = true,
+                Visible = true,
+                Width = 60,
+                DataPropertyName = "CertProfSobesed"
+
+            };
+
+            dgvArticles.Columns.Add(CertRusskiy);
+            dgvArticles.Columns.Add(CertMatemat);
+            dgvArticles.Columns.Add(CertHimia);
+            dgvArticles.Columns.Add(CertIstoriaBelorus);
+            dgvArticles.Columns.Add(CertInostrYazik);
+            dgvArticles.Columns.Add(CertSpecEkzamen);
+            dgvArticles.Columns.Add(CertBiologia);
+            dgvArticles.Columns.Add(CertFizika);
+            dgvArticles.Columns.Add(CertObschestvoved);
+            dgvArticles.Columns.Add(CertVsemirIstoria);
+            dgvArticles.Columns.Add(CertGeografia);
+            dgvArticles.Columns.Add(CertProfSobesed);
+
+            dgvArticles.Columns["PrBallDnevnBudget"].Width = 60;
+            dgvArticles.Columns["PrBallDnevnBudget"].HeaderText = "Дневное\nбюджет";
+
+            dgvArticles.Columns["PrBallDnevnPlatnoe"].Width = 60;
+            dgvArticles.Columns["PrBallDnevnPlatnoe"].HeaderText = "Дневное\nплатное";
+
+            dgvArticles.Columns["PrBallZaochnBudget"].Width = 60;
+            dgvArticles.Columns["PrBallZaochnBudget"].HeaderText = "Заочное\nБюджет";
+
+            dgvArticles.Columns["PrBallZaochnPlatn"].Width = 60;
+            dgvArticles.Columns["PrBallZaochnPlatn"].HeaderText = "Заочное\nПлатное";
+
+            dgvArticles.Columns["PrBallSokrDnevnBudg"].Width = 60;
+            dgvArticles.Columns["PrBallSokrDnevnBudg"].HeaderText = "СкрДнев\nБюдж";
+
+            dgvArticles.Columns["PrBallSokrDnevnPlatn"].Width = 60;
+            dgvArticles.Columns["PrBallSokrDnevnPlatn"].HeaderText = "СкрДнев\nПлатное";
+
+            dgvArticles.Columns["PrBallSokrZaochBudget"].Width = 60;
+            dgvArticles.Columns["PrBallSokrZaochBudget"].HeaderText = "СкрЗаоч\nДневн";
+
+            dgvArticles.Columns["PrBallSokrZaochPlatnoe"].Width = 60;
+            dgvArticles.Columns["PrBallSokrZaochPlatnoe"].HeaderText = "СкрЗаоч\nПлатн";
+
+            dgvArticles.Columns["PrBallDistBudget"].Width = 60;
+            dgvArticles.Columns["PrBallDistBudget"].HeaderText = "Дистанц\nБюдж";
+
+            dgvArticles.Columns["PrBallDistPlatnoe"].Width = 60;
+            dgvArticles.Columns["PrBallDistPlatnoe"].HeaderText = "Дистанц\nПлатное";
+
+            dgvArticles.Columns["TypeObuchDnevnoe"].Visible = false;
+            dgvArticles.Columns["TypeObuchZaochnoe"].Visible = false;
+            dgvArticles.Columns["TypeObuchDistanc"].Visible = false;
+            dgvArticles.Columns["TypeObuchSokrasch"].Visible = false;
+            dgvArticles.Columns["CertRusskiy"].Visible = false;
+            dgvArticles.Columns["CertMatemat"].Visible = false;
+            dgvArticles.Columns["CertHimia"].Visible = false;
+            dgvArticles.Columns["CertIstoriaBelorus"].Visible = false;
+            dgvArticles.Columns["CertBiologia"].Visible = false;
+            dgvArticles.Columns["CertFizika"].Visible = false;
+            dgvArticles.Columns["CertObschestvoved"].Visible = false;
+            dgvArticles.Columns["CertVsemirIstoria"].Visible = false;
+            dgvArticles.Columns["CertGeografia"].Visible = false;
+            dgvArticles.Columns["CertProfSobesed"].Visible = false;
+            dgvArticles.Columns["CertInostrYazik"].Visible = false;
+            dgvArticles.Columns["CertSpecEkzamen"].Visible = false;
+            dgvArticles.Columns["ArticleID"].Visible = false;
+            dgvArticles.Columns["GorodID"].Visible = false;
+            dgvArticles.Columns["VuzID"].Visible = false;
+            dgvArticles.Columns["FakultetID"].Visible = false;
+            dgvArticles.Columns["NapravleniePodgotovki"].Visible = false;
+            dgvArticles.Columns["PreviousArticleID"].Visible = false;
+
+            dgvArticles.Columns["Shr"].DisplayIndex = 0;
+            dgvArticles.Columns["Title"].Width = 300;
+
+            dgvArticles.Columns["Title"].DisplayIndex = 1;
+            dgvArticles.Columns["Дневное"].DisplayIndex = 2;
+            dgvArticles.Columns["Заочное"].DisplayIndex = 3;
+            dgvArticles.Columns["Дистанционное"].DisplayIndex = 4;
+            dgvArticles.Columns["Сокращенное"].DisplayIndex = 5;
+
+
         }
     }
 }

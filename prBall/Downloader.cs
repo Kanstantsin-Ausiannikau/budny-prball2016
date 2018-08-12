@@ -48,8 +48,22 @@ namespace scanner.Code
 			//return doc;
 		}
 
-		
-		public static HtmlDocument GetUserInfo(string user)
+        public static string DownloadHtml(string uri)
+        {
+            WebClient client = new WebClient();
+
+            Stream data = client.OpenRead(uri);
+            StreamReader reader = new StreamReader(data);
+            string s = reader.ReadToEnd();
+            data.Close();
+            reader.Close();
+
+            return s;
+
+        }
+
+
+        public static HtmlDocument GetUserInfo(string user)
 		{
             return DownloadPage(user);
 		}

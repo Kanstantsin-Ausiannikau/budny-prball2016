@@ -1,6 +1,10 @@
 $ cat .gitignore
 prBall/bin
+<<<<<<< .mine
 prBall/obj
+=======
+prBall/obj
+>>>>>>> .theirs
 *.suo
 *.exe
 *.obj

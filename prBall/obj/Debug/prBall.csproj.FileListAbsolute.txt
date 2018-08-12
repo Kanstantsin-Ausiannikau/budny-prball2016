@@ -9,7 +9,6 @@ C:\projects\budny-prball2016\prBall\obj\Debug\prBall.csproj.GenerateResource.Cac
 C:\projects\budny-prball2016\prBall\obj\Debug\prBall.exe
 C:\projects\budny-prball2016\prBall\obj\Debug\prBall.pdb
 C:\projects\budny-prball2016\prBall\bin\Debug\prBall.pdb
-C:\projects\budny-prball2016\prBall\obj\Debug\prBall.csprojResolveAssemblyReference.cache
 C:\Projects\budny-prball2016\prBall\bin\Debug\HtmlAgilityPack.dll
 C:\Projects\budny-prball2016\prBall\bin\Debug\HtmlAgilityPack.pdb
 C:\Projects\budny-prball2016\prBall\bin\Debug\HtmlAgilityPack.xml
@@ -29,3 +28,8 @@ c:\projects\budny-prball2016\budny-prball2016\prBall\obj\Debug\prBall.csproj.Gen
 c:\projects\budny-prball2016\budny-prball2016\prBall\obj\Debug\prBall.exe
 c:\projects\budny-prball2016\budny-prball2016\prBall\obj\Debug\prBall.pdb
 c:\projects\budny-prball2016\prBall\bin\Debug\EPPlus.dll
+C:\projects\budny-prball2016\prBall\obj\Debug\prBall.AddPrBallArticleForm.resources
+C:\projects\budny-prball2016\prBall\obj\Debug\prBall.BallsParserForm.resources
+c:\Projects\budny-prball2016\prBall\obj\Debug\prBall.csprojAssemblyReference.cache
+c:\Projects\budny-prball2016\prBall\obj\Debug\prBall.csproj.CoreCompileInputs.cache
+c:\Projects\budny-prball2016\prBall\obj\Debug\prBall.csproj.CopyComplete
